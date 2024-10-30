@@ -1,8 +1,8 @@
 import { Link, NavLink } from "react-router-dom";
 import { useState } from "react";
 
-import Logo from '../../assets/Symbol.svg';
-import User from '../../assets/User.svg';
+import Logo from 'src/assets/Symbol.svg';
+import User from 'src/assets/User.svg';
 
 const Header = () => { //TODO: Нужно при авторизации передавать в header имя пользователя,в последствии поменять { userName }: { userName: string }
   const [isMenuOpen, setIsMenuOpen] = useState(false);
