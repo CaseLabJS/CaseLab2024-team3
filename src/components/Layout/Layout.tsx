@@ -4,9 +4,11 @@ import Header from "src/components/Header/Header";
 
 const Layout = () => {
   return (
-    <main className='h-screen, bg-bg-white'>
+    <main className='flex flex-col min-h-screen bg-bg-white'>
       <Header />
-      <Outlet />
+      <div className="flex-grow">
+        <Outlet />
+      </div>
       <Footer />
     </main>
   );
