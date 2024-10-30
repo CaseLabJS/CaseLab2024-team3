@@ -1,3 +1,38 @@
+export type Pagination = {
+  page: number;
+  size: number;
+  totalPages: number;
+  totalElements: number;
+}
+
+export type PaginationDataResponse = {
+  pageable: {
+    pageNumber: number,
+    pageSize: number,
+    sort: {
+      unsorted: boolean,
+      sorted: boolean,
+      empty: boolean
+    },
+    offset: number,
+    unpaged: boolean,
+    paged: boolean
+  },
+  totalElements: number,
+  totalPages: number,
+  last: boolean,
+  numberOfElements: number,
+  size: number,
+  number: number,
+  sort: {
+    unsorted: boolean,
+    sorted: boolean,
+    empty: boolean
+  },
+  first: boolean,
+  empty: boolean
+}
+
 // User
 export type UserLogin = {
   login: string;
@@ -21,6 +56,10 @@ export type ChangeUser = Omit<UserRegister, "password"> & { // GET, PUT
     id: string;
 };
 
+export type GetUsersResponse = Pagination & {
+  content: ChangeUser[];
+}
+
 // Document type
 export type CreateDocumentType = {
   name: string;
@@ -31,6 +70,10 @@ export type CreateDocumentType = {
 export type ChangeDocumentType = CreateDocumentType & { // GET, PUT
   id: number;
 };
+
+export type GetDocumentTypesResponse = PaginationDataResponse &{
+  content: ChangeDocumentType[];
+}
 
 // attribute-controller
 export type CreateAttribute = {
@@ -43,6 +86,10 @@ export type CreateAttribute = {
 export type ChangeAttribute = CreateAttribute & { // GET, PUT
   id: number;
 };
+
+export type GetAttributesResponse = PaginationDataResponse &{
+  content: ChangeAttributeValue[];
+}
 
 // document-attribute-value-controller
 export type CreateAttributeValue = {
@@ -72,3 +119,7 @@ export type ChangeDocument = { // GET, PUT
   name?: string;
   data?: string;
 };
+
+export type GetDocumentsResponse = Pagination & {
+  content: ChangeDocument[];
+}
