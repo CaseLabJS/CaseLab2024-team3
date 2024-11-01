@@ -3,11 +3,13 @@ import { useState } from "react";
 
 import Logo from 'src/assets/Symbol.svg';
 import User from 'src/assets/User.svg';
+import { observer } from "mobx-react-lite";
+import { authStore } from "src/stores";
 
-const Header = () => { //TODO: Нужно при авторизации передавать в header имя пользователя,в последствии поменять { userName }: { userName: string }
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  return (
-          <header className="bg-[#283593]">
+const Header = observer(() => { //TODO: Нужно при авторизации передавать в header имя пользователя,в последствии поменять { userName }: { userName: string }
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    return (
+        <header className="bg-[#283593]">
             <nav className="border-gray-200 py-2.5">
                 <div className="flex justify-between items-center mx-3.5">
 
@@ -18,12 +20,12 @@ const Header = () => { //TODO: Нужно при авторизации пере
 
                     {/* Десктопное меню */}
                     <div className="hidden lg:flex lg:items-center lg:space-x-8">
-                      <NavLink to="app" className="block py-2 text-white font-medium" onClick={() => setIsMenuOpen(false)}>
-                        UserDashboard
-                      </NavLink>
-                      <NavLink to="admin" className="block py-2 text-white font-medium" onClick={() => setIsMenuOpen(false)}>
-                        Admin
-                      </NavLink>
+                        <NavLink to="app" className="block py-2 text-white font-medium" onClick={() => setIsMenuOpen(false)}>
+                            UserDashboard
+                        </NavLink>
+                        <NavLink to="admin" className="block py-2 text-white font-medium" onClick={() => setIsMenuOpen(false)}>
+                            Admin
+                        </NavLink>
                     </div>
 
                     {/* Блок пользователя */}
@@ -37,6 +39,7 @@ const Header = () => { //TODO: Нужно при авторизации пере
                         <div className="hidden lg:block">
                             <button
                                 className="border border-white text-white bg-transparent rounded-lg text-sm px-4 py-2 focus:ring-4 focus:ring-white/50 hover:bg-white/10"
+                                onClick={authStore.logout}
                             >
                                 Выход
                             </button>
@@ -90,7 +93,7 @@ const Header = () => { //TODO: Нужно при авторизации пере
                 )}
             </nav>
         </header>
-  );
-};
+    );
+})
 
 export default Header;

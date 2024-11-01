@@ -1,37 +1,39 @@
+export * from "./assignComponent";
+
 export type Pagination = {
   page: number;
   size: number;
   totalPages: number;
   totalElements: number;
-}
+};
 
 export type PaginationDataResponse = {
   pageable: {
-    pageNumber: number,
-    pageSize: number,
+    pageNumber: number;
+    pageSize: number;
     sort: {
-      unsorted: boolean,
-      sorted: boolean,
-      empty: boolean
-    },
-    offset: number,
-    unpaged: boolean,
-    paged: boolean
-  },
-  totalElements: number,
-  totalPages: number,
-  last: boolean,
-  numberOfElements: number,
-  size: number,
-  number: number,
+      unsorted: boolean;
+      sorted: boolean;
+      empty: boolean;
+    };
+    offset: number;
+    unpaged: boolean;
+    paged: boolean;
+  };
+  totalElements: number;
+  totalPages: number;
+  last: boolean;
+  numberOfElements: number;
+  size: number;
+  number: number;
   sort: {
-    unsorted: boolean,
-    sorted: boolean,
-    empty: boolean
-  },
-  first: boolean,
-  empty: boolean
-}
+    unsorted: boolean;
+    sorted: boolean;
+    empty: boolean;
+  };
+  first: boolean;
+  empty: boolean;
+};
 
 // User
 export type UserLogin = {
@@ -52,13 +54,14 @@ export type UserRegister = UserLogin & {
   roles: string[];
 };
 
-export type ChangeUser = Omit<UserRegister, "password"> & { // GET, PUT
-    id: string;
+export type ChangeUser = Omit<UserRegister, "password"> & {
+  // GET, PUT
+  id: string;
 };
 
 export type GetUsersResponse = Pagination & {
   content: ChangeUser[];
-}
+};
 
 // Document type
 export type CreateDocumentType = {
@@ -67,13 +70,14 @@ export type CreateDocumentType = {
   attributeIds?: string[];
 };
 
-export type ChangeDocumentType = CreateDocumentType & { // GET, PUT
+export type ChangeDocumentType = CreateDocumentType & {
+  // GET, PUT
   id: number;
 };
 
-export type GetDocumentTypesResponse = PaginationDataResponse &{
+export type GetDocumentTypesResponse = PaginationDataResponse & {
   content: ChangeDocumentType[];
-}
+};
 
 // attribute-controller
 export type CreateAttribute = {
@@ -83,13 +87,14 @@ export type CreateAttribute = {
   required?: boolean;
 };
 
-export type ChangeAttribute = CreateAttribute & { // GET, PUT
+export type ChangeAttribute = CreateAttribute & {
+  // GET, PUT
   id: number;
 };
 
-export type GetAttributesResponse = PaginationDataResponse &{
+export type GetAttributesResponse = PaginationDataResponse & {
   content: ChangeAttributeValue[];
-}
+};
 
 // document-attribute-value-controller
 export type CreateAttributeValue = {
@@ -98,7 +103,8 @@ export type CreateAttributeValue = {
   value?: string;
 };
 
-export type ChangeAttributeValue = CreateAttributeValue & { // GET, PUT
+export type ChangeAttributeValue = CreateAttributeValue & {
+  // GET, PUT
   id: number;
 };
 
@@ -111,7 +117,8 @@ export type CreateDocument = {
   data: string;
 };
 
-export type ChangeDocument = { // GET, PUT
+export type ChangeDocument = {
+  // GET, PUT
   id: number;
   documentTypeId?: number;
   userId?: string;
@@ -122,4 +129,4 @@ export type ChangeDocument = { // GET, PUT
 
 export type GetDocumentsResponse = Pagination & {
   content: ChangeDocument[];
-}
+};
