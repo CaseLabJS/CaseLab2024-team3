@@ -1,3 +1,6 @@
+import { DocAttributesAdminPage } from '@pages/DocAttributesAdminPage';
+import { DocTypesAdminPage } from '@pages/DocTypesAdminPage';
+import { UsersAdminPage } from '@pages/UsersAdminPage';
 import { Suspense } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Layout from 'src/components/Layout/Layout';
@@ -27,15 +30,28 @@ const AppRouter = () => {
         <Route element={<Layout />}>
           <Route element={<ProtectedRoute role="user" />}>
             <Route index element={<Navigate replace to="app" />} />
-            <Route path="app" element={<UserDashboardPage />}>
+            <Route path={ROUTE_CONSTANTS.APP} element={<UserDashboardPage />}>
               <Route path="documents" element={<DocumentsPage />} />
               <Route path="users" element={<UsersPage />} />
             </Route>
           </Route>
           <Route element={<ProtectedRoute role="admin" />}>
-            <Route path="admin" element={<AdminPage />} />
+            <Route path={ROUTE_CONSTANTS.ADMIN} element={<AdminPage />}>
+              <Route
+                path={ROUTE_CONSTANTS.USERS}
+                element={<UsersAdminPage />}
+              />
+              <Route
+                path={ROUTE_CONSTANTS.DOC_TYPES_ADMIN}
+                element={<DocTypesAdminPage />}
+              />
+              <Route
+                path={ROUTE_CONSTANTS.DOC_ATTRIBUTES_ADMIN}
+                element={<DocAttributesAdminPage />}
+              />
+            </Route>
           </Route>
-          <Route path="*" element={<NotFoundPage />} />
+          <Route path={ROUTE_CONSTANTS.NOT_FOUND} element={<NotFoundPage />} />
         </Route>
       </Routes>
     </Suspense>

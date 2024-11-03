@@ -4,3 +4,8 @@ export * from './Label';
 export * from './Form';
 export * from './Button';
 export * from './Spinner';
+export * from './Sidebar';
+export * from './Separator';
+export * from './Sheet';
+export * from './Tooltip';
+export * from './Skeleton';
