@@ -1,4 +1,4 @@
-export * from "./assignComponent";
+export * from './assignComponent';
 
 export type Pagination = {
   page: number;
@@ -54,7 +54,7 @@ export type UserRegister = UserLogin & {
   roles: string[];
 };
 
-export type ChangeUser = Omit<UserRegister, "password"> & {
+export type ChangeUser = Omit<UserRegister, 'password'> & {
   // GET, PUT
   id: string;
 };

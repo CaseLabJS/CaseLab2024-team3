@@ -1,31 +1,46 @@
 # **CaseLab2024-team3**
+
 ## Description
+
 This system is designed for document management, including document creation, versioning and approval. The program supports document processing at different stages, from the draft to the approved version, and also provides work with document attributes and their types.
+
 ## Technology stack
-* TypeScript
-* React
-* Vite
-* MobX
-* Axios
+
+- TypeScript
+- React
+- Vite
+- MobX
+- Axios
+
 ## Installation and launch
+
 1. Cloning a repository:
-``` bash
+
+```bash
 git clone https://github.com/CaseLabJS/CaseLab2024-team3.git
 ```
+
 2. Installing dependencies:
-``` bash
+
+```bash
 npm install
 ```
+
 3. Project Launch:
-``` bash
+
+```bash
 npm run dev
 ```
+
 4. If you want to build a project, write a command:
-``` bash
-npm run build 
+
+```bash
+npm run build
 ```
->**The project will be available at:  http://localhost:5173**. 
-***
+
+> **The project will be available at: http://localhost:5173**.
+
+---
 
 ### This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
@@ -49,7 +64,7 @@ export default tseslint.config({
       tsconfigRootDir: import.meta.dirname,
     },
   },
-})
+});
 ```
 
 - Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
@@ -58,7 +73,7 @@ export default tseslint.config({
 
 ```js
 // eslint.config.js
-import react from 'eslint-plugin-react'
+import react from 'eslint-plugin-react';
 
 export default tseslint.config({
   // Set the react version
@@ -73,5 +88,5 @@ export default tseslint.config({
     ...react.configs.recommended.rules,
     ...react.configs['jsx-runtime'].rules,
   },
-})
+});
 ```

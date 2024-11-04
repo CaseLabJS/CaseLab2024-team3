@@ -1,37 +1,53 @@
-import { AxiosResponse } from "axios";
-import api from "./index";
-import { ChangeDocumentType, CreateDocumentType, GetDocumentTypesResponse } from "src/types";
+import { AxiosResponse } from 'axios';
+import api from './index';
+import {
+  ChangeDocumentType,
+  CreateDocumentType,
+  GetDocumentTypesResponse,
+} from 'src/types';
 
 class ApiDocumentTypeController {
-  public static getDocumetTypes(page?: number, size?: number): Promise<AxiosResponse<GetDocumentTypesResponse>> {
+  public static getDocumetTypes(
+    page?: number,
+    size?: number
+  ): Promise<AxiosResponse<GetDocumentTypesResponse>> {
     if (page && size) {
       return api.get(`/document_type?page=${page}&size=${size}`);
     }
-  
+
     if (page) {
       return api.get(`/document_type?page=${page}`);
     }
-  
+
     if (size) {
       return api.get(`/document_type?size=${size}`);
     }
-    
+
     return api.get(`/document_type`);
   }
 
-  public static async createDocumentType(data: CreateDocumentType): Promise<AxiosResponse<ChangeDocumentType>> {
+  public static async createDocumentType(
+    data: CreateDocumentType
+  ): Promise<AxiosResponse<ChangeDocumentType>> {
     return api.post(`/document_type`, data);
   }
 
-  public static async getDocumentTypeById(id: number): Promise<AxiosResponse<ChangeDocumentType>> {
+  public static async getDocumentTypeById(
+    id: number
+  ): Promise<AxiosResponse<ChangeDocumentType>> {
     return api.get(`/document_type/${id}`);
   }
-  
-  public static async deleteDocumentTypeById(id: number): Promise<AxiosResponse> {
+
+  public static async deleteDocumentTypeById(
+    id: number
+  ): Promise<AxiosResponse> {
     return api.delete(`/document_type/${id}`);
   }
 
-  public static async updateDocumentTypeById(id: number, data: CreateDocumentType): Promise<AxiosResponse<ChangeDocumentType>> {
+  public static async updateDocumentTypeById(
+    id: number,
+    data: CreateDocumentType
+  ): Promise<AxiosResponse<ChangeDocumentType>> {
     return api.patch(`/document_type/${id}`, data);
   }
 }

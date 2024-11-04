@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios from 'axios';
 
-import { AuthUserResponse } from "src/types";
-import { API_URL } from "./index";
+import { AuthUserResponse } from 'src/types';
+import { API_URL } from './index';
 
 class ApiAuthController {
   public static async login(

@@ -1,15 +1,21 @@
 import { AxiosResponse } from 'axios';
 import api from './index';
-import { ChangeAttribute, CreateAttribute, GetAttributesResponse } from 'src/types';
+import {
+  ChangeAttribute,
+  CreateAttribute,
+  GetAttributesResponse,
+} from 'src/types';
 
 class ApiAttributeController {
-  public static async getAttributeById(id: number): Promise<AxiosResponse<ChangeAttribute>> {
+  public static async getAttributeById(
+    id: number
+  ): Promise<AxiosResponse<ChangeAttribute>> {
     return api.get(`/attributes/${id}`);
   }
 
   public static async updateAttributeById(
     id: number,
-    data: CreateAttribute,
+    data: CreateAttribute
   ): Promise<AxiosResponse<ChangeAttribute>> {
     return api.put(`/attributes/${id}`, data);
   }
@@ -18,7 +24,10 @@ class ApiAttributeController {
     return api.delete(`/attributes/${id}`);
   }
 
-  public static async getAttributes(page?: number, size?: number): Promise<AxiosResponse<GetAttributesResponse>> {
+  public static async getAttributes(
+    page?: number,
+    size?: number
+  ): Promise<AxiosResponse<GetAttributesResponse>> {
     if (page && size) {
       return api.get(`/attributes?page=${page}&size=${size}`);
     }
@@ -30,11 +39,13 @@ class ApiAttributeController {
     if (size) {
       return api.get(`/attributes?size=${size}`);
     }
-    
+
     return api.get(`/attributes`);
   }
 
-  public static async createAttribute(data: CreateAttribute): Promise<AxiosResponse<ChangeAttribute>> {
+  public static async createAttribute(
+    data: CreateAttribute
+  ): Promise<AxiosResponse<ChangeAttribute>> {
     return api.post(`/attributes`, data);
   }
 }
