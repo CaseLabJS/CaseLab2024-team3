@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 export const API_URL = 'http://172.18.27.103:8080/api/v1';
 
@@ -12,8 +12,8 @@ api.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
-  
+
   return config;
-})
+});
 
 export default api;

@@ -1,11 +1,11 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, runInAction } from 'mobx';
 
-import ApiAuthController from "src/api/ApiAuthController";
+import ApiAuthController from 'src/api/ApiAuthController';
 
-import { AuthStoreProps, LocalStorageHelperProps } from "./types";
-import { STATUS } from "src/types/status";
-import { REFRESH_TOKEN, TOKEN } from "src/constants/authConstants";
-import { UserLogin } from "src/types";
+import { AuthStoreProps, LocalStorageHelperProps } from './types';
+import { STATUS } from 'src/types/status';
+import { REFRESH_TOKEN, TOKEN } from 'src/constants/authConstants';
+import { UserLogin } from 'src/types';
 
 class AuthStore implements AuthStoreProps {
   private _isAuth = false;
@@ -30,11 +30,11 @@ class AuthStore implements AuthStoreProps {
 
   helperLocalStorage(params: LocalStorageHelperProps) {
     const { action } = params;
-    if (action === "setItem" && "data" in params) {
+    if (action === 'setItem' && 'data' in params) {
       const { data } = params;
       localStorage.setItem(TOKEN, data.jwt);
       localStorage.setItem(REFRESH_TOKEN, data.refreshToken);
-    } else if (action === "removeItem") {
+    } else if (action === 'removeItem') {
       localStorage.removeItem(TOKEN);
       localStorage.removeItem(REFRESH_TOKEN);
     }
@@ -44,7 +44,7 @@ class AuthStore implements AuthStoreProps {
     this._status = STATUS.LOADING;
     try {
       const data = await ApiAuthController.login(login, password);
-      this.helperLocalStorage({ action: "setItem", data });
+      this.helperLocalStorage({ action: 'setItem', data });
       runInAction(() => {
         this._isAuth = true;
         this._status = STATUS.SUCCESS;
@@ -66,7 +66,7 @@ class AuthStore implements AuthStoreProps {
         return;
       }
       const data = await ApiAuthController.refresh(refreshToken);
-      this.helperLocalStorage({ action: "setItem", data });
+      this.helperLocalStorage({ action: 'setItem', data });
       runInAction(() => {
         this._isAuth = true;
         this._status = STATUS.SUCCESS;
@@ -84,7 +84,7 @@ class AuthStore implements AuthStoreProps {
     try {
       this._isAuth = false;
       this.helperLocalStorage({
-        action: "removeItem",
+        action: 'removeItem',
       });
       this._status = STATUS.SUCCESS;
     } catch (err) {

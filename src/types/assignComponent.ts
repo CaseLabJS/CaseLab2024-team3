@@ -1,4 +1,4 @@
-import { ElementType } from "react";
+import { ElementType } from 'react';
 
 export type PropsOf<T extends ElementType> = React.ComponentPropsWithoutRef<T> &
   AsProps;
@@ -9,19 +9,19 @@ interface AsProps<T extends ElementType = ElementType> {
 
 export type OmitCommonProps<
   Target,
-  OmitAdditionalProps extends keyof any = never
-> = Omit<Target, "as" | OmitAdditionalProps>;
+  OmitAdditionalProps extends keyof any = never,
+> = Omit<Target, 'as' | OmitAdditionalProps>;
 
 export type RightJoinProps<
   SourceProps extends object = {},
-  OverrideProps extends object = {}
+  OverrideProps extends object = {},
 > = OmitCommonProps<SourceProps, keyof OverrideProps> & OverrideProps;
 
 export type MergeWithAs<
   ComponentProps extends object,
   AsProps extends object,
   AdditionalProps extends object = {},
-  AsComponent extends ElementType = ElementType
+  AsComponent extends ElementType = ElementType,
 > = (
   | RightJoinProps<ComponentProps, AdditionalProps>
   | RightJoinProps<AsProps, AdditionalProps>
@@ -31,7 +31,7 @@ export type MergeWithAs<
 
 export type ComponentWithAs<
   Component extends ElementType,
-  Props extends object = {}
+  Props extends object = {},
 > = {
   <AsComponent extends ElementType = Component>(
     props: MergeWithAs<

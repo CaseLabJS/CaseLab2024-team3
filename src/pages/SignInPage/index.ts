@@ -1,1 +1,1 @@
-export { SignInPageAsync as SignInPage } from "./SignInPage.async";
+export { SignInPageAsync as SignInPage } from './SignInPage.async';

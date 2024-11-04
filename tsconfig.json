@@ -12,8 +12,7 @@
       "@assets/*": ["src/assets/*"],
       "@pages/*": ["src/pages/*"],
       "@types/*": ["src/types/*"],
-      "@constants/*": ["src/constants/*"],
+      "@constants/*": ["src/constants/*"]
     }
   }
-  
 }

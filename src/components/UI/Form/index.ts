@@ -7,6 +7,6 @@ export {
   FormDescription,
   FormMessage,
   FormField,
-} from "./Form";
+} from './Form';
 
-export * as BaseForm from "./BaseForm";
+export * as BaseForm from './BaseForm';

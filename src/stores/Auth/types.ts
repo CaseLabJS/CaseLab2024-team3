@@ -1,5 +1,5 @@
-import { AuthUserResponse, UserLogin } from "src/types";
-import { STATUS } from "src/types/status";
+import { AuthUserResponse, UserLogin } from 'src/types';
+import { STATUS } from 'src/types/status';
 
 export interface AuthStoreProps {
   isAuth: boolean;
@@ -11,12 +11,12 @@ export interface AuthStoreProps {
 }
 
 interface LocalStorageActionSet {
-  action: "setItem" | "removeItem";
+  action: 'setItem' | 'removeItem';
   data: AuthUserResponse;
 }
 
 interface LocalStorageActionRemove {
-  action: "removeItem";
+  action: 'removeItem';
 }
 
 export type LocalStorageHelperProps =
