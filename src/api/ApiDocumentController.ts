@@ -3,20 +3,21 @@ import api from './index';
 import {
   ChangeDocument,
   CreateDocument,
+  CreateDocumentResponse,
   GetDocumentsResponse,
 } from 'src/types';
 
 class ApiDocumentController {
   public static async getDocumentById(
     id: number
-  ): Promise<AxiosResponse<ChangeDocument>> {
+  ): Promise<AxiosResponse<CreateDocumentResponse>> {
     return api.get(`/document/${id}`);
   }
 
   public static async updateDocumentById(
     id: number,
     data: ChangeDocument
-  ): Promise<AxiosResponse<ChangeDocument>> {
+  ): Promise<AxiosResponse<CreateDocumentResponse>> {
     return api.put(`/document/${id}`, data);
   }
 
@@ -45,7 +46,7 @@ class ApiDocumentController {
 
   public static async createDocument(
     data: CreateDocument
-  ): Promise<AxiosResponse<ChangeDocument>> {
+  ): Promise<AxiosResponse<CreateDocumentResponse>> {
     return api.post(`/document`, data);
   }
 

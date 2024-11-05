@@ -127,6 +127,15 @@ export type ChangeDocument = {
   data?: string;
 };
 
+export type CreateDocumentResponse = {
+  id: number;
+  documentName: string;
+  createdAt: string;
+  updatedAt: string;
+  contentUrl: string;
+  documentId: number;
+};
+
 export type GetDocumentsResponse = Pagination & {
-  content: ChangeDocument[];
+  content: CreateDocumentResponse[];
 };
