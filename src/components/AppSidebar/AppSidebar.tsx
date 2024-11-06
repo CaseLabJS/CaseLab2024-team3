@@ -23,7 +23,7 @@ interface SidebarProps {
 
 export function AppSidebar({ menuItems, sidebarName }: SidebarProps) {
   return (
-    <Sidebar collapsible="offcanvas" className="absolute h-[calc(100vh-130px)]">
+    <Sidebar collapsible="offcanvas" className="absolute h-[calc(100vh-130px)] ml-40">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>{sidebarName}</SidebarGroupLabel>
