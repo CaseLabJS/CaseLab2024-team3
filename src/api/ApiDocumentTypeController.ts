@@ -7,7 +7,7 @@ import {
 } from 'src/types';
 
 class ApiDocumentTypeController {
-  public static getDocumetTypes(
+  public static getDocumentTypes(
     page?: number,
     size?: number
   ): Promise<AxiosResponse<GetDocumentTypesResponse>> {
