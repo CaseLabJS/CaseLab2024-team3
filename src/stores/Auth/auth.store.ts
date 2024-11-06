@@ -1,15 +1,15 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-
 import ApiAuthController from 'src/api/ApiAuthController';
-
 import { AuthStoreProps, LocalStorageHelperProps } from './types';
 import { STATUS } from 'src/types/status';
 import { REFRESH_TOKEN, TOKEN } from 'src/constants/authConstants';
 import { UserLogin } from 'src/types';
+import userStore from '../User/user.store';
 
 class AuthStore implements AuthStoreProps {
   private _isAuth = false;
   private _status = STATUS.INITIAL;
+  private _userId = ''
 
   constructor() {
     this.checkAuth();
@@ -26,6 +26,10 @@ class AuthStore implements AuthStoreProps {
 
   getToken() {
     return localStorage.getItem(REFRESH_TOKEN);
+  }
+
+  get userId(){
+    return this._userId;
   }
 
   helperLocalStorage(params: LocalStorageHelperProps) {
@@ -47,6 +51,8 @@ class AuthStore implements AuthStoreProps {
       this.helperLocalStorage({ action: 'setItem', data });
       runInAction(() => {
         this._isAuth = true;
+        this._userId = data.userId
+        userStore.fetchUserData()
         this._status = STATUS.SUCCESS;
       });
     } catch (err) {
@@ -69,6 +75,8 @@ class AuthStore implements AuthStoreProps {
       this.helperLocalStorage({ action: 'setItem', data });
       runInAction(() => {
         this._isAuth = true;
+        this._userId = data.userId
+        userStore.fetchUserData()
         this._status = STATUS.SUCCESS;
       });
     } catch (err) {
@@ -83,6 +91,8 @@ class AuthStore implements AuthStoreProps {
     this._status = STATUS.LOADING;
     try {
       this._isAuth = false;
+      this._userId = ''
+      userStore.fetchUserData()
       this.helperLocalStorage({
         action: 'removeItem',
       });

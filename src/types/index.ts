@@ -42,6 +42,7 @@ export type UserLogin = {
 };
 
 export type AuthUserResponse = {
+  userId: string;
   refreshToken: string;
   jwt: string;
 };
@@ -51,7 +52,10 @@ export type UserRegister = UserLogin & {
   firstName: string;
   lastName: string;
   patronymic?: string;
-  roles: string[];
+  roles: [
+    { id: 1, name: 'ADMIN' },
+    { id: 2, name: 'USER' }
+  ];
 };
 
 export type ChangeUser = Omit<UserRegister, 'password'> & {

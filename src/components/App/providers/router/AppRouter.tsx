@@ -28,14 +28,14 @@ const AppRouter = () => {
         <Route path={ROUTE_CONSTANTS.SIGN_IN} element={<SignInPage />} />
         <Route path={ROUTE_CONSTANTS.SIGN_UP} element={<SignUpPage />} />
         <Route element={<Layout />}>
-          <Route element={<ProtectedRoute role="user" />}>
+          <Route element={<ProtectedRoute role="USER" />}>
             <Route index element={<Navigate replace to="app" />} />
             <Route path={ROUTE_CONSTANTS.APP} element={<UserDashboardPage />}>
               <Route path="documents" element={<DocumentsPage />} />
               <Route path="users" element={<UsersPage />} />
             </Route>
           </Route>
-          <Route element={<ProtectedRoute role="admin" />}>
+          <Route element={<ProtectedRoute role="ADMIN" />}>
             <Route path={ROUTE_CONSTANTS.ADMIN} element={<AdminPage />}>
               <Route
                 path={ROUTE_CONSTANTS.USERS}
