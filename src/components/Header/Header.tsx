@@ -10,9 +10,9 @@ const Header = observer(() => {
   //TODO: Нужно при авторизации передавать в header имя пользователя,в последствии поменять { userName }: { userName: string }
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
-    <header className="bg-[#283593]">
-      <nav className="border-gray-200 py-2.5">
-        <div className="flex justify-between items-center mx-3.5">
+    <header className="bg-[#283593] px-4 md:px-8 lg:px-40">
+      <nav className="py-2.5">
+        <div className="flex justify-between items-center ">
           <Link to="/" className="flex items-center">
             <img src={Logo} className="mr-3 h-6 sm:h-9" alt="Logo" />
             <span className="text-sm font-semibold text-white">
