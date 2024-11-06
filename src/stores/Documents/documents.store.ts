@@ -5,8 +5,9 @@ import {
   ChangeDocument,
   CreateDocumentResponse,
 } from 'src/types';
+import { DocumentsStoreProps } from './types';
 
-class DocumentsStore {
+class DocumentsStore implements DocumentsStoreProps {
   private _document: CreateDocumentResponse | null = null;
   private _documents: CreateDocumentResponse[] = [];
   private _loading: boolean = false;
@@ -32,141 +33,76 @@ class DocumentsStore {
     return this._error;
   }
 
-  async fetchDocumentById(id: number) {
+  private async responseHandler<T>(
+    action: () => Promise<T>,
+    onSuccess: (data: T) => void
+  ) {
     this._loading = true;
+
     try {
-      const response = await ApiDocumentController.getDocumentById(id);
+      const result = await action();
       runInAction(() => {
-        this._document = response.data;
+        onSuccess(result);
         this._error = null;
       });
     } catch (error) {
-      if (error instanceof Error) {
-        runInAction(() => {
-          this._error = error.message;
-        });
-      } else {
-        runInAction(() => {
-          this._error = 'An unknown error occurred';
-        });
-      }
+      runInAction(() => {
+        this._error =
+          error instanceof Error ? error.message : 'An unknown error occurred';
+      });
     } finally {
       runInAction(() => {
         this._loading = false;
       });
     }
+  }
+
+  async fetchDocumentById(id: number) {
+    return this.responseHandler(
+      () => ApiDocumentController.getDocumentById(id),
+      (response) => {
+        this._document = response.data;
+      }
+    );
   }
 
   async fetchDocuments(page?: number, size?: number) {
-    this._loading = true;
-    try {
-      const response = await ApiDocumentController.getDocuments(page, size);
-      runInAction(() => {
+    return this.responseHandler(
+      () => ApiDocumentController.getDocuments(page, size),
+      (response) => {
         this._documents = response.data.content;
-        this._error = null;
-      });
-    } catch (error) {
-      if (error instanceof Error) {
-        runInAction(() => {
-          this._error = error.message;
-        });
-      } else {
-        runInAction(() => {
-          this._error = 'An unknown error occurred';
-        });
       }
-    } finally {
-      runInAction(() => {
-        this._loading = false;
-      });
-    }
+    );
   }
 
   async createDocument(document: CreateDocument) {
-    this._loading = true;
-    try {
-      const response = await ApiDocumentController.createDocument(document);
-      runInAction(() => {
+    return this.responseHandler(
+      () => ApiDocumentController.createDocument(document),
+      (response) => {
         this._documents.push(response.data);
-        this._error = null;
-      });
-    } catch (error) {
-      if (error instanceof Error) {
-        runInAction(() => {
-          this._error = error.message;
-        });
-      } else {
-        runInAction(() => {
-          this._error = 'An unknown error occurred';
-        });
       }
-    } finally {
-      runInAction(() => {
-        this._loading = false;
-      });
-    }
+    );
   }
 
   async updateDocument(id: number, document: ChangeDocument) {
-    this._loading = true;
-    try {
-      const response = await ApiDocumentController.updateDocumentById(
-        id,
-        document
-      );
-      runInAction(() => {
+    return this.responseHandler(
+      () => ApiDocumentController.updateDocumentById(id, document),
+      (response) => {
         const index = this._documents.findIndex((doc) => doc.id === id);
         if (index !== -1) {
-          this._documents[index] = {
-            ...this._documents[index],
-            ...response.data,
-          };
+          this._documents[index] = response.data;
         }
-        this._error = null;
-      });
-    } catch (error) {
-      if (error instanceof Error) {
-        runInAction(() => {
-          this._error = error.message;
-        });
-      } else {
-        runInAction(() => {
-          this._error = 'An unknown error occurred';
-        });
       }
-    } finally {
-      runInAction(() => {
-        this._loading = false;
-      });
-    }
+    );
   }
 
   async deleteDocument(id: number) {
-    this._loading = true;
-    try {
-      await ApiDocumentController.deleteDocumentById(id);
-      runInAction(() => {
-        const index = this._documents.findIndex((doc) => doc.id === id);
-        if (index !== -1) {
-          this._documents.splice(index, 1);
-        }
-        this._error = null;
-      });
-    } catch (error) {
-      if (error instanceof Error) {
-        runInAction(() => {
-          this._error = error.message;
-        });
-      } else {
-        runInAction(() => {
-          this._error = 'An unknown error occurred';
-        });
+    return this.responseHandler(
+      () => ApiDocumentController.deleteDocumentById(id),
+      () => {
+        this._documents = this._documents.filter((doc) => doc.id !== id);
       }
-    } finally {
-      runInAction(() => {
-        this._loading = false;
-      });
-    }
+    );
   }
 }
 
