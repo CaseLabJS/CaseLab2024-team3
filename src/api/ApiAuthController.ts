@@ -9,7 +9,7 @@ class ApiAuthController {
     password: string
   ): Promise<AuthUserResponse> {
     return axios
-      .post(`${API_URL}/users/auth`, { login, password })
+      .post(`${API_URL}/auth`, { login, password })
       .then((res) => res.data);
   }
 
