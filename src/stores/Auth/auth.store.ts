@@ -9,7 +9,7 @@ import {usersStore} from '../Users';
 class AuthStore implements AuthStoreProps {
   private _isAuth = false;
   private _status = STATUS.INITIAL;
-  private _userId = ''
+  private _userId = '';
 
   constructor() {
     this.checkAuth();
@@ -28,7 +28,7 @@ class AuthStore implements AuthStoreProps {
     return localStorage.getItem(REFRESH_TOKEN);
   }
 
-  get userId(){
+  get userId() {
     return this._userId;
   }
 

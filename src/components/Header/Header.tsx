@@ -113,7 +113,7 @@ const Header = observer(() => {
               <li>
                 <button
                   className="w-full border border-white text-white bg-transparent rounded-lg font-medium text-sm px-4 py-2"
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={authStore.logout}
                 >
                   Выход
                 </button>
