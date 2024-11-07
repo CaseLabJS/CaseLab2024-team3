@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Logo from 'src/assets/Symbol.svg';
 import User from 'src/assets/User.svg';
 import { observer } from 'mobx-react-lite';
-import { authStore, userStore } from 'src/stores';
+import { authStore, usersStore } from 'src/stores';
 
 const Header = observer(() => {
   //TODO: Нужно при авторизации передавать в header имя пользователя,в последствии поменять { userName }: { userName: string }
@@ -22,8 +22,8 @@ const Header = observer(() => {
 
           {/* Десктопное меню */}
           <div className="hidden lg:flex lg:items-center lg:space-x-8">
-            {userStore.user &&
-              userStore.user.roles.some(
+            {usersStore.user &&
+              usersStore.user.roles.some(
                 (roleUser) => roleUser.name === 'USER'
               ) && (
                 <NavLink
@@ -34,8 +34,8 @@ const Header = observer(() => {
                   UserDashboard
                 </NavLink>
               )}
-            {userStore.user &&
-              userStore.user.roles.some(
+            {usersStore.user &&
+              usersStore.user.roles.some(
                 (roleUser) => roleUser.name === 'ADMIN'
               ) && (
                 <NavLink
@@ -94,8 +94,8 @@ const Header = observer(() => {
               </button>
             </div>
             <ul className="mt-10 space-y-4 text-center">
-              {userStore.user &&
-                userStore.user.roles.some(
+              {usersStore.user &&
+                usersStore.user.roles.some(
                   (roleUser) => roleUser.name === 'USER'
                 ) && (
                   <li>
@@ -108,8 +108,8 @@ const Header = observer(() => {
                     </NavLink>
                   </li>
                 )}
-              {userStore.user &&
-                userStore.user.roles.some(
+              {usersStore.user &&
+                usersStore.user.roles.some(
                   (roleUser) => roleUser.name === 'ADMIN'
                 ) && (
                   <li>

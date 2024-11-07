@@ -4,7 +4,7 @@ import { AuthStoreProps, LocalStorageHelperProps } from './types';
 import { STATUS } from 'src/types/status';
 import { REFRESH_TOKEN, TOKEN } from 'src/constants/authConstants';
 import { UserLogin } from 'src/types';
-import userStore from '../User/user.store';
+import {usersStore} from '../Users';
 
 class AuthStore implements AuthStoreProps {
   private _isAuth = false;
@@ -51,8 +51,8 @@ class AuthStore implements AuthStoreProps {
       this.helperLocalStorage({ action: 'setItem', data });
       runInAction(() => {
         this._isAuth = true;
-        this._userId = data.userId;
-        userStore.fetchUserData();
+        this._userId = data.userId
+        usersStore.fetchUserData()
         this._status = STATUS.SUCCESS;
       });
     } catch (err) {
@@ -75,8 +75,8 @@ class AuthStore implements AuthStoreProps {
       this.helperLocalStorage({ action: 'setItem', data });
       runInAction(() => {
         this._isAuth = true;
-        this._userId = data.userId;
-        userStore.fetchUserData();
+        this._userId = data.userId
+        usersStore.fetchUserData()
         this._status = STATUS.SUCCESS;
       });
     } catch (err) {
@@ -91,8 +91,8 @@ class AuthStore implements AuthStoreProps {
     this._status = STATUS.LOADING;
     try {
       this._isAuth = false;
-      this._userId = '';
-      userStore.fetchUserData();
+      this._userId = ''
+      usersStore.fetchUserData()
       this.helperLocalStorage({
         action: 'removeItem',
       });
