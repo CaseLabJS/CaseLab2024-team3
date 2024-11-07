@@ -33,10 +33,14 @@ const ProtectedRouteSuccess: FC<{ role: string }> = observer(({ role }) => {
       [STATUS.ERROR]: () => <ProtectedRouteLoading />,
       [STATUS.LOADING]: () => <ProtectedRouteLoading />,
       [STATUS.SUCCESS]: () => {
-        if (userStore.user && Array.isArray(userStore.user.roles) && userStore.user.roles.some(roleUser => roleUser.name === role))
+        if (
+          userStore.user &&
+          Array.isArray(userStore.user.roles) &&
+          userStore.user.roles.some((roleUser) => roleUser.name === role)
+        )
           return <Outlet />;
         return <Navigate to={ROUTE_CONSTANTS.NOT_FOUND} />;
-      }
+      },
     };
 
     const renderComponent = MapComponent[userStore.status] || (() => null);
@@ -53,7 +57,7 @@ const ProtectedRouteError = observer(() => {
 const ProtectedRoute: FC<ProtectedRouteProps> = observer(({ role }) => {
   const Component = MapComponent[authStore.status] ?? null;
   if (!Component) return null;
-  return <Component role={role}/>;
+  return <Component role={role} />;
 });
 
 export default ProtectedRoute;
