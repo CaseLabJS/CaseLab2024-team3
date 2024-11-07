@@ -48,6 +48,7 @@ export type AuthUserResponse = {
 };
 
 export type UserRegister = UserLogin & {
+  id?: string;
   email: string;
   firstName: string;
   lastName: string;
