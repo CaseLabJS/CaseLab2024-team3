@@ -22,24 +22,30 @@ const Header = observer(() => {
 
           {/* Десктопное меню */}
           <div className="hidden lg:flex lg:items-center lg:space-x-8">
-            {userStore.user && userStore.user.roles.some(roleUser => roleUser.name === 'USER') && (
-              <NavLink
-                to="app"
-                className="block py-2 text-white font-medium"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                UserDashboard
-              </NavLink>
-            )}
-            {userStore.user && userStore.user.roles.some(roleUser => roleUser.name === 'ADMIN') && (
-              <NavLink
-                to="admin"
-                className="block py-2 text-white font-medium"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Admin
-              </NavLink>
-            )}
+            {userStore.user &&
+              userStore.user.roles.some(
+                (roleUser) => roleUser.name === 'USER'
+              ) && (
+                <NavLink
+                  to="app"
+                  className="block py-2 text-white font-medium"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  UserDashboard
+                </NavLink>
+              )}
+            {userStore.user &&
+              userStore.user.roles.some(
+                (roleUser) => roleUser.name === 'ADMIN'
+              ) && (
+                <NavLink
+                  to="admin"
+                  className="block py-2 text-white font-medium"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Admin
+                </NavLink>
+              )}
           </div>
 
           {/* Блок пользователя */}
@@ -88,32 +94,38 @@ const Header = observer(() => {
               </button>
             </div>
             <ul className="mt-10 space-y-4 text-center">
-              {userStore.user && userStore.user.roles.some(roleUser => roleUser.name === 'USER') && (
-                <li>
-                  <NavLink
-                    to="app"
-                    className="block py-2 text-white font-medium"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    UserDashboard
-                  </NavLink>
-                </li>
-              )}
-              {userStore.user && userStore.user.roles.some(roleUser => roleUser.name === 'ADMIN') && (
-                <li>
-                  <NavLink
-                    to="admin"
-                    className="block py-2 text-white font-medium"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Admin
-                  </NavLink>
-                </li>
-              )}
+              {userStore.user &&
+                userStore.user.roles.some(
+                  (roleUser) => roleUser.name === 'USER'
+                ) && (
+                  <li>
+                    <NavLink
+                      to="app"
+                      className="block py-2 text-white font-medium"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      UserDashboard
+                    </NavLink>
+                  </li>
+                )}
+              {userStore.user &&
+                userStore.user.roles.some(
+                  (roleUser) => roleUser.name === 'ADMIN'
+                ) && (
+                  <li>
+                    <NavLink
+                      to="admin"
+                      className="block py-2 text-white font-medium"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Admin
+                    </NavLink>
+                  </li>
+                )}
               <li>
                 <button
                   className="w-full border border-white text-white bg-transparent rounded-lg font-medium text-sm px-4 py-2"
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={authStore.logout}
                 >
                   Выход
                 </button>

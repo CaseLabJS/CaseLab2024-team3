@@ -1,2 +1,2 @@
-import userStore from "./user.store.ts";
+import userStore from './user.store.ts';
 export { userStore };
