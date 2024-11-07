@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { FC } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { authStore, UsersStore } from 'src/stores';
+import { authStore, usersStore } from 'src/stores';
 import { STATUS } from 'src/types/status';
 import { Spinner } from '../UI';
 import { UNEXPECTED_ERROR_MESSAGE } from 'src/constants/errorMessage';
@@ -33,13 +33,13 @@ const ProtectedRouteSuccess: FC<{ role: string }> = observer(({ role }) => {
       [STATUS.ERROR]: () => <ProtectedRouteLoading />,
       [STATUS.LOADING]: () => <ProtectedRouteLoading />,
       [STATUS.SUCCESS]: () => {
-        if (UsersStore.user && Array.isArray(UsersStore.user.roles) && UsersStore.user.roles.some(roleUser => roleUser.name === role))
+        if (usersStore.user && Array.isArray(usersStore.user.roles) && usersStore.user.roles.some(roleUser => roleUser.name === role))
           return <Outlet />;
         return <Navigate to={ROUTE_CONSTANTS.NOT_FOUND} />;
       }
     };
 
-    const renderComponent = MapComponent[UsersStore.status] || (() => null);
+    const renderComponent = MapComponent[usersStore.status] || (() => null);
     return renderComponent();
   } else {
     return <Navigate to={ROUTE_CONSTANTS.SIGN_IN} />;
