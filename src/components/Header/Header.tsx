@@ -22,24 +22,30 @@ const Header = observer(() => {
 
           {/* Десктопное меню */}
           <div className="hidden lg:flex lg:items-center lg:space-x-8">
-            {usersStore.user && usersStore.user.roles.some(roleUser => roleUser.name === 'USER') && (
-              <NavLink
-                to="app"
-                className="block py-2 text-white font-medium"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                UserDashboard
-              </NavLink>
-            )}
-            {usersStore.user && usersStore.user.roles.some(roleUser => roleUser.name === 'ADMIN') && (
-              <NavLink
-                to="admin"
-                className="block py-2 text-white font-medium"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Admin
-              </NavLink>
-            )}
+            {usersStore.user &&
+              usersStore.user.roles.some(
+                (roleUser) => roleUser.name === 'USER'
+              ) && (
+                <NavLink
+                  to="app"
+                  className="block py-2 text-white font-medium"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  UserDashboard
+                </NavLink>
+              )}
+            {usersStore.user &&
+              usersStore.user.roles.some(
+                (roleUser) => roleUser.name === 'ADMIN'
+              ) && (
+                <NavLink
+                  to="admin"
+                  className="block py-2 text-white font-medium"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Admin
+                </NavLink>
+              )}
           </div>
 
           {/* Блок пользователя */}
@@ -88,28 +94,34 @@ const Header = observer(() => {
               </button>
             </div>
             <ul className="mt-10 space-y-4 text-center">
-              {usersStore.user && usersStore.user.roles.some(roleUser => roleUser.name === 'USER') && (
-                <li>
-                  <NavLink
-                    to="app"
-                    className="block py-2 text-white font-medium"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    UserDashboard
-                  </NavLink>
-                </li>
-              )}
-              {usersStore.user && usersStore.user.roles.some(roleUser => roleUser.name === 'ADMIN') && (
-                <li>
-                  <NavLink
-                    to="admin"
-                    className="block py-2 text-white font-medium"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Admin
-                  </NavLink>
-                </li>
-              )}
+              {usersStore.user &&
+                usersStore.user.roles.some(
+                  (roleUser) => roleUser.name === 'USER'
+                ) && (
+                  <li>
+                    <NavLink
+                      to="app"
+                      className="block py-2 text-white font-medium"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      UserDashboard
+                    </NavLink>
+                  </li>
+                )}
+              {usersStore.user &&
+                usersStore.user.roles.some(
+                  (roleUser) => roleUser.name === 'ADMIN'
+                ) && (
+                  <li>
+                    <NavLink
+                      to="admin"
+                      className="block py-2 text-white font-medium"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Admin
+                    </NavLink>
+                  </li>
+                )}
               <li>
                 <button
                   className="w-full border border-white text-white bg-transparent rounded-lg font-medium text-sm px-4 py-2"

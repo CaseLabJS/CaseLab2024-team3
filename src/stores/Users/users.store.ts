@@ -23,7 +23,7 @@ class UsersStore {
   }
   get status() {
     return this._status;
-}
+  }
 
   get error() {
     return this._error;
@@ -46,7 +46,7 @@ class UsersStore {
       runInAction(() => {
         this._error =
           error instanceof Error ? error.message : 'An unknown error occurred';
-          this._status = STATUS.ERROR; 
+        this._status = STATUS.ERROR;
       });
     } finally {
       runInAction(() => {

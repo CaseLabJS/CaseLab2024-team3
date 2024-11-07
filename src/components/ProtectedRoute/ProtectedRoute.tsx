@@ -33,7 +33,11 @@ const ProtectedRouteSuccess: FC<{ role: string }> = observer(({ role }) => {
       [STATUS.ERROR]: () => <ProtectedRouteLoading />,
       [STATUS.LOADING]: () => <ProtectedRouteLoading />,
       [STATUS.SUCCESS]: () => {
-        if (usersStore.user && Array.isArray(usersStore.user.roles) && usersStore.user.roles.some(roleUser => roleUser.name === role))
+        if (
+          usersStore.user &&
+          Array.isArray(usersStore.user.roles) &&
+          usersStore.user.roles.some((roleUser) => roleUser.name === role)
+        )
           return <Outlet />;
         return <Navigate to={ROUTE_CONSTANTS.NOT_FOUND} />;
       },
