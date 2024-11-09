@@ -1,2 +1,2 @@
-import usersStore from "@/stores/Users/users.store";
-export {usersStore}
+import usersStore from './users.store';
+export { usersStore };

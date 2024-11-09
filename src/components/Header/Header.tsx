@@ -2,9 +2,9 @@ import { Link, NavLink } from 'react-router-dom';
 import { useState } from 'react';
 
 import Logo from 'src/assets/Symbol.svg';
-import User from 'src/assets/User.svg';
 import { observer } from 'mobx-react-lite';
 import { authStore, usersStore } from 'src/stores';
+import { User } from './User';
 
 const Header = observer(() => {
   //TODO: Нужно при авторизации передавать в header имя пользователя,в последствии поменять { userName }: { userName: string }
@@ -50,10 +50,7 @@ const Header = observer(() => {
 
           {/* Блок пользователя */}
           <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2">
-              <img src={User} alt="User Icon" className="w-7 h-7" />
-              <span className="text-white text-sm">Иванов А.А.</span>
-            </div>
+            <User />
 
             {/* Кнопка выхода на десктопе */}
             <div className="hidden lg:block">
