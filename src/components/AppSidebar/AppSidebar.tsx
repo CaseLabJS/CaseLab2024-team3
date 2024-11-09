@@ -8,7 +8,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@components/UI';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 interface MenuItem {
   title: string;
@@ -22,8 +23,18 @@ interface SidebarProps {
 }
 
 export function AppSidebar({ menuItems, sidebarName }: SidebarProps) {
+  const { pathname } = useLocation();
+  const lastPart = pathname.split('/').filter(Boolean).pop();
+
+  const [activeName, setActiveName] = useState(
+    menuItems.find((item) => item.url === lastPart)?.title
+  );
+
   return (
-    <Sidebar collapsible="offcanvas" className="absolute h-[calc(100vh-130px)] md:ml-8 lg:ml-40">
+    <Sidebar
+      collapsible="offcanvas"
+      className="absolute h-[calc(100vh-130px)] md:ml-8 lg:ml-40"
+     >
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>{sidebarName}</SidebarGroupLabel>
@@ -31,7 +42,11 @@ export function AppSidebar({ menuItems, sidebarName }: SidebarProps) {
             <SidebarMenu>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={activeName === item.title}
+                    onClick={() => setActiveName(item.title)}
+                  >
                     <Link to={item.url}>
                       <item.icon />
                       <span>{item.title}</span>

@@ -1,3 +1,4 @@
+import { Toaster } from '@components/Toaster/Toaster';
 import { Outlet } from 'react-router-dom';
 import Footer from 'src/components/Footer/Footer';
 import Header from 'src/components/Header/Header';
@@ -9,6 +10,7 @@ const Layout = () => {
       <div className="flex flex-grow flex-col">
         <Outlet />
       </div>
+      <Toaster />
       <Footer />
     </main>
   );

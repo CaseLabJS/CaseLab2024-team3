@@ -9,3 +9,8 @@ export * from './Separator';
 export * from './Sheet';
 export * from './Tooltip';
 export * from './Skeleton';
+export * from './Table';
+export * from './Dialog';
+export * from './AlertDialog';
+export * from './Toast';
+export * from './Badge';
