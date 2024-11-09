@@ -1,4 +1,5 @@
 export * from './assignComponent';
+export * from './docTypes';
 
 export type Pagination = {
   page: number;
@@ -72,7 +73,7 @@ export type GetUsersResponse = Pagination & {
 export type CreateDocumentType = {
   name: string;
   description?: string;
-  attributeIds?: string[];
+  attributeIds?: number[];
 };
 
 export type ChangeDocumentType = CreateDocumentType & {
@@ -98,7 +99,7 @@ export type ChangeAttribute = CreateAttribute & {
 };
 
 export type GetAttributesResponse = PaginationDataResponse & {
-  content: ChangeAttributeValue[];
+  content: ChangeAttribute[];
 };
 
 // document-attribute-value-controller
