@@ -4,12 +4,16 @@ import {
   CreateDocument,
   ChangeDocument,
   CreateDocumentResponse,
+  DocumentSign,
 } from 'src/types';
 import { DocumentsStoreProps } from './types';
 
 class DocumentsStore implements DocumentsStoreProps {
   private _document: CreateDocumentResponse | null = null;
   private _documents: CreateDocumentResponse[] = [];
+
+  private _documentsForSign: DocumentSign[] = [];
+
   private _loading: boolean = false;
   private _error: string | null = null;
 
@@ -23,6 +27,10 @@ class DocumentsStore implements DocumentsStoreProps {
 
   get documents() {
     return this._documents;
+  }
+
+  get documentsForSign() {
+    return this._documentsForSign;
   }
 
   get loading() {
@@ -101,6 +109,15 @@ class DocumentsStore implements DocumentsStoreProps {
       () => ApiDocumentController.deleteDocumentById(id),
       () => {
         this._documents = this._documents.filter((doc) => doc.id !== id);
+      }
+    );
+  }
+
+  async fetchDocumentsForSign() {
+    return this.responseHandler(
+      ApiDocumentController.getDocumentsForSign,
+      (response) => {
+        this._documentsForSign = response.data.content;
       }
     );
   }
