@@ -4,6 +4,7 @@ import {
   ChangeDocument,
   CreateDocument,
   CreateDocumentResponse,
+  GetDocumentsForSignResponse,
   GetDocumentsResponse,
 } from 'src/types';
 
@@ -30,18 +31,18 @@ class ApiDocumentController {
     size?: number
   ): Promise<AxiosResponse<GetDocumentsResponse>> {
     if (page && size) {
-      return api.get(`/document?page=${page}&size=${size}`);
+      return api.get(`/document/owner?page=${page}&size=${size}`);
     }
 
     if (page) {
-      return api.get(`/document?page=${page}`);
+      return api.get(`/document/owner?page=${page}`);
     }
 
     if (size) {
-      return api.get(`/document?size=${size}`);
+      return api.get(`/document/owner?size=${size}`);
     }
 
-    return api.get(`/document`);
+    return api.get(`/document/owner`);
   }
 
   public static async createDocument(
@@ -52,6 +53,10 @@ class ApiDocumentController {
 
   public static async signDocumentById(id: number): Promise<AxiosResponse> {
     return api.post(`/document/${id}/sign`);
+  }
+
+  public static async getDocumentsForSign(): Promise<AxiosResponse<GetDocumentsForSignResponse>> {
+    return api.get(`/document/signer`);
   }
 
   public static async sendForSignDocumentById(

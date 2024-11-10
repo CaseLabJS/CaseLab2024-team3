@@ -145,3 +145,14 @@ export type CreateDocumentResponse = {
 export type GetDocumentsResponse = Pagination & {
   content: CreateDocumentResponse[];
 };
+
+export type DocumentSign = {
+  documentId: number;
+  documentTypeId: number;
+  userId: string;
+  createdAt: string;
+};
+
+export type GetDocumentsForSignResponse = Pagination & {
+  content: DocumentSign[];
+};
