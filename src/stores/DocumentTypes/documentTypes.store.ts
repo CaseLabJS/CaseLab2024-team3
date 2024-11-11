@@ -44,7 +44,7 @@ export class DocumentTypesStore implements DocumentTypesStoreProps {
     return this._error;
   }
 
-  private async responseHandler<T>(
+  private async _responseHandler<T>(
     action: () => Promise<T>,
     onSuccess: (data: T) => void
   ) {
@@ -66,6 +66,7 @@ export class DocumentTypesStore implements DocumentTypesStoreProps {
           this._error = UNKNOWN_ERROR_MESSAGE;
         }
         toast({ description: this._error });
+        console.error(this._error);
       });
     } finally {
       runInAction(() => {
@@ -79,7 +80,7 @@ export class DocumentTypesStore implements DocumentTypesStoreProps {
     size?: number,
     sizeForAttributes = 1000
   ) {
-    return this.responseHandler(
+    return this._responseHandler(
       () =>
         Promise.all([
           ApiAttributeController.getAttributes(0, sizeForAttributes),
@@ -93,7 +94,7 @@ export class DocumentTypesStore implements DocumentTypesStoreProps {
   }
 
   fetchDocumentTypes(page?: number, size?: number) {
-    return this.responseHandler(
+    return this._responseHandler(
       () => ApiDocumentTypeController.getDocumentTypes(page, size),
       (response) => {
         this._documentTypes = response.data.content;
@@ -102,7 +103,7 @@ export class DocumentTypesStore implements DocumentTypesStoreProps {
   }
 
   createDocumentType(data: CreateDocumentType) {
-    return this.responseHandler(
+    return this._responseHandler(
       () => ApiDocumentTypeController.createDocumentType(data),
       (response) => {
         this._documentTypes = [...this._documentTypes, response.data];
@@ -131,11 +132,12 @@ export class DocumentTypesStore implements DocumentTypesStoreProps {
           (currDocTypeId) => currDocTypeId !== docTypeId
         );
       }
+      toast(TOASTS.SUCCESS_UPDATE_TYPE);
     });
   }
 
   fetchDocumentTypeById(id: number) {
-    return this.responseHandler(
+    return this._responseHandler(
       () => ApiDocumentTypeController.getDocumentTypeById(id),
       (response) => {
         this._documentType = response.data;
@@ -144,7 +146,7 @@ export class DocumentTypesStore implements DocumentTypesStoreProps {
   }
 
   updateDocumentType(id: number, data: CreateDocumentType) {
-    return this.responseHandler(
+    return this._responseHandler(
       () => ApiDocumentTypeController.updateDocumentTypeById(id, data),
       (response) => {
         const index = this._documentTypes.findIndex((doc) => doc.id === id);
@@ -160,7 +162,7 @@ export class DocumentTypesStore implements DocumentTypesStoreProps {
   }
 
   deleteDocumentType(id: number) {
-    return this.responseHandler(
+    return this._responseHandler(
       () => ApiDocumentTypeController.deleteDocumentTypeById(id),
       () => {
         this._documentTypes = this._documentTypes.filter(

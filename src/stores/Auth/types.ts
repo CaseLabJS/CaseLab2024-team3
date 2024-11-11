@@ -4,6 +4,7 @@ import { STATUS } from 'src/types/status';
 export interface AuthStoreProps {
   isAuth: boolean;
   status: STATUS;
+  error: string | null;
 
   login: (data: UserLogin) => Promise<void>;
   checkAuth: () => Promise<void>;
