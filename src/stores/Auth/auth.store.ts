@@ -19,7 +19,7 @@ class AuthStore implements AuthStoreProps {
   private _userId = '';
 
   constructor() {
-    this.checkAuth();
+    void this.checkAuth();
     makeAutoObservable(this, undefined, { autoBind: true });
   }
 
@@ -54,11 +54,11 @@ class AuthStore implements AuthStoreProps {
         this._status = STATUS.SUCCESS;
         this._error = null;
       });
-    } catch (error: any) {
+    } catch (error) {
       runInAction(() => {
         this._status = STATUS.ERROR;
         if (error instanceof AxiosError) {
-          this._error = error.response?.data;
+          this._error = error.response?.data as string;
         } else if (error instanceof Error) {
           this._error = error.message;
         } else {
@@ -93,7 +93,7 @@ class AuthStore implements AuthStoreProps {
         this.helperLocalStorage({ action: 'setItem', data });
         this._isAuth = true;
         this._userId = data.userId;
-        usersStore.fetchUserData();
+        void usersStore.fetchUserData();
       }
     );
   }
@@ -110,16 +110,16 @@ class AuthStore implements AuthStoreProps {
       (data) => {
         this._userId = data.userId;
         this._isAuth = true;
-        usersStore.fetchUserData();
+        void usersStore.fetchUserData();
       }
     );
   }
 
-  async logout() {
-    return await this._responseHandler(
-      async () => {
+  logout() {
+    return this._responseHandler(
+      () => {
         this.helperLocalStorage({ action: 'removeItem' });
-        return null;
+        return Promise.resolve(null);
       },
       () => {
         this._isAuth = false;

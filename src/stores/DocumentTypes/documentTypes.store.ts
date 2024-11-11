@@ -59,7 +59,7 @@ export class DocumentTypesStore implements DocumentTypesStoreProps {
     } catch (error) {
       runInAction(() => {
         if (error instanceof AxiosError) {
-          this._error = error.response?.data;
+          this._error = error.response?.data as string;
         } else if (error instanceof Error) {
           this._error = error.message;
         } else {
@@ -116,7 +116,7 @@ export class DocumentTypesStore implements DocumentTypesStoreProps {
     );
   }
 
-  private async _updateAttributesWithDocumentType(
+  private _updateAttributesWithDocumentType(
     docTypeId: number,
     attributeIds: number[] | undefined
   ) {

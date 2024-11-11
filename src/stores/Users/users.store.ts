@@ -52,11 +52,11 @@ class UsersStore implements UsersStoreProps {
         this._error = null;
         this._status = STATUS.SUCCESS;
       });
-    } catch (error: any) {
+    } catch (error) {
       runInAction(() => {
         this._status = STATUS.ERROR;
         if (error instanceof AxiosError) {
-          this._error = error.response?.data;
+          this._error = error.response?.data as string;
         } else if (error instanceof Error) {
           this._error = error.message;
         } else {

@@ -62,7 +62,7 @@ class DocumentsStore implements DocumentsStoreProps {
     } catch (error) {
       runInAction(() => {
         if (error instanceof AxiosError) {
-          this._error = error.response?.data;
+          this._error = error.response?.data as string;
         } else if (error instanceof Error) {
           this._error = error.message;
         } else {
@@ -133,14 +133,14 @@ class DocumentsStore implements DocumentsStoreProps {
     );
   }
 
-  async fetchDocumentsForSign() {
+  fetchDocumentsForSign = async () => {
     return this._responseHandler(
-      ApiDocumentController.getDocumentsForSign,
+      () => ApiDocumentController.getDocumentsForSign(),
       (response) => {
         this._documentsForSign = response.data.content;
       }
     );
-  }
+  };
 }
 
 export default new DocumentsStore();
