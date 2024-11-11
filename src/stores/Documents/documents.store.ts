@@ -7,13 +7,19 @@ import {
   DocumentSign,
 } from 'src/types';
 import { DocumentsStoreProps } from './types';
+import { toast } from '@/hooks/use-toast';
+import {
+  UNKNOWN_ERROR_MESSAGE,
+  NETWORK_ERROR_MESSAGE,
+} from '@constants/errorMessage';
+import { AxiosError } from 'axios';
+import { TOASTS } from '@constants/toast';
 
 class DocumentsStore implements DocumentsStoreProps {
   private _document: CreateDocumentResponse | null = null;
   private _documents: CreateDocumentResponse[] = [];
 
   private _documentsForSign: DocumentSign[] = [];
-
   private _loading: boolean = false;
   private _error: string | null = null;
 
@@ -41,7 +47,7 @@ class DocumentsStore implements DocumentsStoreProps {
     return this._error;
   }
 
-  private async responseHandler<T>(
+  private async _responseHandler<T>(
     action: () => Promise<T>,
     onSuccess: (data: T) => void
   ) {
@@ -55,8 +61,19 @@ class DocumentsStore implements DocumentsStoreProps {
       });
     } catch (error) {
       runInAction(() => {
-        this._error =
-          error instanceof Error ? error.message : 'An unknown error occurred';
+        if (error instanceof AxiosError) {
+          this._error = error.response?.data as string;
+        } else if (error instanceof Error) {
+          this._error = error.message;
+        } else {
+          this._error = UNKNOWN_ERROR_MESSAGE;
+        }
+        console.error(this._error);
+        toast({
+          title: 'Ошибка',
+          description: this._error || NETWORK_ERROR_MESSAGE,
+          variant: 'destructive',
+        });
       });
     } finally {
       runInAction(() => {
@@ -66,7 +83,7 @@ class DocumentsStore implements DocumentsStoreProps {
   }
 
   async fetchDocumentById(id: number) {
-    return this.responseHandler(
+    return this._responseHandler(
       () => ApiDocumentController.getDocumentById(id),
       (response) => {
         this._document = response.data;
@@ -75,7 +92,7 @@ class DocumentsStore implements DocumentsStoreProps {
   }
 
   async fetchDocuments(page?: number, size?: number) {
-    return this.responseHandler(
+    return this._responseHandler(
       () => ApiDocumentController.getDocuments(page, size),
       (response) => {
         this._documents = response.data.content;
@@ -84,43 +101,46 @@ class DocumentsStore implements DocumentsStoreProps {
   }
 
   async createDocument(document: CreateDocument) {
-    return this.responseHandler(
+    return this._responseHandler(
       () => ApiDocumentController.createDocument(document),
       (response) => {
         this._documents.push(response.data);
+        toast(TOASTS.SUCCESS_CREATE_DOCUMENT);
       }
     );
   }
 
   async updateDocument(id: number, document: ChangeDocument) {
-    return this.responseHandler(
+    return this._responseHandler(
       () => ApiDocumentController.updateDocumentById(id, document),
       (response) => {
         const index = this._documents.findIndex((doc) => doc.id === id);
         if (index !== -1) {
           this._documents[index] = response.data;
         }
+        toast(TOASTS.SUCCESS_UPDATE_DOCUMENT);
       }
     );
   }
 
   async deleteDocument(id: number) {
-    return this.responseHandler(
+    return this._responseHandler(
       () => ApiDocumentController.deleteDocumentById(id),
       () => {
         this._documents = this._documents.filter((doc) => doc.id !== id);
+        toast(TOASTS.SUCCESS_DELETE_DOCUMENT);
       }
     );
   }
 
-  async fetchDocumentsForSign() {
-    return this.responseHandler(
-      ApiDocumentController.getDocumentsForSign,
+  fetchDocumentsForSign = async () => {
+    return this._responseHandler(
+      () => ApiDocumentController.getDocumentsForSign(),
       (response) => {
         this._documentsForSign = response.data.content;
       }
     );
-  }
+  };
 }
 
 export default new DocumentsStore();
