@@ -44,10 +44,10 @@ export class DocumentTypesStore implements DocumentTypesStoreProps {
     return this._error;
   }
 
-  private async _responseHandler<T>(
+  private _responseHandler = async <T>(
     action: () => Promise<T>,
     onSuccess: (data: T) => void
-  ) {
+  ) => {
     this._isLoading = true;
 
     try {
@@ -73,13 +73,13 @@ export class DocumentTypesStore implements DocumentTypesStoreProps {
         this._isLoading = false;
       });
     }
-  }
+  };
 
-  fetchDocTypesAndAttributes(
+  fetchDocTypesAndAttributes = (
     page?: number,
     size?: number,
     sizeForAttributes = 1000
-  ) {
+  ) => {
     return this._responseHandler(
       () =>
         Promise.all([
@@ -91,35 +91,38 @@ export class DocumentTypesStore implements DocumentTypesStoreProps {
         this._documentAttributes = responseAttributes.data.content;
       }
     );
-  }
+  };
 
-  fetchDocumentTypes(page?: number, size?: number) {
+  fetchDocumentTypes = (page?: number, size?: number) => {
     return this._responseHandler(
       () => ApiDocumentTypeController.getDocumentTypes(page, size),
       (response) => {
         this._documentTypes = response.data.content;
       }
     );
-  }
+  };
 
-  createDocumentType(data: CreateDocumentType) {
+  createDocumentType = (data: Partial<CreateDocumentType>) => {
     return this._responseHandler(
       () => ApiDocumentTypeController.createDocumentType(data),
       (response) => {
         this._documentTypes = [...this._documentTypes, response.data];
-        this._updateAttributesWithDocumentType(
-          response.data.id,
-          response.data.attributeIds
-        );
+
+        if (response.data.attributeIds) {
+          this._updateAttributesWithDocumentType(
+            response.data.id,
+            response.data.attributeIds
+          );
+        }
         toast(TOASTS.SUCCESS_CREATE_TYPE);
       }
     );
-  }
+  };
 
-  private _updateAttributesWithDocumentType(
+  private _updateAttributesWithDocumentType = (
     docTypeId: number,
     attributeIds: number[] | undefined
-  ) {
+  ) => {
     this._documentAttributes.forEach((docAttribute) => {
       if (attributeIds?.includes(docAttribute.id)) {
         docAttribute.documentTypeIds?.push(docTypeId);
@@ -134,18 +137,18 @@ export class DocumentTypesStore implements DocumentTypesStoreProps {
       }
       toast(TOASTS.SUCCESS_UPDATE_TYPE);
     });
-  }
+  };
 
-  fetchDocumentTypeById(id: number) {
+  fetchDocumentTypeById = (id: number) => {
     return this._responseHandler(
       () => ApiDocumentTypeController.getDocumentTypeById(id),
       (response) => {
         this._documentType = response.data;
       }
     );
-  }
+  };
 
-  updateDocumentType(id: number, data: CreateDocumentType) {
+  updateDocumentType = (data: Partial<CreateDocumentType>, id: number) => {
     return this._responseHandler(
       () => ApiDocumentTypeController.updateDocumentTypeById(id, data),
       (response) => {
@@ -153,15 +156,17 @@ export class DocumentTypesStore implements DocumentTypesStoreProps {
         if (index !== -1) {
           this._documentTypes[index] = response.data;
         }
-        this._updateAttributesWithDocumentType(
-          response.data.id,
-          data.attributeIds
-        );
+        if (data.attributeIds) {
+          this._updateAttributesWithDocumentType(
+            response.data.id,
+            data.attributeIds
+          );
+        }
       }
     );
-  }
+  };
 
-  deleteDocumentType(id: number) {
+  deleteDocumentType = (id: number) => {
     return this._responseHandler(
       () => ApiDocumentTypeController.deleteDocumentTypeById(id),
       () => {
@@ -171,7 +176,7 @@ export class DocumentTypesStore implements DocumentTypesStoreProps {
         toast(TOASTS.SUCCESS_DELETE_TYPE);
       }
     );
-  }
+  };
 }
 
 export default new DocumentTypesStore();

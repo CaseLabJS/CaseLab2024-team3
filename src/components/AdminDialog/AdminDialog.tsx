@@ -1,3 +1,6 @@
+import { toJS } from 'mobx';
+import { useMemo, useState } from 'react';
+import Select, { MultiValue } from 'react-select';
 import {
   Button,
   Dialog,
@@ -9,22 +12,24 @@ import {
   DialogTrigger,
   Input,
   Label,
-} from '@/components/UI';
-import { calculateDiff } from '@/lib/utils';
-import { useMemo, useState } from 'react';
-import Select, { MultiValue } from 'react-select';
-import { ChangeAttribute } from 'src/types/index';
+} from 'src/components/UI';
 import {
+  AdminDialogData,
   AdminDialogProps,
-  DocumentType,
   OptionItem,
-} from './adminDialogs.types';
+} from 'src/types/adminTypes';
+import {
+  calculateDiff,
+  formatValueForInput,
+  getKeyName,
+  getKeyType,
+} from './adminDialog.utils';
 
 const DEFAULT_DIALOG_FORM_WIDTH = 625;
 
 export const AdminDialog = <
-  TData extends DocumentType,
-  TRelatedData extends ChangeAttribute,
+  TData extends AdminDialogData,
+  TRelatedData extends AdminDialogData,
 >({
   data,
   relatedData,
@@ -33,19 +38,37 @@ export const AdminDialog = <
 }: AdminDialogProps<TData, TRelatedData>) => {
   const [inputs, setInputs] = useState<TData>(data);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [chosenAttributeIds, setChosenAttributeIds] = useState<number[]>([]);
+  const [chosenIds, setChosenIds] = useState<number[]>(() => {
+    if ('attributeIds' in data) {
+      return data.attributeIds ?? [];
+    } else if ('documentTypeIds' in data) {
+      return data.documentTypeIds ?? [];
+    } else {
+      return [];
+    }
+  });
+
+  const firstElemOfRelatedData = relatedData ? relatedData[0] : undefined;
+  const keyNameForSelectUse = getKeyName(firstElemOfRelatedData);
 
   const { btnTriggerText, dialogDescriptionText, dialogTitleText } =
     dialogTexts;
 
   const selectOptions: OptionItem[] = useMemo(
     () =>
-      relatedData?.map(({ name, documentTypeIds }) => ({
-        value: name,
-        label: name,
-        isSelected: 'id' in data && documentTypeIds?.includes(Number(data.id)),
-      })) ?? [],
-    [relatedData, data]
+      relatedData?.map((elem) => {
+        const listOfIds = elem[keyNameForSelectUse as keyof AdminDialogData];
+
+        return {
+          value: elem.name,
+          label: elem.name,
+          isSelected:
+            'id' in data &&
+            Array.isArray(listOfIds) &&
+            listOfIds?.includes(Number(data.id)),
+        };
+      }) ?? [],
+    [relatedData, keyNameForSelectUse, data]
   );
 
   const defaultSelectValues = useMemo(
@@ -54,12 +77,15 @@ export const AdminDialog = <
   );
 
   const handleOnSelectChange = (newValue: MultiValue<OptionItem>) => {
-    const newChosenAttributeIds = [
-      ...newValue
-        .map((el) => relatedData?.find((attr) => attr.name === el.value))
-        .map((el) => el?.id),
-    ].filter((id) => id !== undefined);
-    setChosenAttributeIds(newChosenAttributeIds);
+    if (relatedData) {
+      const entitiesNames = newValue.map((option) => option.value);
+      const newChosenIds = relatedData
+        .filter((data) => entitiesNames.includes(data.name))
+        .map((data) => ('id' in data ? data.id : undefined))
+        .filter((el) => el !== undefined);
+
+      setChosenIds(newChosenIds);
+    }
   };
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,15 +96,28 @@ export const AdminDialog = <
   };
 
   const handleOnSave = () => {
-    const newData: TData = { ...inputs, attributeIds: chosenAttributeIds };
+    const newData: TData = {
+      ...inputs,
+      [getKeyName(data)]: chosenIds,
+    };
 
     const id = 'id' in data ? data.id : undefined;
     const patchData = calculateDiff(data, newData);
+    console.log('ON SAVE HANDLE', {
+      chosenIds: toJS(chosenIds),
+      newData,
+      patchData,
+      data: toJS(data),
+      id,
+      defaultSelectValues,
+      relatedData: toJS(relatedData),
+      selectOptions,
+    });
 
     if (typeof id === 'number' && Object.keys(patchData).length !== 0) {
-      onSave?.(id, patchData);
+      void onSave?.(patchData, id);
     } else if (btnTriggerText !== 'Редактировать') {
-      onSave?.(newData);
+      void onSave?.(newData);
     }
     setIsDialogOpen(false);
     setInputs(data);
@@ -104,7 +143,7 @@ export const AdminDialog = <
                 <Label htmlFor="name" className="text-right">
                   {key}
                 </Label>
-                {Array.isArray(value) || value === null ? (
+                {typeof value === 'object' && getKeyType(key) === 'array' ? (
                   <div className="col-span-3">
                     <Select
                       placeholder="Выберите значение"
@@ -119,7 +158,7 @@ export const AdminDialog = <
                 ) : (
                   <Input
                     name={key}
-                    value={value ?? ''}
+                    value={formatValueForInput(value)}
                     disabled={key === 'id'}
                     className="col-span-3"
                     onChange={handleOnChange}

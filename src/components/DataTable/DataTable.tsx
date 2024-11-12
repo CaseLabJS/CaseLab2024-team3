@@ -7,14 +7,15 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/UI';
+import { DataTableProps } from '@components/DataTable/DataTable.types';
 import {
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { DataTableProps } from './DataTable.types';
+import { AdminDialogData } from 'src/types/adminTypes';
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends AdminDialogData, TValue>({
   columns,
   data,
   relatedData,
@@ -26,7 +27,7 @@ export function DataTable<TData, TValue>({
     columns,
     getCoreRowModel: getCoreRowModel(),
     meta: {
-      relatedData,
+      relatedData: relatedData ?? [],
       onDelete,
       onEdit,
     },
@@ -72,13 +73,14 @@ export function DataTable<TData, TValue>({
                         ? cellValue.map((el) => {
                             return (
                               <Badge
-                                key={el}
+                                key={crypto.randomUUID()}
                                 variant="outline"
                                 className="cursor-pointer m-1"
                               >
                                 {relatedData
-                                  ? relatedData.find((att) => att.id === el)
-                                      ?.name
+                                  ? relatedData.find((data) => {
+                                      if ('id' in data) return data.id === el;
+                                    })?.name
                                   : ''}
                               </Badge>
                             );

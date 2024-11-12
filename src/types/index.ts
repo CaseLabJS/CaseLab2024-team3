@@ -1,5 +1,5 @@
 export * from './assignComponent';
-export * from './docTypes';
+export * from './adminTypes';
 
 export type Pagination = {
   page: number;
@@ -54,10 +54,7 @@ export type UserRegister = UserLogin & {
   firstName: string;
   lastName: string;
   patronymic?: string;
-  roles: [
-    { id: 1, name: 'ADMIN' },
-    { id: 2, name: 'USER' }
-  ];
+  roles: [{ id: 1; name: 'ADMIN' }, { id: 2; name: 'USER' }];
 };
 
 export type ChangeUser = Omit<UserRegister, 'password'> & {
@@ -72,8 +69,8 @@ export type GetUsersResponse = Pagination & {
 // Document type
 export type CreateDocumentType = {
   name: string;
-  description?: string;
-  attributeIds?: number[];
+  description: string | null;
+  attributeIds: number[] | null;
 };
 
 export type ChangeDocumentType = CreateDocumentType & {

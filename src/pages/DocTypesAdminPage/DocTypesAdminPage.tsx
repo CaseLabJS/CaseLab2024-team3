@@ -6,7 +6,7 @@ import {
   DIALOGS_VALUES,
   EMPTY_DOC_TYPE,
   TYPES_TABLE_COLUMNS,
-} from '@constants/adminDocTypes';
+} from '@constants/admin';
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
 
@@ -22,8 +22,8 @@ const DocTypesAdminPage = observer(() => {
   } = documentTypesStore;
 
   useEffect(() => {
-    fetchDocTypesAndAttributes(0, 1000);
-  }, []);
+    void fetchDocTypesAndAttributes(0, 1000);
+  }, [fetchDocTypesAndAttributes]);
 
   if (isLoading) {
     return (

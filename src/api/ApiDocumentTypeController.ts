@@ -27,7 +27,7 @@ class ApiDocumentTypeController {
   }
 
   public static async createDocumentType(
-    data: CreateDocumentType
+    data: Partial<CreateDocumentType>
   ): Promise<AxiosResponse<ChangeDocumentType>> {
     return api.post(`/document_type`, data);
   }
@@ -46,7 +46,7 @@ class ApiDocumentTypeController {
 
   public static async updateDocumentTypeById(
     id: number,
-    data: CreateDocumentType
+    data: Partial<CreateDocumentType>
   ): Promise<AxiosResponse<ChangeDocumentType>> {
     return api.patch(`/document_type/${id}`, data);
   }
