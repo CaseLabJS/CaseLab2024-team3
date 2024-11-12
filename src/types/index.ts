@@ -1,5 +1,5 @@
 export * from './assignComponent';
-export * from './docTypes';
+export * from './adminTypes';
 
 // ____________________ Pagination start ____________________
 export type Pagination = {
@@ -74,8 +74,8 @@ export type GetUsersResponse = Pagination & {
 // ____________________ Document type start ____________________
 export type CreateDocumentType = {
   name: string;
-  description?: string;
-  attributeIds?: number[];
+  description: string | null;
+  attributeIds: number[] | null;
 };
 
 export type ChangeDocumentType = CreateDocumentType & {

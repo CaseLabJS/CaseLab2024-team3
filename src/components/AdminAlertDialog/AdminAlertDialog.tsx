@@ -8,18 +8,18 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
+  Button,
 } from '@/components/UI';
-import { Button } from '@/components/UI';
-import { DocTypesData, DialogTexts } from '@/types';
+import { AdminDialogData, DialogTexts } from '@/types';
 
-export interface AdminAlertDialogProps<TData extends DocTypesData> {
-  id: number;
+export interface AdminAlertDialogProps<TData extends AdminDialogData> {
+  id?: number;
   data: TData;
   dialogTexts: DialogTexts;
   onDelete: (id: number) => void;
 }
 
-export function AdminAlertDialog<TData extends DocTypesData>({
+export function AdminAlertDialog<TData extends AdminDialogData>({
   onDelete,
   id,
 }: AdminAlertDialogProps<TData>) {
@@ -42,7 +42,11 @@ export function AdminAlertDialog<TData extends DocTypesData>({
           </AlertDialogCancel>
           <AlertDialogAction
             className="hover:opacity-75 mb-3 bg-bg-header hover:bg-bg-header"
-            onClick={() => onDelete(id)}
+            onClick={() => {
+              if (id) {
+                onDelete(id);
+              }
+            }}
           >
             Продолжить
           </AlertDialogAction>

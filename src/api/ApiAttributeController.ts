@@ -44,7 +44,7 @@ class ApiAttributeController {
   }
 
   public static async createAttribute(
-    data: CreateAttribute
+    data: Partial<CreateAttribute>
   ): Promise<AxiosResponse<ChangeAttribute>> {
     return api.post(`/attributes`, data);
   }
