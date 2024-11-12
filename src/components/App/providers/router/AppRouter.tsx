@@ -12,12 +12,10 @@ import ProtectedRoute from 'src/components/ProtectedRoute/ProtectedRoute';
 import { Spinner } from 'src/components/UI';
 import { ROUTE_CONSTANTS } from 'src/constants/routes';
 import { AdminPage } from 'src/pages/AdminPage';
-import DocumentsPage from 'src/pages/DocumentsPage';
 import NotFoundPage from 'src/pages/NotFoundPage';
 import { SignInPage } from 'src/pages/SignInPage';
 import { SignUpPage } from 'src/pages/SignUpPage';
 import { UserDashboardPage } from 'src/pages/UserDashboardPage';
-import UsersPage from 'src/pages/UsersPage';
 
 const AppRouter = () => {
   return (
