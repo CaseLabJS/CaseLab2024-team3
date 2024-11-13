@@ -34,7 +34,7 @@ export function AppSidebar({ menuItems, sidebarName }: SidebarProps) {
     <Sidebar
       collapsible="offcanvas"
       className="absolute h-[calc(100vh-130px)] md:ml-8 lg:ml-40"
-     >
+    >
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>{sidebarName}</SidebarGroupLabel>

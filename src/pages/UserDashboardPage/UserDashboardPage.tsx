@@ -1,13 +1,12 @@
-import { Outlet } from 'react-router-dom';
-import HeaderDashboard from '@components/HeaderDashboard/HeaderDashboard';
-import { Suspense, useState } from 'react';
+import { AppSidebar } from '@components/AppSidebar/AppSidebar';
+import { Spinner } from '@components/UI';
 import {
   SidebarProvider,
   SidebarTrigger,
 } from '@components/UI/Sidebar/Sidebar';
-import { AppSidebar } from '@components/AppSidebar/AppSidebar';
 import { userMenuItems } from '@constants/sideBar';
-import { Spinner } from '@components/UI';
+import { Suspense, useState } from 'react';
+import { Outlet } from 'react-router-dom';
 
 const UserDashboardPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
