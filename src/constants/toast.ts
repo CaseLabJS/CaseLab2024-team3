@@ -30,7 +30,7 @@ export const TOASTS = {
     description: 'Атрибут успешно удален',
   },
   SUCCESS_CREATE_ATTRIBUTE: {
-    description: 'Новый Атрибут успешно создан',
+    description: 'Новый атрибут успешно создан',
   },
   SUCCESS_UPDATE_ATTRIBUTE: {
     description: 'Атрибут успешно обновлен',

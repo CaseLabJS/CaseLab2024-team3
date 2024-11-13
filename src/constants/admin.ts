@@ -8,7 +8,32 @@ import {
 import { getAdminAlertDialogCellContext } from 'src/components/AdminAlertDialog/AdminAlertDialogCellContext';
 import { getAdminDialogCellContext } from 'src/components/AdminDialog/AdminDialogCellContext';
 import { ColumnDef } from '@tanstack/react-table';
-
+export const FIELD_LABELS: { [key: string]: string } = {
+  id: 'Ид. номер',
+  name: 'Имя',
+  description: 'Описание',
+  attributeIds: 'Атрибуты',
+  documentTypeIds: 'Св-е типы документов',
+  required: 'Обязательный',
+  dataType: 'Тип данных',
+  roles: 'Роли',
+  lastName: 'Фамилия',
+  firstName: 'Имя',
+  patronymic: 'Отчество',
+  email: 'Электронная почта',
+  login: 'Логин',
+  password: 'Пароль',
+};
+export const ROLES = [
+  {
+    id: 'USER',
+    name: 'USER',
+  },
+  {
+    id: 'ADMIN',
+    name: 'ADMIN',
+  },
+];
 type Role = {
   id: number;
   name: string;

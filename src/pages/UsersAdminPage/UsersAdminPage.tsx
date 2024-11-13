@@ -32,7 +32,6 @@ const UsersAdminPage = observer(() => {
             data={EMPTY_USER_ATTRIBUTE}
             onSave={createUser}
           />
-          {console.log('USERS', users)}
           <div>
             <DataTable
               columns={USERS_TABLE_COLUMNS}

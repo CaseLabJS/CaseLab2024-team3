@@ -71,12 +71,6 @@ class UsersStore implements UsersStoreProps {
       runInAction(() => {
         this._isLoading = false;
         this._status = STATUS.SUCCESS;
-        console.log(
-          'Ошибка при запросе:',
-          this._error,
-          'isLoading:',
-          this._status
-        );
       });
     }
   }
