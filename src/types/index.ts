@@ -1,6 +1,7 @@
 export * from './assignComponent';
 export * from './adminTypes';
 
+// ____________________ Pagination start ____________________
 export type Pagination = {
   page: number;
   size: number;
@@ -36,7 +37,9 @@ export type PaginationDataResponse = {
   empty: boolean;
 };
 
-// User
+// ____________________ Pagination end ____________________
+
+//____________________ User start ____________________
 export type UserLogin = {
   login: string;
   password: string;
@@ -66,7 +69,9 @@ export type GetUsersResponse = Pagination & {
   content: ChangeUser[];
 };
 
-// Document type
+// ____________________ User end ____________________
+
+// ____________________ Document type start ____________________
 export type CreateDocumentType = {
   name: string;
   description: string | null;
@@ -82,7 +87,9 @@ export type GetDocumentTypesResponse = PaginationDataResponse & {
   content: ChangeDocumentType[];
 };
 
-// attribute-controller
+// ____________________ Document type end ____________________
+
+// ____________________ Attribute start ____________________
 export type CreateAttribute = {
   name: string;
   dataType: string;
@@ -99,7 +106,9 @@ export type GetAttributesResponse = PaginationDataResponse & {
   content: ChangeAttribute[];
 };
 
-// document-attribute-value-controller
+// ____________________ Attribute end ____________________
+
+// ____________________ Document attribute value start ____________________
 export type CreateAttributeValue = {
   attributeId: number;
   documentId: number;
@@ -111,7 +120,9 @@ export type ChangeAttributeValue = CreateAttributeValue & {
   id: number;
 };
 
-// Document
+//____________________ Document attribute value end ____________________
+
+// ____________________ Document start ____________________
 export type CreateDocument = {
   attributeId?: number;
   documentTypeId: number;
