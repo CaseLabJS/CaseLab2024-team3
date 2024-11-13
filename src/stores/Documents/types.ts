@@ -1,4 +1,8 @@
-import { ChangeDocument, CreateDocument, CreateDocumentResponse } from 'src/types';
+import {
+  ChangeDocument,
+  CreateDocument,
+  CreateDocumentResponse,
+} from 'src/types';
 
 export interface DocumentsStoreProps {
   document: CreateDocumentResponse | null;

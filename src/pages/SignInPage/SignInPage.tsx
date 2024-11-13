@@ -34,7 +34,7 @@ const SignInPage: FC<SignInPageProps> = observer(() => {
     if (authStore.isAuth && authStore.status === STATUS.SUCCESS) {
       const userRoles = usersStore.user?.roles || [];
       const isAdmin = userRoles.some((role) => role.name === 'ADMIN');
-      
+
       navigate(isAdmin ? '/admin' : '/app', { replace: true });
     }
   }, [authStore.status, authStore.isAuth]);

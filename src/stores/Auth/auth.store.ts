@@ -115,7 +115,7 @@ class AuthStore implements AuthStoreProps {
     );
   }
 
-  logout() {
+  logout = () => {
     return this._responseHandler(
       () => {
         this.helperLocalStorage({ action: 'removeItem' });
@@ -127,7 +127,7 @@ class AuthStore implements AuthStoreProps {
         // usersStore.fetchUserData()
       }
     );
-  }
+  };
 }
 
 export default new AuthStore();
