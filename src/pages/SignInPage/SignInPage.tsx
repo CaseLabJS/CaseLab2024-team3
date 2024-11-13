@@ -11,7 +11,7 @@ import {
   CardFooter,
   Form,
 } from 'src/components/UI';
-import { authStore } from 'src/stores';
+import { authStore, usersStore } from 'src/stores';
 import type { UserLogin } from 'src/types';
 import { STATUS } from 'src/types/status';
 
@@ -32,7 +32,10 @@ const SignInPage: FC<SignInPageProps> = observer(() => {
 
   useEffect(() => {
     if (authStore.isAuth && authStore.status === STATUS.SUCCESS) {
-      navigate('/app', { replace: true });
+      const userRoles = usersStore.user?.roles || [];
+      const isAdmin = userRoles.some((role) => role.name === 'ADMIN');
+      
+      navigate(isAdmin ? '/admin' : '/app', { replace: true });
     }
   }, [authStore.status, authStore.isAuth]);
 
