@@ -95,7 +95,7 @@ class DocumentsStore implements DocumentsStoreProps {
     return this._responseHandler(
       () => ApiDocumentController.getDocuments(page, size),
       (response) => {
-        this._documents = response.data.content;
+        this._documents = [...response.data.content];
       }
     );
   }
@@ -104,7 +104,7 @@ class DocumentsStore implements DocumentsStoreProps {
     return this._responseHandler(
       () => ApiDocumentController.createDocument(document),
       (response) => {
-        this._documents.push(response.data);
+        this._documents = [...this._documents, response.data];
         toast(TOASTS.SUCCESS_CREATE_DOCUMENT);
       }
     );
