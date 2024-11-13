@@ -1,3 +1,5 @@
 import { lazy } from 'react';
 
-export const UserAwaitingSignPageAsync = lazy(() => import('./UserAwaitingSignPage'));
+export const UserAwaitingSignPageAsync = lazy(
+  () => import('./UserAwaitingSignPage')
+);

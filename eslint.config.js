@@ -16,14 +16,13 @@ export default tseslint.config(
       ...config.rules,
       '@typescript-eslint/no-empty-object-type': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
-      "@typescript-eslint/no-misused-promises": [
-        "error",
+      '@typescript-eslint/no-misused-promises': [
+        'error',
         {
-          "checksVoidReturn": false
-        }
-      ]
-
-    }
+          checksVoidReturn: false,
+        },
+      ],
+    },
   })),
   {
     plugins: { mobx: pluginMobx },
@@ -73,7 +72,7 @@ export default tseslint.config(
     rules: {
       ...eslintPluginPrettierRecommended.rules,
       'prettier/prettier': 'warn',
-    }
+    },
   },
-  { ignores: ['**/dist', '**/node_modules', 'env.d.ts'], }
+  { ignores: ['**/dist', '**/node_modules', 'env.d.ts'] }
 );

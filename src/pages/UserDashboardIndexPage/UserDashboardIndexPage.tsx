@@ -7,8 +7,8 @@ import { ROUTE_CONSTANTS } from '@constants/routes';
 
 const UserDashboardIndexPage = observer(() => {
   useEffect(() => {
-    documentsStore.fetchDocuments();
-    documentsStore.fetchDocumentsForSign();
+    void documentsStore.fetchDocuments();
+    void documentsStore.fetchDocumentsForSign();
   }, []);
 
   return (
@@ -37,7 +37,9 @@ const UserDashboardIndexPage = observer(() => {
             <FileCheck className="text-4xl sm:text-5xl mb-4 animate-pulse" />
             <div>
               <h2 className="text-3xl sm:text-4xl font-bold">TODO</h2>
-              <p className="text-md sm:text-lg mt-2">Отправленные на подписание</p>
+              <p className="text-md sm:text-lg mt-2">
+                Отправленные на подписание
+              </p>
             </div>
           </article>
         </Link>

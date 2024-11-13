@@ -55,7 +55,9 @@ class ApiDocumentController {
     return api.post(`/document/${id}/sign`);
   }
 
-  public static async getDocumentsForSign(): Promise<AxiosResponse<GetDocumentsForSignResponse>> {
+  public static async getDocumentsForSign(): Promise<
+    AxiosResponse<GetDocumentsForSignResponse>
+  > {
     return api.get(`/document/signer`);
   }
 
