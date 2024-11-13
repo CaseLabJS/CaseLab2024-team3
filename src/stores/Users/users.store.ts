@@ -42,8 +42,6 @@ class UsersStore implements UsersStoreProps {
     onSuccess: (data: T) => void
   ) {
     this._isLoading = true;
-    this._status = STATUS.LOADING;
-    this._error = null;
 
     try {
       const result = await action();
@@ -72,26 +70,33 @@ class UsersStore implements UsersStoreProps {
     } finally {
       runInAction(() => {
         this._isLoading = false;
+        this._status = STATUS.SUCCESS;
+        console.log(
+          'Ошибка при запросе:',
+          this._error,
+          'isLoading:',
+          this._status
+        );
       });
     }
   }
 
-  fetchUserById(id: string) {
+  fetchUserById(id: string | number) {
     return this._responseHandler(
-      () => ApiUserController.getUserById(id),
+      () => ApiUserController.getUserById(id as string),
       (response) =>
         (this._user = response.data.id ? (response.data as ChangeUser) : null)
     );
   }
 
-  async fetchUsers(page?: number, size?: number) {
-    return this._responseHandler(
+  fetchUsers = async (page?: number, size?: number) => {
+    return await this._responseHandler(
       () => ApiUserController.getUsers(page, size),
       (response) => (this._users = response.data.content)
     );
-  }
+  };
 
-  async createUser(user: UserRegister) {
+  createUser = async (user: UserRegister) => {
     return this._responseHandler(
       () => ApiUserController.createUser(user),
       (response) => {
@@ -99,10 +104,10 @@ class UsersStore implements UsersStoreProps {
         toast(TOASTS.SUCCESS_CREATE_USER);
       }
     );
-  }
-  async updateUser(id: string, user: UserRegister) {
+  };
+  updateUser = async (id: string | number, user: UserRegister) => {
     return this._responseHandler(
-      () => ApiUserController.updateUserById(id, user),
+      () => ApiUserController.updateUserById(id as string, user),
       (response) => {
         const index = this._users.findIndex((u) => u.id === id);
         if (index !== -1) {
@@ -113,17 +118,17 @@ class UsersStore implements UsersStoreProps {
         toast(TOASTS.SUCCESS_UPDATE_USER);
       }
     );
-  }
+  };
 
-  async deleteUser(id: string) {
+  deleteUser = async (id: string | number) => {
     return this._responseHandler(
-      () => ApiUserController.deleteUserById(id),
+      () => ApiUserController.deleteUserById(id as string),
       () => {
         this._users = this._users.filter((u) => u.id !== id);
         toast(TOASTS.SUCCESS_DELETE_USER);
       }
     );
-  }
+  };
   async fetchUserData() {
     return this._responseHandler(
       async () => {

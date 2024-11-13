@@ -26,7 +26,32 @@ import {
 } from './adminDialog.utils';
 
 const DEFAULT_DIALOG_FORM_WIDTH = 625;
-
+const fieldLabels: { [key: string]: string } = {
+  id: 'Ид. номер',
+  name: 'Имя',
+  description: 'Описание',
+  attributeIds: 'Атрибуты',
+  documentTypeIds: 'Св-е типы документов',
+  required: 'Обязательный',
+  dataType: 'Тип данных',
+  roles: 'Роли',
+  lastName: 'Фамилия',
+  firstName: 'Имя',
+  patronymic: 'Отчество',
+  email: 'Электронная почта',
+  login: 'Логин',
+  password: 'Пароль',
+};
+const ROLES = [
+  {
+    id: 2,
+    name: 'USER',
+  },
+  {
+    id: 1,
+    name: 'ADMIN',
+  },
+];
 export const AdminDialog = <
   TData extends AdminDialogData,
   TRelatedData extends AdminDialogData,
@@ -43,6 +68,8 @@ export const AdminDialog = <
       return data.attributeIds ?? [];
     } else if ('documentTypeIds' in data) {
       return data.documentTypeIds ?? [];
+    } else if ('roles' in data) {
+      return data.roles.map((role) => role.id);
     } else {
       return [];
     }
@@ -79,6 +106,7 @@ export const AdminDialog = <
   const handleOnSelectChange = (newValue: MultiValue<OptionItem>) => {
     if (relatedData) {
       const entitiesNames = newValue.map((option) => option.value);
+      console.log(relatedData);
       const newChosenIds = relatedData
         .filter((data) => entitiesNames.includes(data.name))
         .map((data) => ('id' in data ? data.id : undefined))
@@ -86,6 +114,14 @@ export const AdminDialog = <
 
       setChosenIds(newChosenIds);
     }
+  };
+  const handleOnRolesChange = (newValue: MultiValue<OptionItem>) => {
+    const newRoles = newValue.map((option) => option.label);
+
+    setInputs((prev: TData) => ({
+      ...prev,
+      roles: newRoles,
+    }));
   };
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,6 +135,7 @@ export const AdminDialog = <
     const newData: TData = {
       ...inputs,
       [getKeyName(data)]: chosenIds,
+      roles: inputs.roles,
     };
 
     const id = 'id' in data ? data.id : undefined;
@@ -138,12 +175,31 @@ export const AdminDialog = <
 
         <div className="grid gap-4 py-4">
           {Object.entries(inputs).map(([key, value]) => {
+            const label = fieldLabels[key] || key; // Подпись на русском
             return (
               <div key={key} className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="name" className="text-right">
-                  {key}
+                  {label}
                 </Label>
-                {typeof value === 'object' && getKeyType(key) === 'array' ? (
+                {key === 'roles' ? (
+                  <div className="col-span-3">
+                    <Select
+                      placeholder="Выберите значение"
+                      isMulti
+                      className="basic-multi-select"
+                      classNamePrefix="select"
+                      value={inputs.roles?.map((role) => ({
+                        label: role,
+                        value: role,
+                      }))}
+                      options={ROLES.map((role) => ({
+                        label: role.name,
+                        value: role.name,
+                      }))}
+                      onChange={handleOnRolesChange}
+                    />
+                  </div>
+                ) : typeof value === 'object' && getKeyType(key) === 'array' ? (
                   <div className="col-span-3">
                     <Select
                       placeholder="Выберите значение"

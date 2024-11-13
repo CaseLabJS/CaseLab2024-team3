@@ -78,10 +78,12 @@ export function DataTable<TData extends AdminDialogData, TValue>({
                                 className="cursor-pointer m-1"
                               >
                                 {relatedData
-                                  ? relatedData.find((data) => {
-                                      if ('id' in data) return data.id === el;
-                                    })?.name
-                                  : ''}
+                                  ? relatedData.find(
+                                      (data) => 'id' in data && data.id === el
+                                    )?.name
+                                  : typeof el === 'object' && 'name' in el
+                                    ? el.name
+                                    : ''}
                               </Badge>
                             );
                           })

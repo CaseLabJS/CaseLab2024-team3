@@ -5,14 +5,22 @@ export interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   relatedData: TData[];
-  onDelete: (id: number) => Promise<void>;
-  onEdit: (data: Partial<AdminDialogData>, id?: number) => Promise<void>;
+  onDelete: (id: number | string) => Promise<void>;
+  onEdit: (
+    data: Partial<AdminDialogData>,
+    id?: number | string,
+    user?: Partial<AdminDialogData>
+  ) => Promise<void>;
 }
 
 export interface CustomTableMeta<TData> {
   relatedData: TData[];
-  onDelete: (id: number) => Promise<void>;
-  onEdit: (data: Partial<AdminDialogData>, id?: number) => Promise<void>;
+  onDelete: (id: number | string) => Promise<void>;
+  onEdit: (
+    data: Partial<AdminDialogData>,
+    id?: number | string,
+    user?: Partial<AdminDialogData>
+  ) => Promise<void>;
 }
 
 declare module '@tanstack/react-table' {
