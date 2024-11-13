@@ -26,4 +26,13 @@ export const TOASTS = {
   SUCCESS_UPDATE_DOCUMENT: {
     description: 'Документ успешно обновлен',
   },
+  SUCCESS_DELETE_ATTRIBUTE: {
+    description: 'Атрибут успешно удален',
+  },
+  SUCCESS_CREATE_ATTRIBUTE: {
+    description: 'Новый атрибут успешно создан',
+  },
+  SUCCESS_UPDATE_ATTRIBUTE: {
+    description: 'Атрибут успешно обновлен',
+  },
 };
