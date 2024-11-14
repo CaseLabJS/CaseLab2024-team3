@@ -1,7 +1,9 @@
 import {
   AdminDialogData,
+  ChangeUser,
   CreateAttribute,
   CreateDocumentType,
+  UserRegister,
 } from 'src/types';
 import { getAdminAlertDialogCellContext } from 'src/components/AdminAlertDialog/AdminAlertDialogCellContext';
 import { getAdminDialogCellContext } from 'src/components/AdminDialog/AdminDialogCellContext';
@@ -100,6 +102,65 @@ export const ATTRIBUTES_TABLE_COLUMNS: ColumnDef<AdminDialogData>[] = [
     cell: getAdminAlertDialogCellContext,
   },
 ];
+export const USERS_TABLE_COLUMNS: ColumnDef<
+  UserRegister | ChangeUser | AdminDialogData
+>[] = [
+  {
+    accessorKey: 'sequenceNumber',
+    header: '№',
+    size: 80,
+    cell: ({ row }) => row.index + 1,
+  },
+  {
+    accessorKey: 'lastName',
+    header: 'Фамилия',
+    size: 150,
+  },
+  {
+    accessorKey: 'firstName',
+    header: 'Имя',
+    size: 150,
+  },
+  {
+    accessorKey: 'patronymic',
+    header: 'Отчество',
+    size: 150,
+  },
+  {
+    accessorKey: 'email',
+    header: 'Электронная почта',
+    size: 150,
+  },
+  {
+    accessorKey: 'login',
+    header: 'Логин',
+    size: 150,
+  },
+
+  {
+    accessorKey: 'roles',
+    header: 'Роль',
+    size: 100,
+    cell: ({ row }) => {
+      const data = row.original as UserRegister;
+      if (Array.isArray(data.roles)) {
+        return data.roles.map((role) => role.name).join(', ');
+      }
+      return 'Нет роли';
+    },
+  },
+
+  {
+    accessorKey: 'edit',
+    header: '',
+    cell: getAdminDialogCellContext,
+  },
+  {
+    accessorKey: 'delete',
+    header: '',
+    cell: getAdminAlertDialogCellContext,
+  },
+];
 
 const BUTTONS_NAMES = {
   edit: 'Редактировать',
@@ -118,6 +179,7 @@ export const DIALOGS_VALUES = {
       "Здесь можно изменить тип документа. После внесения изменений нажмите 'сохранить'.",
     btnTriggerText: BUTTONS_NAMES.edit,
   },
+
   docAttributesCreate: {
     dialogTitleText: 'Создание атрибута документа',
     dialogDescriptionText:
@@ -128,6 +190,19 @@ export const DIALOGS_VALUES = {
     dialogTitleText: 'Редактирование атрибута документа',
     dialogDescriptionText:
       "Здесь можно изменить атрибута документа. После внесения изменений нажмите 'сохранить'.",
+    btnTriggerText: BUTTONS_NAMES.edit,
+  },
+
+  userCreate: {
+    dialogTitleText: 'Создание нового пользователя',
+    dialogDescriptionText:
+      'Для создания нового пользователя необходимо заполнить поля ниже:',
+    btnTriggerText: 'Создать пользователя',
+  },
+  userEdit: {
+    dialogTitleText: 'Редактирование пользователя',
+    dialogDescriptionText:
+      "Здесь можно изменить пользователя. После внесения изменений нажмите 'Cохранить'.",
     btnTriggerText: BUTTONS_NAMES.edit,
   },
 };
@@ -143,4 +218,14 @@ export const EMPTY_DOC_ATTRIBUTE: CreateAttribute = {
   dataType: '',
   documentTypeIds: [],
   required: true,
+};
+
+export const EMPTY_USER_ATTRIBUTE: UserRegister = {
+  lastName: '',
+  firstName: '',
+  patronymic: '',
+  email: '',
+  login: '',
+  password: '',
+  roles: [] as Role[],
 };

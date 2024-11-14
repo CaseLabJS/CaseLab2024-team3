@@ -1,3 +1,4 @@
+import { toJS } from 'mobx';
 import { useMemo, useState } from 'react';
 import Select, { MultiValue } from 'react-select';
 import {
@@ -47,13 +48,6 @@ export const AdminDialog = <
       return [];
     }
   });
-  const [chosenNames, setChosenNames] = useState<string[]>(() => {
-    if ('roles' in data) {
-      return data.roles.map((role) => role.name);
-    } else {
-      return [];
-    }
-  });
 
   const firstElemOfRelatedData = relatedData ? relatedData[0] : undefined;
   const keyNameForSelectUse = getKeyName(firstElemOfRelatedData);
@@ -95,15 +89,11 @@ export const AdminDialog = <
     }
   };
   const handleOnRolesChange = (newValue: MultiValue<OptionItem>) => {
-    const selectedRoles = newValue.map((option) => ({
-      id: option.value,
-      name: option.label,
-    }));
-    setChosenNames(selectedRoles);
+    const newRoles = newValue.map((option) => option.label);
 
     setInputs((prev: TData) => ({
       ...prev,
-      roles: selectedRoles,
+      roles: newRoles,
     }));
   };
 
@@ -118,15 +108,27 @@ export const AdminDialog = <
     const newData: TData = {
       ...inputs,
       [getKeyName(data)]: chosenIds,
-      roles: chosenNames,
+      roles: inputs.roles,
     };
 
     const id = 'id' in data ? data.id : undefined;
     const patchData = calculateDiff(data, newData);
+    console.log('ON SAVE HANDLE', {
+      chosenIds: toJS(chosenIds),
+      newData,
+      patchData,
+      data: toJS(data),
+      id,
+      defaultSelectValues,
+      relatedData: toJS(relatedData),
+      selectOptions,
+    });
 
-    if (typeof id === 'number' && Object.keys(patchData).length !== 0) {
+    if (typeof id && Object.keys(patchData).length !== 0) {
+      console.log('ON_EDIT', { id, patchData });
       void onSave?.(patchData, id);
     } else if (btnTriggerText !== 'Редактировать') {
+      console.log('ON_CREATE', { id, patchData });
       void onSave?.(newData);
     }
     setIsDialogOpen(false);
@@ -162,13 +164,13 @@ export const AdminDialog = <
                       isMulti
                       className="basic-multi-select"
                       classNamePrefix="select"
-                      value={inputs.roles?.map((role) => ({
+                      defaultValue={inputs.roles?.map((role) => ({
                         label: role.name,
-                        value: role.id,
+                        value: role.name,
                       }))}
                       options={ROLES.map((role) => ({
                         label: role.name,
-                        value: role.id,
+                        value: role.name,
                       }))}
                       onChange={handleOnRolesChange}
                     />
