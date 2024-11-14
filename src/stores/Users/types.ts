@@ -7,7 +7,7 @@ export interface UsersStoreProps {
   error: string | null;
   status: STATUS;
   isLoading: boolean;
-  fetchUserById: (id: string) => Promise<void>;
+  fetchUserById: (id: string | number) => Promise<void>;
   fetchUsers: () => Promise<void>;
   createUser: (user: UserRegister) => Promise<void>;
   updateUser: (user: UserRegister, id: string) => Promise<void>;
