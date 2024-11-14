@@ -1,18 +1,24 @@
-import { makeAutoObservable, runInAction } from 'mobx';
-import ApiAttributeController from '@api/ApiAttributeController';
-import { ChangeAttribute, CreateAttribute } from 'src/types';
-import { AttributesStoreProps } from './types';
 import { toast } from '@/hooks/use-toast';
+import ApiAttributeController from '@api/ApiAttributeController';
 import {
   NETWORK_ERROR_MESSAGE,
   UNKNOWN_ERROR_MESSAGE,
 } from '@constants/errorMessage';
-import { AxiosError } from 'axios';
 import { TOASTS } from '@constants/toast';
+import { AxiosError } from 'axios';
+import { makeAutoObservable, runInAction } from 'mobx';
+import {
+  ChangeAttribute,
+  ChangeDocumentType,
+  CreateAttribute,
+} from 'src/types';
+import { AttributesStoreProps } from './types';
+import ApiDocumentTypeController from '@api/ApiDocumentTypeController';
 
 class AttributesStore implements AttributesStoreProps {
   private _attribute: ChangeAttribute | null = null;
   private _attributes: ChangeAttribute[] = [];
+  private _documentTypes: ChangeDocumentType[] = [];
 
   private _loading: boolean = false;
   private _error: string | null = null;
@@ -27,6 +33,10 @@ class AttributesStore implements AttributesStoreProps {
 
   get attributes() {
     return this._attributes;
+  }
+
+  get documentTypes() {
+    return this._documentTypes;
   }
 
   get loading() {
@@ -72,6 +82,24 @@ class AttributesStore implements AttributesStoreProps {
     }
   }
 
+  fetchDocTypesAndAttributes = async (
+    page?: number,
+    size?: number,
+    sizeForAttributes = 1000
+  ) => {
+    return this._responseHandler(
+      () =>
+        Promise.all([
+          ApiAttributeController.getAttributes(0, sizeForAttributes),
+          ApiDocumentTypeController.getDocumentTypes(page, size),
+        ]),
+      ([responseAttributes, responseDocTypes]) => {
+        this._documentTypes = responseDocTypes.data.content;
+        this._attributes = responseAttributes.data.content;
+      }
+    );
+  };
+
   async fetchAttributeById(id: number) {
     return this._responseHandler(
       () => ApiAttributeController.getAttributeById(id),
@@ -90,17 +118,24 @@ class AttributesStore implements AttributesStoreProps {
     );
   }
 
-  async createAttribute(attribute: CreateAttribute) {
+  createAttribute = async (attribute: Partial<CreateAttribute>) => {
     return this._responseHandler(
       () => ApiAttributeController.createAttribute(attribute),
       (response) => {
         this._attributes = [...this._attributes, response.data];
+
+        if (response.data.documentTypeIds) {
+          this._updateDocumentTypesWithAttribute(
+            response.data.id,
+            response.data.documentTypeIds
+          );
+        }
         toast(TOASTS.SUCCESS_CREATE_ATTRIBUTE);
       }
     );
-  }
+  };
 
-  async updateAttribute(id: number, attribute: CreateAttribute) {
+  updateAttribute = (attribute: CreateAttribute, id: number) => {
     return this._responseHandler(
       () => ApiAttributeController.updateAttributeById(id, attribute),
       (response) => {
@@ -108,12 +143,18 @@ class AttributesStore implements AttributesStoreProps {
         if (index !== -1) {
           this._attributes[index] = response.data;
         }
+        if (attribute.documentTypeIds) {
+          this._updateDocumentTypesWithAttribute(
+            response.data.id,
+            attribute.documentTypeIds
+          );
+        }
         toast(TOASTS.SUCCESS_UPDATE_ATTRIBUTE);
       }
     );
-  }
+  };
 
-  async deleteAttribute(id: number) {
+  deleteAttribute = (id: number) => {
     return this._responseHandler(
       () => ApiAttributeController.deleteAttributeById(id),
       () => {
@@ -121,7 +162,27 @@ class AttributesStore implements AttributesStoreProps {
         toast(TOASTS.SUCCESS_DELETE_ATTRIBUTE);
       }
     );
-  }
+  };
+
+  private _updateDocumentTypesWithAttribute = (
+    docAttributeId: number,
+    docTypesIds: number[] | undefined
+  ) => {
+    this._documentTypes.forEach((docType) => {
+      if (docTypesIds?.includes(docType.id)) {
+        docType.attributeIds?.push(docAttributeId);
+      }
+      if (
+        docTypesIds?.includes(docAttributeId) &&
+        !docTypesIds?.includes(docType.id) &&
+        docType.attributeIds
+      ) {
+        docType.attributeIds = docType.attributeIds.filter(
+          (currAttributeId) => currAttributeId !== docAttributeId
+        );
+      }
+    });
+  };
 }
 
 export default new AttributesStore();
