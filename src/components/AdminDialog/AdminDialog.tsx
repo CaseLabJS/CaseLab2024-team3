@@ -154,11 +154,10 @@ export const AdminDialog = <
             return (
               <div key={key} className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="name" className="text-right">
-                  {key}
+                  {label}
                 </Label>
                 {key === 'roles' ? (
                   <div className="col-span-3">
-                    {console.log(inputs)}
                     <Select
                       placeholder="Выберите значение"
                       isMulti
@@ -177,7 +176,6 @@ export const AdminDialog = <
                   </div>
                 ) : typeof value === 'object' && getKeyType(key) === 'array' ? (
                   <div className="col-span-3">
-                    {console.log(selectOptions)}
                     <Select
                       placeholder="Выберите значение"
                       isMulti
