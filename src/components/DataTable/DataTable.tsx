@@ -41,7 +41,7 @@ export function DataTable<TData extends AdminDialogData, TValue>({
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead key={header.id} >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -78,10 +78,12 @@ export function DataTable<TData extends AdminDialogData, TValue>({
                                 className="cursor-pointer m-1"
                               >
                                 {relatedData
-                                  ? relatedData.find((data) => {
+                                  ? (relatedData.find((data) => {
                                       if ('id' in data) return data.id === el;
-                                    })?.name
-                                  : ''}
+                                    })?.name ?? '')
+                                  : typeof el === 'object' && 'name' in el
+                                    ? el.name
+                                    : String(el)}
                               </Badge>
                             );
                           })

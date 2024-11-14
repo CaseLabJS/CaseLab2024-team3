@@ -10,8 +10,8 @@ class ApiUserController {
   }
 
   public static async updateUserById(
-    id: string,
-    data: UserRegister
+    data: UserRegister,
+    id: string
   ): Promise<AxiosResponse<UserRegister>> {
     return api.put(`/users/${id}`, data);
   }

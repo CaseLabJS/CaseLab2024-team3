@@ -1,3 +1,4 @@
+import { toJS } from 'mobx';
 import { useMemo, useState } from 'react';
 import Select, { MultiValue } from 'react-select';
 import {
@@ -23,6 +24,7 @@ import {
   getKeyName,
   getKeyType,
 } from './adminDialog.utils';
+import { FIELD_LABELS, ROLES } from '@constants/admin';
 
 const DEFAULT_DIALOG_FORM_WIDTH = 625;
 
@@ -86,6 +88,14 @@ export const AdminDialog = <
       setChosenIds(newChosenIds);
     }
   };
+  const handleOnRolesChange = (newValue: MultiValue<OptionItem>) => {
+    const newRoles = newValue.map((option) => option.label);
+
+    setInputs((prev: TData) => ({
+      ...prev,
+      roles: newRoles,
+    }));
+  };
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputs((prev: TData) => ({
@@ -98,14 +108,27 @@ export const AdminDialog = <
     const newData: TData = {
       ...inputs,
       [getKeyName(data)]: chosenIds,
+      roles: inputs.roles,
     };
 
     const id = 'id' in data ? data.id : undefined;
     const patchData = calculateDiff(data, newData);
+    console.log('ON SAVE HANDLE', {
+      chosenIds: toJS(chosenIds),
+      newData,
+      patchData,
+      data: toJS(data),
+      id,
+      defaultSelectValues,
+      relatedData: toJS(relatedData),
+      selectOptions,
+    });
 
-    if (typeof id === 'number' && Object.keys(patchData).length !== 0) {
+    if (typeof id && Object.keys(patchData).length !== 0) {
+      console.log('ON_EDIT', { id, patchData });
       void onSave?.(patchData, id);
     } else if (btnTriggerText !== 'Редактировать') {
+      console.log('ON_CREATE', { id, patchData });
       void onSave?.(newData);
     }
     setIsDialogOpen(false);
@@ -127,12 +150,31 @@ export const AdminDialog = <
 
         <div className="grid gap-4 py-4">
           {Object.entries(inputs).map(([key, value]) => {
+            const label = FIELD_LABELS[key] || key; // Подпись на русском
             return (
               <div key={key} className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="name" className="text-right">
-                  {key}
+                  {label}
                 </Label>
-                {typeof value === 'object' && getKeyType(key) === 'array' ? (
+                {key === 'roles' ? (
+                  <div className="col-span-3">
+                    <Select
+                      placeholder="Выберите значение"
+                      isMulti
+                      className="basic-multi-select"
+                      classNamePrefix="select"
+                      defaultValue={inputs.roles?.map((role) => ({
+                        label: role.name,
+                        value: role.name,
+                      }))}
+                      options={ROLES.map((role) => ({
+                        label: role.name,
+                        value: role.name,
+                      }))}
+                      onChange={handleOnRolesChange}
+                    />
+                  </div>
+                ) : typeof value === 'object' && getKeyType(key) === 'array' ? (
                   <div className="col-span-3">
                     <Select
                       placeholder="Выберите значение"
