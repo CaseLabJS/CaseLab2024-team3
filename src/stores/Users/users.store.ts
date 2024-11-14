@@ -72,6 +72,7 @@ class UsersStore implements UsersStoreProps {
     } finally {
       runInAction(() => {
         this._isLoading = false;
+        this._status = STATUS.SUCCESS;
       });
     }
   }

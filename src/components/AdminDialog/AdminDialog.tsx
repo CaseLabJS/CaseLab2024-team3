@@ -23,6 +23,7 @@ import {
   getKeyName,
   getKeyType,
 } from './adminDialog.utils';
+import { FIELD_LABELS, ROLES } from '@constants/admin';
 
 const DEFAULT_DIALOG_FORM_WIDTH = 625;
 
@@ -42,6 +43,13 @@ export const AdminDialog = <
       return data.attributeIds ?? [];
     } else if ('documentTypeIds' in data) {
       return data.documentTypeIds ?? [];
+    } else {
+      return [];
+    }
+  });
+  const [chosenNames, setChosenNames] = useState<string[]>(() => {
+    if ('roles' in data) {
+      return data.roles.map((role) => role.name);
     } else {
       return [];
     }
@@ -86,6 +94,18 @@ export const AdminDialog = <
       setChosenIds(newChosenIds);
     }
   };
+  const handleOnRolesChange = (newValue: MultiValue<OptionItem>) => {
+    const selectedRoles = newValue.map((option) => ({
+      id: option.value,
+      name: option.label,
+    }));
+    setChosenNames(selectedRoles);
+
+    setInputs((prev: TData) => ({
+      ...prev,
+      roles: selectedRoles,
+    }));
+  };
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputs((prev: TData) => ({
@@ -98,6 +118,7 @@ export const AdminDialog = <
     const newData: TData = {
       ...inputs,
       [getKeyName(data)]: chosenIds,
+      roles: chosenNames,
     };
 
     const id = 'id' in data ? data.id : undefined;
@@ -127,13 +148,34 @@ export const AdminDialog = <
 
         <div className="grid gap-4 py-4">
           {Object.entries(inputs).map(([key, value]) => {
+            const label = FIELD_LABELS[key] || key; // Подпись на русском
             return (
               <div key={key} className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="name" className="text-right">
                   {key}
                 </Label>
-                {typeof value === 'object' && getKeyType(key) === 'array' ? (
+                {key === 'roles' ? (
                   <div className="col-span-3">
+                    {console.log(inputs)}
+                    <Select
+                      placeholder="Выберите значение"
+                      isMulti
+                      className="basic-multi-select"
+                      classNamePrefix="select"
+                      value={inputs.roles?.map((role) => ({
+                        label: role.name,
+                        value: role.id,
+                      }))}
+                      options={ROLES.map((role) => ({
+                        label: role.name,
+                        value: role.id,
+                      }))}
+                      onChange={handleOnRolesChange}
+                    />
+                  </div>
+                ) : typeof value === 'object' && getKeyType(key) === 'array' ? (
+                  <div className="col-span-3">
+                    {console.log(selectOptions)}
                     <Select
                       placeholder="Выберите значение"
                       isMulti
