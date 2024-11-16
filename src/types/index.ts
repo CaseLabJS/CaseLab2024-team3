@@ -124,11 +124,13 @@ export type ChangeAttributeValue = CreateAttributeValue & {
 
 // ____________________ Document start ____________________
 export type CreateDocument = {
-  attributeId?: number;
+  attributeValues?: {
+    attributeId: number;
+    value: string;
+  }[];
   documentTypeId: number;
-  userId: string;
   name: string;
-  data: string;
+  base64Data: string;
 };
 
 export type ChangeDocument = {
