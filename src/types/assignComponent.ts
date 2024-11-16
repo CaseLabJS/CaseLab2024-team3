@@ -9,7 +9,7 @@ interface AsProps<T extends ElementType = ElementType> {
 
 export type OmitCommonProps<
   Target,
-  OmitAdditionalProps extends keyof any = never,
+  OmitAdditionalProps extends keyof never = never,
 > = Omit<Target, 'as' | OmitAdditionalProps>;
 
 export type RightJoinProps<
@@ -43,9 +43,9 @@ export type ComponentWithAs<
   ): JSX.Element;
 
   displayName?: string;
-  propTypes?: React.WeakValidationMap<any>;
-  contextTypes?: React.ValidationMap<any>;
-  defaultProps?: Partial<any>;
+  propTypes?: React.WeakValidationMap<unknown>;
+  contextTypes?: React.ValidationMap<unknown>;
+  defaultProps?: Partial<unknown>;
   id?: string;
 };
 

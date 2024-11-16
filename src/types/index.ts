@@ -1,5 +1,6 @@
 export * from './assignComponent';
 export * from './adminTypes';
+export * from './state';
 
 // ____________________ Pagination start ____________________
 export type Pagination = {
@@ -138,6 +139,7 @@ export type ChangeDocument = {
   userId?: string;
   createdAt?: string;
   name?: string;
+  documentName?: string;
   data?: string;
 };
 

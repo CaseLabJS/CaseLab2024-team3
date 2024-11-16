@@ -14,3 +14,5 @@ export * from './Dialog';
 export * from './AlertDialog';
 export * from './Toast';
 export * from './Badge';
+export * from './Pagination';
+export * from './DropdownMenu';

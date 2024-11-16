@@ -1,0 +1,1 @@
+export { getCommonPinningStyles } from './getCommonPinningStyles';
