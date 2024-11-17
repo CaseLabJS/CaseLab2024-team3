@@ -69,7 +69,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             <Spinner size="sm" />
           </div>
         )}
-        <span className={cn(loading && 'opacity-0')}>{children}</span>
+        <span className={cn(loading && 'opacity-0', 'flex items-center gap-2')}>
+          {children}
+        </span>
       </Comp>
     );
   }

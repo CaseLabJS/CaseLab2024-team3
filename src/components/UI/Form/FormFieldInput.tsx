@@ -12,16 +12,16 @@ import { LabelProps } from '@radix-ui/react-label';
 import { UseControllerProps } from 'react-hook-form';
 import { cn } from 'src/lib';
 import { AssignComponent } from 'src/types/assignComponent';
+import { BaseFieldProps } from './types';
 
 interface FormFieldInput
-  extends Omit<InputProps, 'defaultValue'>,
+  extends Omit<InputProps, 'defaultValue' | 'name' | 'type'>,
+    BaseFieldProps,
     UseControllerProps {
-  name: string;
-  description?: string;
-  label?: string;
   labelProps?: LabelProps;
   descriptionProps?: React.HTMLAttributes<HTMLParagraphElement>;
   messageProps?: React.HTMLAttributes<HTMLParagraphElement>;
+  defaultValue?: string;
 }
 
 export const FormFieldInput: AssignComponent<'input', FormFieldInput> = ({
@@ -57,7 +57,7 @@ export const FormFieldInput: AssignComponent<'input', FormFieldInput> = ({
             {label}
           </FormLabel>
           <FormControl>
-            <Comp {...inputProps} {...field} />
+            <Comp disabled={disabled} {...inputProps} {...field} />
           </FormControl>
           <FormDescription {...descriptionProps}>{description}</FormDescription>
           <FormMessage {...messageProps} />

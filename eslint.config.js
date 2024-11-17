@@ -16,6 +16,7 @@ export default tseslint.config(
       ...config.rules,
       '@typescript-eslint/no-empty-object-type': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-floating-promises': 'off',
       '@typescript-eslint/no-misused-promises': [
         'error',
         {

@@ -1,5 +1,6 @@
-import { ColumnDef } from '@tanstack/react-table';
-import { AdminDialogData } from 'src/types/index';
+import { ActionItem, ActionMore } from '@components/Action/types';
+import { ColumnDef, RowData } from '@tanstack/react-table';
+import { AdminDialogData, RecordStateInfo } from 'src/types/index';
 
 export interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -8,13 +9,22 @@ export interface DataTableProps<TData, TValue> {
   onDelete: (id: number) => Promise<void>;
   onEdit: (data: Partial<AdminDialogData>, id?: number) => Promise<void>;
 }
-
 export interface CustomTableMeta<TData> {
-  relatedData: TData[];
-  onDelete: (id: number) => Promise<void>;
-  onEdit: (data: Partial<AdminDialogData>, id?: number) => Promise<void>;
+  pagination?: {
+    totalPages?: number;
+  };
+  actionItem?: (props: ActionItem<TData>) => unknown;
+  actionMore?: ActionMore<TData>;
+  state?: RecordStateInfo<string>;
+  relatedData?: TData[];
+  onDelete?: (id: number) => Promise<void>;
+  onEdit?: (data: Partial<AdminDialogData>, id?: number) => Promise<void>;
 }
 
 declare module '@tanstack/react-table' {
   interface TableMeta<TData> extends CustomTableMeta<TData> {}
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  interface ColumnMeta<TData extends RowData, TValue>
+    extends CustomTableMeta<TData> {}
 }
