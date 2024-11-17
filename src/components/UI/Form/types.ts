@@ -10,3 +10,5 @@ export type BaseFieldProps = {
   description?: string;
   required?: boolean;
 };
+
+export type FormSwitcherProps = BaseFieldProps & { type: FieldTypes };

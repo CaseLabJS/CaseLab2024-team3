@@ -8,11 +8,12 @@ import {
   timeColumn,
 } from './defaultTableColumns';
 import { BUTTONS_NAMES, DOCUMENT_STATE } from './defaultConstants';
-import { BaseFieldProps, FieldTypes } from '@components/UI/Form/types';
+import { FieldTypes, FormSwitcherProps } from '@components/UI/Form/types';
 import { z } from 'zod';
 
 const DOCUMENT_ID = 'documentId';
 const UPDATED_AT = 'updatedAt';
+const CONTENT_URL = 'contentUrl';
 
 export const TABLE_USER_DOCUMENTS_CONFIG: ColumnDef<CreateDocumentResponse>[] =
   [
@@ -33,7 +34,7 @@ export const TABLE_USER_DOCUMENTS_CONFIG: ColumnDef<CreateDocumentResponse>[] =
       state: DOCUMENT_STATE,
     }),
     defaultColumn({ accessorKey: DOCUMENT_ID, header: 'ID документа' }),
-    defaultColumn({ accessorKey: 'contentUrl', header: 'КонтентURL' }),
+    defaultColumn({ accessorKey: CONTENT_URL, header: 'КонтентURL' }),
     timeColumn({
       accessorKey: 'createdAt',
       enableSorting: true,
@@ -46,18 +47,19 @@ export const TABLE_USER_DOCUMENTS_CONFIG: ColumnDef<CreateDocumentResponse>[] =
 export const TABLE_USER_COLUMN_VISIBLE = {
   [DOCUMENT_ID]: false,
   [UPDATED_AT]: false,
+  [CONTENT_URL]: false,
 };
 
-export const CONFIG_FIELDS_USER_EDIT: BaseFieldProps[] = [
+export const CONFIG_FIELDS_USER_EDIT: FormSwitcherProps[] = [
   {
     name: 'id',
     disabled: true,
-    component: FieldTypes.Input,
+    type: FieldTypes.Input,
     label: 'ID',
   },
   {
     name: 'documentName',
-    component: FieldTypes.Input,
+    type: FieldTypes.Input,
     label: 'Название документа',
   },
 ];

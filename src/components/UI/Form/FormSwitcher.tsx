@@ -1,17 +1,12 @@
 import { FC } from 'react';
 import { BaseForm } from '.';
-import { BaseFieldProps, FieldTypes } from './types';
+import { FieldTypes, FormSwitcherProps } from './types';
 
-const MapComponent: Record<
-  FieldTypes,
-  FC<BaseFieldProps & { type: FieldTypes }>
-> = {
+const MapComponent: Record<FieldTypes, FC<FormSwitcherProps>> = {
   [FieldTypes.Input]: (props) => <BaseForm.FormFieldInput {...props} />,
 };
 
-export const FormSwitcher: FC<BaseFieldProps & { type: FieldTypes }> = (
-  field
-) => {
+export const FormSwitcher: FC<FormSwitcherProps> = (field) => {
   const { type } = field;
   const Component = MapComponent[type] ?? null;
   if (!Component) return null;

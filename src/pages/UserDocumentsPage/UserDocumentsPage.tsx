@@ -28,7 +28,7 @@ const UserDocumentsPage = observer(() => {
 
   useEffect(() => {
     void documentsStore.fetchDocuments(
-      (query.page ?? 1) + 1,
+      (query.page ?? 0) + 1,
       query.limit ?? 20
     );
   }, [query.limit, query.page]);
