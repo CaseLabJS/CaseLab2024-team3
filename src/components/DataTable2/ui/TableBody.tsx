@@ -22,7 +22,7 @@ export const TableBody = <TData,>({ table }: TableBodyProps<TData>) => {
           return (
             <TableRowLink
               key={row.id}
-              className="table-row"
+              className="table-row border last:border-none"
               {...props}
               data-state={row.getIsSelected() && 'selected'}
             >
