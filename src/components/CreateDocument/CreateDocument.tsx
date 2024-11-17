@@ -12,10 +12,11 @@ import {
 } from '@/components/UI';
 
 import { useMemo, useState } from 'react';
-import Select, { MultiValue } from 'react-select';
+import Select from 'react-select';
 import { CreateDocumentProps, OptionItem } from './createDocuments.types';
 import { CreateDocument } from 'src/types/index';
 import { calculateDiff } from '@components/AdminDialog/adminDialog.utils';
+import { fieldLabels } from '@constants/createDocument';
 
 const DEFAULT_DIALOG_FORM_WIDTH = 625;
 
@@ -28,9 +29,9 @@ export const CreateDocumentForm = ({
 }: CreateDocumentProps<CreateDocument, any, any>) => {
   const [inputs, setInputs] = useState(data);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [chosenAttributeIds, setChosenAttributeIds] = useState<number[]>([]);
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
   const [base64str, setBase64str] = useState<string>('');
+  const [filteredAttributes, setFilteredAttributes] = useState<any[]>([]);
 
   const { btnTriggerText, dialogDescriptionText, dialogTitleText } =
     dialogTexts;
@@ -45,38 +46,41 @@ export const CreateDocumentForm = ({
     [documentTypes, data]
   );
 
-  const defaultSelectValues = useMemo(
-    () => documentTypesOptions.filter((option) => option.isSelected),
-    [documentTypesOptions]
-  );
-
-  const documentAttributesOptions: OptionItem[] = useMemo(
-    () =>
-      documentAttributes?.map((type) => ({
-        value: type.id,
-        label: type.name || 'Без названия',
-        isSelected:
-          data.attributeValues?.some((attr) => attr.attributeId === type.id) ??
-          false,
-      })) ?? [],
-    [documentAttributes, data]
-  );
-
-  const handleOnAttributesChange = (newValue: MultiValue<OptionItem>) => {
-    const newChosenAttributeIds = [
-      ...newValue
-        .map((el) => documentAttributes?.find((attr) => attr.id === el.value))
-        .map((el) => el?.id),
-    ].filter((id) => id !== undefined);
-    setChosenAttributeIds(newChosenAttributeIds);
-  };
-
   const handleOnDocumentTypeChange = (selectedOption: OptionItem | null) => {
-    if (selectedOption) {
+    if (!selectedOption) {
+      return;
+    }
+
+    const documentTypeId = Number(selectedOption.value);
+
+    if (!documentTypes) {
+      console.warn('documentTypes is undefined');
+      setFilteredAttributes([]);
+      return;
+    }
+
+    const selectedDocumentType = documentTypes.find(
+      (type) => type.id === documentTypeId
+    );
+
+    if (selectedDocumentType) {
+      const attributes =
+        documentAttributes?.filter((attribute) =>
+          selectedDocumentType.attributeIds.includes(attribute.id)
+        ) || [];
+      setFilteredAttributes(attributes);
+
       setInputs((prev) => ({
         ...prev,
-        documentTypeId: parseInt(selectedOption.value),
+        documentTypeId,
+        attributeValues: attributes.map((attribute) => ({
+          attributeId: attribute.id,
+          value: '',
+        })),
       }));
+    } else {
+      console.warn('Selected document type not found');
+      setFilteredAttributes([]);
     }
   };
 
@@ -87,14 +91,26 @@ export const CreateDocumentForm = ({
     }));
   };
 
+  const handleAttributeChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    attributeId: number
+  ) => {
+    const newValue = e.target.value;
+    setInputs((prev) => ({
+      ...prev,
+      attributeValues: prev.attributeValues?.map((attribute) =>
+        attribute.attributeId === attributeId
+          ? { ...attribute, value: newValue }
+          : attribute
+      ),
+    }));
+  };
+
   const handleOnSave = () => {
     const newData: CreateDocument = {
       ...inputs,
-      attributeValues: chosenAttributeIds.map((id) => ({
-        attributeId: id,
-        value: '',
-      })),
       documentTypeId: inputs.documentTypeId ?? 0,
+      attributeValues: inputs.attributeValues ?? [],
     };
 
     const id = 'id' in data ? data.id : undefined;
@@ -162,90 +178,119 @@ export const CreateDocumentForm = ({
                 defaultValue={documentTypesOptions.find(
                   (option) => option.isSelected
                 )}
-                onChange={handleOnDocumentTypeChange}
+                onChange={(selectedOption) => {
+                  if (!selectedOption) return;
+                  handleOnDocumentTypeChange(selectedOption);
+                }}
               />
             </div>
           </div>
-          {Object.entries(inputs).map(([key, value]) => (
-            <div key={key} className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor={key} className="text-right">
-                {key}
-              </Label>
-              {key === 'base64Data' ? (
-                <div className="col-span-3">
-                  {inputs.base64Data ? (
-                    <div className="flex items-center gap-4">
-                      <div className="text-sm text-green-600">
-                        Файл <strong>{uploadedFileName}</strong> успешно
-                        загружен
-                      </div>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() =>
-                          setInputs((prev) => ({
-                            ...prev,
-                            base64Data: '',
-                          }))
-                        }
-                      >
-                        Заменить файл
-                      </Button>
-                    </div>
-                  ) : (
-                    <Button
-                      variant="outline"
-                      className="w-full"
-                      onClick={() => {
-                        const fileInput = document.createElement('input');
-                        fileInput.type = 'file';
-                        fileInput.onchange = async (event: Event) => {
-                          const target = event.target as HTMLInputElement;
-                          const file = target?.files?.[0];
-                          if (file) {
-                            try {
-                              const base64 = await convertFileToBase64(file);
-                              setInputs((prev) => ({
-                                ...prev,
-                                base64Data: base64,
-                              }));
-                              setUploadedFileName(file.name);
-                            } catch (error) {
-                              console.error('Ошибка при загрузке файла', error);
-                            }
-                          }
-                        };
-                        fileInput.click();
-                      }}
-                    >
-                      Загрузить файл
-                    </Button>
-                  )}
-                </div>
-              ) : Array.isArray(value) || value === null ? (
-                <div className="col-span-3">
-                  <Select
-                    placeholder="Выберите значение"
-                    isMulti
-                    className="basic-multi-select"
-                    classNamePrefix="select"
-                    defaultValue={defaultSelectValues}
-                    options={documentAttributesOptions}
-                    onChange={handleOnAttributesChange}
+
+          {filteredAttributes.length > 0 && (
+            <>
+              {filteredAttributes.map((attribute) => (
+                <div
+                  key={attribute.id}
+                  className="grid grid-cols-4 items-center gap-4"
+                >
+                  <Label
+                    htmlFor={`attribute-${attribute.id}`}
+                    className="text-right"
+                  >
+                    {attribute.name}
+                  </Label>
+                  <Input
+                    name={`attribute-${attribute.id}`}
+                    value={
+                      inputs.attributeValues?.find(
+                        (attr) => attr.attributeId === attribute.id
+                      )?.value || ''
+                    }
+                    onChange={(e) => handleAttributeChange(e, attribute.id)}
+                    className="col-span-3"
                   />
                 </div>
-              ) : (
-                <Input
-                  name={key}
-                  value={value ?? ''}
-                  disabled={key === 'id'}
-                  className="col-span-3"
-                  onChange={handleOnChange}
-                />
-              )}
-            </div>
-          ))}
+              ))}
+            </>
+          )}
+          {Object.entries(inputs)
+            .filter(([key]) => !fieldLabels[key]?.hidden)
+            .map(([key, value]) => (
+              <div key={key} className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor={key} className="text-right">
+                  {fieldLabels[key]?.label || key}
+                </Label>
+                {key === 'base64Data' ? (
+                  <div className="col-span-3">
+                    {inputs.base64Data ? (
+                      <div className="flex items-center gap-4">
+                        <div className="text-sm text-green-600">
+                          Файл <strong>{uploadedFileName}</strong> успешно
+                          загружен
+                        </div>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() =>
+                            setInputs((prev) => ({
+                              ...prev,
+                              base64Data: '',
+                            }))
+                          }
+                        >
+                          Заменить файл
+                        </Button>
+                      </div>
+                    ) : (
+                      <Button
+                        variant="outline"
+                        className="w-full"
+                        onClick={() => {
+                          const fileInput = document.createElement('input');
+                          fileInput.type = 'file';
+                          fileInput.onchange = async (event: Event) => {
+                            const target = event.target as HTMLInputElement;
+                            const file = target?.files?.[0];
+                            if (file) {
+                              try {
+                                const base64 = await convertFileToBase64(file);
+                                setInputs((prev) => ({
+                                  ...prev,
+                                  base64Data: base64,
+                                }));
+                                setUploadedFileName(file.name);
+                              } catch (error) {
+                                console.error(
+                                  'Ошибка при загрузке файла',
+                                  error
+                                );
+                              }
+                            }
+                          };
+                          fileInput.click();
+                        }}
+                      >
+                        Загрузить файл
+                      </Button>
+                    )}
+                  </div>
+                ) : (
+                  <Input
+                    name={key}
+                    value={
+                      Array.isArray(value)
+                        ? JSON.stringify(value)
+                        : (value ?? '')
+                    }
+                    disabled={key === 'id'}
+                    className="col-span-3"
+                    onChange={handleOnChange}
+                  />
+                )}
+              </div>
+            ))}
         </div>
+
         <DialogFooter>
           <Button
             className="block hover:opacity-75 mb-3 bg-bg-header hover:bg-bg-header"

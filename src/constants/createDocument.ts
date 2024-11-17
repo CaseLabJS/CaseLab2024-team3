@@ -18,3 +18,10 @@ export const EMPTY_DOC = {
   name: '',
   base64Data: '',
 };
+
+export const fieldLabels: Record<string, { label: string; hidden: boolean }> = {
+  name: { label: 'Название документа', hidden: false },
+  documentTypeId: { label: 'ID типа документа', hidden: true },
+  base64Data: { label: 'Файл', hidden: false },
+  attributeValues: { label: 'Атрибут документа', hidden: true },
+};
