@@ -4,13 +4,20 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './components/App/App.tsx';
 import { ErrorBoundary } from './components/App/providers/ErrorBoundary/ErrorBoundary.tsx';
 import './index.css';
+import { QueryParamProvider } from 'use-query-params';
+import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
+import { initError } from './lib/index.ts';
+
+initError();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <ErrorBoundary>
-        <App />
-      </ErrorBoundary>
+      <QueryParamProvider adapter={ReactRouter6Adapter}>
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
+      </QueryParamProvider>
     </BrowserRouter>
   </StrictMode>
 );

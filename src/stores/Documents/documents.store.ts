@@ -5,6 +5,7 @@ import {
   ChangeDocument,
   CreateDocumentResponse,
   DocumentSign,
+  Pagination,
 } from 'src/types';
 import { DocumentsStoreProps } from './types';
 import { toast } from '@/hooks/use-toast';
@@ -16,6 +17,7 @@ import { AxiosError } from 'axios';
 import { TOASTS } from '@constants/toast';
 
 class DocumentsStore implements DocumentsStoreProps {
+  private _pagination: Pagination | null = null;
   private _document: CreateDocumentResponse | null = null;
   private _documents: CreateDocumentResponse[] = [];
 
@@ -25,6 +27,10 @@ class DocumentsStore implements DocumentsStoreProps {
 
   constructor() {
     makeAutoObservable(this, undefined, { autoBind: true });
+  }
+
+  get pagination() {
+    return this._pagination;
   }
 
   get document() {
@@ -95,7 +101,9 @@ class DocumentsStore implements DocumentsStoreProps {
     return this._responseHandler(
       () => ApiDocumentController.getDocuments(page, size),
       (response) => {
-        this._documents = [...response.data.content];
+        const { content, ...res } = response.data;
+        this._documents = [...content];
+        this._pagination = res;
       }
     );
   }

@@ -8,6 +8,7 @@ import {
 import { getAdminAlertDialogCellContext } from 'src/components/AdminAlertDialog/AdminAlertDialogCellContext';
 import { getAdminDialogCellContext } from 'src/components/AdminDialog/AdminDialogCellContext';
 import { ColumnDef } from '@tanstack/react-table';
+import { BUTTONS_NAMES } from './defaultConstants';
 export const FIELD_LABELS: { [key: string]: string } = {
   id: 'Ид. номер',
   name: 'Имя',
@@ -161,10 +162,6 @@ export const USERS_TABLE_COLUMNS: ColumnDef<
     cell: getAdminAlertDialogCellContext,
   },
 ];
-
-const BUTTONS_NAMES = {
-  edit: 'Редактировать',
-};
 
 export const DIALOGS_VALUES = {
   docTypesCreate: {
