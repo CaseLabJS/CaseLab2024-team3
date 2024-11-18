@@ -26,6 +26,7 @@ export const CreateDocumentForm = ({
   documentAttributes,
   dialogTexts,
   onSave,
+  updateTableData,
 }: CreateDocumentProps<CreateDocument, any, any>) => {
   const [inputs, setInputs] = useState(data);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -54,7 +55,7 @@ export const CreateDocumentForm = ({
     const documentTypeId = Number(selectedOption.value);
 
     if (!documentTypes) {
-      console.warn('documentTypes is undefined');
+      console.warn('documentTypes неопределены');
       setFilteredAttributes([]);
       return;
     }
@@ -79,7 +80,7 @@ export const CreateDocumentForm = ({
         })),
       }));
     } else {
-      console.warn('Selected document type not found');
+      console.warn('Выбранный тип документа не найден');
       setFilteredAttributes([]);
     }
   };
@@ -120,6 +121,7 @@ export const CreateDocumentForm = ({
       onSave?.(id, patchData as Partial<CreateDocument>)
         .then(() => {
           setIsDialogOpen(false);
+          updateTableData?.();
         })
         .catch((error) => {
           console.error('Ошибка при сохранении', error);
@@ -128,6 +130,7 @@ export const CreateDocumentForm = ({
       onSave?.(newData)
         .then(() => {
           setIsDialogOpen(false);
+          updateTableData?.();
         })
         .catch((error) => {
           console.error('Ошибка при создании документа', error);
@@ -304,3 +307,4 @@ export const CreateDocumentForm = ({
     </Dialog>
   );
 };
+

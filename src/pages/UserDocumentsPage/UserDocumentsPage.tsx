@@ -38,7 +38,7 @@ const UserDocumentsPage = observer(() => {
 
   useEffect(() => {
     void documentsStore.fetchDocuments(
-      (query.page ?? 0) + 1,
+      (query.page ?? 0) ,//+ 1
       query.limit ?? 20
     );
   }, [query.limit, query.page]);
@@ -63,6 +63,10 @@ const UserDocumentsPage = observer(() => {
     );
   }
 
+  const refreshTableData = () => {
+    documentsStore.fetchDocuments()
+  };
+
   return (
     <div className="p-10 flex flex-col h-[calc(100vh-130px)] overflow-y-auto">
       <div>
@@ -72,6 +76,7 @@ const UserDocumentsPage = observer(() => {
           onSave={createDocument}
           documentTypes={documentTypes}
           documentAttributes={documentAttributes}
+          updateTableData={refreshTableData}
         />
       </div>
       <section className="flex-grow overflow-auto flex py-5">
