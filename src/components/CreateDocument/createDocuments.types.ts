@@ -21,4 +21,5 @@ export interface CreateDocumentProps<
   };
   documentTypes?: TType[];
   documentAttributes?: TAttributes[];
+  updateTableData?: () => void;
 }
