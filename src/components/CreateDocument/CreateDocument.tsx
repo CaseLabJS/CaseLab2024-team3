@@ -144,16 +144,19 @@ export const CreateDocumentForm = ({
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => {
-        const binary = reader.result as string;
+        const arrayBuffer = reader.result as ArrayBuffer;
+        const binary = new Uint8Array(arrayBuffer)
+          .reduce((acc, byte) => acc + String.fromCharCode(byte), '');
         const base64 = btoa(binary);
         resolve(base64);
-        setBase64str(btoa(binary));
+        setBase64str(base64); 
         setUploadedFileName(file.name);
       };
       reader.onerror = () => reject(new Error('Ошибка при чтении файла'));
       reader.readAsArrayBuffer(file);
     });
   }
+  
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
