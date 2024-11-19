@@ -45,11 +45,19 @@ class ApiUserController {
     return api.post(`/users`, data);
   }
 
-  public static async updateUserPasswordById(
+  //метод для обновления пароля от роли пользователя
+  public static async updateUserPasswordByIdForUser(data: {
+    oldPassword: string;
+    newPassword: string;
+  }): Promise<AxiosResponse> {
+    return api.patch(`/users/password`, data);
+  }
+  //метод для обновления пароля от роли администратора
+  public static async updateUserPasswordByIdForAdmin(
     id: string,
-    data: { oldPassword: string; newPassword: string }
+    data: { newPassword: string }
   ): Promise<AxiosResponse> {
-    return api.patch(`/users/${id}`, data);
+    return api.patch(`/users/${id}/password`, data);
   }
 }
 

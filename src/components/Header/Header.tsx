@@ -5,9 +5,10 @@ import Logo from 'src/assets/Symbol.svg';
 import { observer } from 'mobx-react-lite';
 import { authStore, usersStore } from 'src/stores';
 import { User } from './User';
+import DropdownMenuUser from '@components/DropdownMenuUser/DropdownMenuUser';
+import UpdatePasswordDialog from '@components/UpdatePasswordDialog/UpdatePasswordDialog';
 
 const Header = observer(() => {
-  //TODO: Нужно при авторизации передавать в header имя пользователя,в последствии поменять { userName }: { userName: string }
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
     <header className="bg-[#283593] px-4 md:px-8 lg:px-40">
@@ -53,6 +54,15 @@ const Header = observer(() => {
             <User />
 
             {/* Кнопка выхода на десктопе */}
+            {usersStore.user &&
+              usersStore.user.roles.some(
+                (roleUser) => roleUser.name === 'USER'
+              ) && (
+                <>
+                  {' '}
+                  <UpdatePasswordDialog />
+                </>
+              )}
             <div className="hidden lg:block">
               <button
                 className="border border-white text-white bg-transparent rounded-lg text-sm px-4 py-2 focus:ring-4 focus:ring-white/50 hover:bg-white/10"

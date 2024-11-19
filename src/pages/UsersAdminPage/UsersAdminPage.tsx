@@ -2,6 +2,7 @@ import { usersStore } from '@/stores';
 import { AdminDialog } from '@components/AdminDialog/AdminDialog';
 import { DataTable } from '@components/DataTable/DataTable';
 import { Spinner } from '@components/UI';
+import UpdatePasswordDialog from '@components/UpdatePasswordDialog/UpdatePasswordDialog';
 import {
   DIALOGS_VALUES,
   EMPTY_USER_ATTRIBUTE,
@@ -27,11 +28,15 @@ const UsersAdminPage = observer(() => {
     <div className="p-10 flex flex-col h-[calc(100vh-130px)] gap-4 overflow-y-auto">
       {users && users.length > 0 ? (
         <>
-          <AdminDialog
-            dialogTexts={DIALOGS_VALUES.userCreate}
-            data={EMPTY_USER_ATTRIBUTE}
-            onSave={createUser}
-          />
+          <div style={{ display: 'flex', gap: '30px' }}>
+            <AdminDialog
+              dialogTexts={DIALOGS_VALUES.userCreate}
+              data={EMPTY_USER_ATTRIBUTE}
+              onSave={createUser}
+            />
+            <UpdatePasswordDialog />
+          </div>
+
           <div>
             <DataTable
               columns={USERS_TABLE_COLUMNS}

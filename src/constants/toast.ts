@@ -17,6 +17,9 @@ export const TOASTS = {
   SUCCESS_UPDATE_USER: {
     description: 'Пользователь успешно обновлен',
   },
+  SUCCESS_UPDATE_PASSWORD: {
+    description: 'Пароль успешно обновлен',
+  },
   SUCCESS_DELETE_DOCUMENT: {
     description: 'Документ успешно удален',
   },

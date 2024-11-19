@@ -137,5 +137,33 @@ class UsersStore implements UsersStoreProps {
       }
     );
   }
+  //метод для обновления пароля от роли администратора
+  updateUserPasswordForAdmin = async (id: string, password: string) => {
+    return this._responseHandler(
+      () =>
+        ApiUserController.updateUserPasswordByIdForAdmin(id, {
+          newPassword: password,
+        }),
+      () => {
+        toast(TOASTS.SUCCESS_UPDATE_PASSWORD);
+      }
+    );
+  };
+  //метод для обновления пароля от роли пользователя
+  updateUserPasswordForUser = async (
+    oldpassword: string,
+    newpassword: string
+  ) => {
+    return this._responseHandler(
+      () =>
+        ApiUserController.updateUserPasswordByIdForUser({
+          oldPassword: oldpassword,
+          newPassword: newpassword,
+        }),
+      () => {
+        toast(TOASTS.SUCCESS_UPDATE_PASSWORD);
+      }
+    );
+  };
 }
 export default new UsersStore();
