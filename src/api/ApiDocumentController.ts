@@ -1,12 +1,15 @@
 import { AxiosResponse } from 'axios';
-import api from './index';
 import {
   ChangeDocument,
+  ChangeDocumentResponse,
   CreateDocument,
   CreateDocumentResponse,
-  GetDocumentsForSignResponse,
+  DocumentState,
   GetDocumentsResponse,
+  Initiator,
+  SendDocumentForSignResponse,
 } from 'src/types';
+import api from './index';
 
 class ApiDocumentController {
   public static async getDocumentById(
@@ -18,7 +21,7 @@ class ApiDocumentController {
   public static async updateDocumentById(
     id: number,
     data: ChangeDocument
-  ): Promise<AxiosResponse<CreateDocumentResponse>> {
+  ): Promise<AxiosResponse<ChangeDocumentResponse>> {
     return api.put(`/document/${id}`, data);
   }
 
@@ -28,21 +31,22 @@ class ApiDocumentController {
 
   public static async getDocuments(
     page?: number,
-    size?: number
+    size?: number,
+    initiator: Initiator = 'owner'
   ): Promise<AxiosResponse<GetDocumentsResponse>> {
     if (page && size) {
-      return api.get(`/document/owner?page=${page}&size=${size}`);
+      return api.get(`/document/${initiator}?page=${page}&size=${size}`);
     }
 
     if (page) {
-      return api.get(`/document/owner?page=${page}`);
+      return api.get(`/document/${initiator}?page=${page}`);
     }
 
     if (size) {
-      return api.get(`/document/owner?size=${size}`);
+      return api.get(`/document/${initiator}?size=${size}`);
     }
 
-    return api.get(`/document/owner`);
+    return api.get(`/document/${initiator}`);
   }
 
   public static async createDocument(
@@ -51,21 +55,26 @@ class ApiDocumentController {
     return api.post(`/document`, data);
   }
 
-  public static async signDocumentById(id: number): Promise<AxiosResponse> {
-    return api.post(`/document/${id}/sign`);
+  public static async signDocumentById(
+    id: number,
+    status: DocumentState
+  ): Promise<AxiosResponse> {
+    return api.post(`/document/${id}/sign`, {
+      status,
+    });
   }
 
   public static async getDocumentsForSign(): Promise<
-    AxiosResponse<GetDocumentsForSignResponse>
+    AxiosResponse<GetDocumentsResponse>
   > {
     return api.get(`/document/signer`);
   }
 
   public static async sendForSignDocumentById(
     id: number,
-    userIds: string[]
-  ): Promise<AxiosResponse> {
-    return api.post(`/document/${id}/sign?userIds=${userIds.join(',')}`);
+    userId: string
+  ): Promise<AxiosResponse<SendDocumentForSignResponse>> {
+    return api.post(`/document/${id}/sign?userId=${userId}`);
   }
 }
 

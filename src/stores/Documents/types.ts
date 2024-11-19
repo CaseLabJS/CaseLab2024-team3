@@ -1,12 +1,8 @@
-import {
-  ChangeDocument,
-  CreateDocument,
-  CreateDocumentResponse,
-} from 'src/types';
+import { ChangeDocument, CreateDocument, GetDocument } from 'src/types';
 
 export interface DocumentsStoreProps {
-  document: CreateDocumentResponse | null;
-  documents: CreateDocumentResponse[];
+  document: GetDocument | null;
+  documents: GetDocument[];
   loading: boolean;
   error: string | null;
   fetchDocumentById: (id: number) => Promise<void>;

@@ -1,3 +1,5 @@
+import { DocumentState } from 'src/types/state';
+
 export * from './assignComponent';
 export * from './adminTypes';
 export * from './state';
@@ -124,49 +126,57 @@ export type ChangeAttributeValue = CreateAttributeValue & {
 //____________________ Document attribute value end ____________________
 
 // ____________________ Document start ____________________
-export type CreateDocument = {
-  attributeValues?: {
-    attributeId: number;
-    value: string;
-  }[];
-  documentTypeId: number;
+
+export type ChangeDocument = {
+  attributeValues: Attribute[];
   name: string;
   base64Data: string;
 };
 
-export type ChangeDocument = {
-  // GET, PUT
-  id: number;
-  documentTypeId?: number;
-  userId?: string;
-  createdAt?: string;
-  name?: string;
-  documentName?: string;
-  data?: string;
+export type ChangeDocumentResponse = CreateDocumentResponse;
+
+export type CreateDocument = ChangeDocument & {
+  documentTypeId: number;
 };
 
 export type CreateDocumentResponse = {
-  id: number;
   documentName: string;
   createdAt: string;
-  updatedAt: string;
   contentUrl: string;
-  documentId: number;
+  state: DocumentState;
+  documentVersionId: number;
+  id: number;
+  author: string;
+};
+
+export type GetDocument = {
+  id: number;
+  author: string;
+  createdAt: string;
+  documentName: string;
+  contentUrl: string;
+  state: DocumentState;
 };
 
 export type GetDocumentsResponse = Pagination & {
-  content: CreateDocumentResponse[];
+  content: GetDocument[];
 };
 
-export type DocumentSign = {
-  documentId: number;
-  documentTypeId: number;
+export interface SendDocumentForSignResponse {
+  id: number;
+  approvementProcessId: number | null;
   userId: string;
   createdAt: string;
+  status: DocumentState;
+  documentVersionId: number;
+  signatureId: number | null;
+}
+
+type Attribute = {
+  attributeId: number;
+  value: string;
 };
 
-export type GetDocumentsForSignResponse = Pagination & {
-  content: DocumentSign[];
-};
+export type Initiator = 'owner' | 'signer';
 
 //____________________ Document end ____________________
