@@ -12,4 +12,10 @@ export interface UsersStoreProps {
   createUser: (user: UserRegister) => Promise<void>;
   updateUser: (user: UserRegister, id: string) => Promise<void>;
   deleteUser: (id: string) => Promise<void>;
+  updateUserPasswordForAdmin: (id: string, password: string) => Promise<void>;
+  updateUserPasswordForUser: (
+    id: string,
+    oldPassword: string,
+    newPassword: string
+  ) => Promise<void>;
 }
