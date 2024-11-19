@@ -5,7 +5,6 @@ import Logo from 'src/assets/Symbol.svg';
 import { observer } from 'mobx-react-lite';
 import { authStore, usersStore } from 'src/stores';
 import { User } from './User';
-import DropdownMenuUser from '@components/DropdownMenuUser/DropdownMenuUser';
 import UpdatePasswordDialog from '@components/UpdatePasswordDialog/UpdatePasswordDialog';
 
 const Header = observer(() => {

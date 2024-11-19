@@ -13,6 +13,7 @@ import { Input } from '@components/UI/Input/Input';
 import { useEffect, useState } from 'react';
 import Select from 'react-select';
 import { usersStore } from '@/stores';
+import { Lock } from 'lucide-react';
 
 const DEFAULT_DIALOG_FORM_WIDTH = 625;
 
@@ -107,11 +108,7 @@ function UpdatePasswordDialog() {
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
               <span title="Изменить пароль">
-                <img
-                  src="./src/assets/password.png"
-                  alt=""
-                  style={{ width: '30px', height: '30px' }}
-                />
+                <Lock className="text-indigo-200" />
               </span>
             </DialogTrigger>
             <DialogContent>
