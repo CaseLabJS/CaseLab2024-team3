@@ -21,15 +21,19 @@ class UsersStore implements UsersStoreProps {
   constructor() {
     makeAutoObservable(this, undefined, { autoBind: true });
   }
+
   get user() {
     return this._user;
   }
+
   get users() {
     return this._users;
   }
+
   get isLoading() {
     return this._isLoading;
   }
+
   get status() {
     return this._status;
   }
@@ -37,6 +41,7 @@ class UsersStore implements UsersStoreProps {
   get error() {
     return this._error;
   }
+
   private async _responseHandler<T>(
     action: () => Promise<T>,
     onSuccess: (data: T) => void
@@ -99,6 +104,7 @@ class UsersStore implements UsersStoreProps {
       }
     );
   };
+
   updateUser = async (user: UserRegister, id: string | number) => {
     return this._responseHandler(
       () => ApiUserController.updateUserById(user, id as string),
@@ -123,6 +129,7 @@ class UsersStore implements UsersStoreProps {
       }
     );
   };
+
   async fetchUserData() {
     return this._responseHandler(
       async () => {
@@ -137,8 +144,9 @@ class UsersStore implements UsersStoreProps {
       }
     );
   }
+
   //метод для обновления пароля от роли администратора
-  updateUserPasswordForAdmin = async (id: string, password: string) => {
+  updateUserPasswordForAdmin = (id: string, password: string) => {
     return this._responseHandler(
       () =>
         ApiUserController.updateUserPasswordByIdForAdmin(id, {
@@ -149,16 +157,14 @@ class UsersStore implements UsersStoreProps {
       }
     );
   };
+
   //метод для обновления пароля от роли пользователя
-  updateUserPasswordForUser = async (
-    oldpassword: string,
-    newpassword: string
-  ) => {
+  updateUserPasswordForUser = (oldPassword: string, newPassword: string) => {
     return this._responseHandler(
       () =>
         ApiUserController.updateUserPasswordByIdForUser({
-          oldPassword: oldpassword,
-          newPassword: newpassword,
+          oldPassword,
+          newPassword,
         }),
       () => {
         toast(TOASTS.SUCCESS_UPDATE_PASSWORD);
