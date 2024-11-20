@@ -9,6 +9,8 @@ import UpdatePasswordDialog from '@components/UpdatePasswordDialog/UpdatePasswor
 
 const Header = observer(() => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const hasRole = (roleName) =>
+    usersStore.user?.roles.some((roleUser) => roleUser.name === roleName);
   return (
     <header className="bg-[#283593] px-4 md:px-8 lg:px-40">
       <nav className="py-2.5">
@@ -22,30 +24,24 @@ const Header = observer(() => {
 
           {/* Десктопное меню */}
           <div className="hidden lg:flex lg:items-center lg:space-x-8">
-            {usersStore.user &&
-              usersStore.user.roles.some(
-                (roleUser) => roleUser.name === 'USER'
-              ) && (
-                <NavLink
-                  to="app"
-                  className="block py-2 text-white font-medium"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  UserDashboard
-                </NavLink>
-              )}
-            {usersStore.user &&
-              usersStore.user.roles.some(
-                (roleUser) => roleUser.name === 'ADMIN'
-              ) && (
-                <NavLink
-                  to="admin"
-                  className="block py-2 text-white font-medium"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Admin
-                </NavLink>
-              )}
+            {hasRole('USER') && (
+              <NavLink
+                to="app"
+                className="block py-2 text-white font-medium"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                UserDashboard
+              </NavLink>
+            )}
+            {hasRole('ADMIN') && (
+              <NavLink
+                to="admin"
+                className="block py-2 text-white font-medium"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Admin
+              </NavLink>
+            )}
           </div>
 
           {/* Блок пользователя */}
@@ -53,15 +49,7 @@ const Header = observer(() => {
             <User />
 
             {/* Кнопка выхода на десктопе */}
-            {usersStore.user &&
-              usersStore.user.roles.some(
-                (roleUser) => roleUser.name === 'USER'
-              ) && (
-                <>
-                  {' '}
-                  <UpdatePasswordDialog />
-                </>
-              )}
+            {hasRole('USER') && !hasRole('ADMIN') && <UpdatePasswordDialog />}
             <div className="hidden lg:block">
               <button
                 className="border border-white text-white bg-transparent rounded-lg text-sm px-4 py-2 focus:ring-4 focus:ring-white/50 hover:bg-white/10"
@@ -100,34 +88,29 @@ const Header = observer(() => {
               </button>
             </div>
             <ul className="mt-10 space-y-4 text-center">
-              {usersStore.user &&
-                usersStore.user.roles.some(
-                  (roleUser) => roleUser.name === 'USER'
-                ) && (
-                  <li>
-                    <NavLink
-                      to="app"
-                      className="block py-2 text-white font-medium"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      UserDashboard
-                    </NavLink>
-                  </li>
-                )}
-              {usersStore.user &&
-                usersStore.user.roles.some(
-                  (roleUser) => roleUser.name === 'ADMIN'
-                ) && (
-                  <li>
-                    <NavLink
-                      to="admin"
-                      className="block py-2 text-white font-medium"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Admin
-                    </NavLink>
-                  </li>
-                )}
+              {hasRole('USER') && (
+                <li>
+                  <NavLink
+                    to="app"
+                    className="block py-2 text-white font-medium"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    UserDashboard
+                  </NavLink>
+                </li>
+              )}
+              {hasRole('ADMIN') && (
+                <li>
+                  <NavLink
+                    to="admin"
+                    className="block py-2 text-white font-medium"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Admin
+                  </NavLink>
+                </li>
+              )}
+
               <li>
                 <button
                   className="w-full border border-white text-white bg-transparent rounded-lg font-medium text-sm px-4 py-2"
