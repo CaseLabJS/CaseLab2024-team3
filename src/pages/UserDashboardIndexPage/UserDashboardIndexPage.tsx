@@ -36,7 +36,9 @@ const UserDashboardIndexPage = observer(() => {
           <article className="flex flex-col text-center items-center">
             <FileCheck className="text-4xl sm:text-5xl mb-4 animate-pulse" />
             <div>
-              <h2 className="text-3xl sm:text-4xl font-bold">TODO</h2>
+              <h2 className="text-3xl sm:text-4xl font-bold">
+                {documentsStore.documentsSentForSign.length}
+              </h2>
               <p className="text-md sm:text-lg mt-2">
                 Отправленные на подписание
               </p>

@@ -1,27 +1,28 @@
-import { makeAutoObservable, runInAction } from 'mobx';
+import { toast } from '@/hooks/use-toast';
 import ApiDocumentController from '@api/ApiDocumentController';
 import {
-  CreateDocument,
+  NETWORK_ERROR_MESSAGE,
+  UNKNOWN_ERROR_MESSAGE,
+} from '@constants/errorMessage';
+import { TOASTS } from '@constants/toast';
+import { AxiosError } from 'axios';
+import { makeAutoObservable, runInAction } from 'mobx';
+import {
   ChangeDocument,
-  CreateDocumentResponse,
-  DocumentSign,
+  CreateDocument,
+  DocumentState,
+  GetDocument,
+  Initiator,
   Pagination,
 } from 'src/types';
 import { DocumentsStoreProps } from './types';
-import { toast } from '@/hooks/use-toast';
-import {
-  UNKNOWN_ERROR_MESSAGE,
-  NETWORK_ERROR_MESSAGE,
-} from '@constants/errorMessage';
-import { AxiosError } from 'axios';
-import { TOASTS } from '@constants/toast';
 
 class DocumentsStore implements DocumentsStoreProps {
   private _pagination: Pagination | null = null;
-  private _document: CreateDocumentResponse | null = null;
-  private _documents: CreateDocumentResponse[] = [];
+  private _document: GetDocument | null = null;
+  private _documents: GetDocument[] = [];
 
-  private _documentsForSign: DocumentSign[] = [];
+  private _documentsForSign: GetDocument[] = [];
   private _loading: boolean = false;
   private _error: string | null = null;
 
@@ -43,6 +44,14 @@ class DocumentsStore implements DocumentsStoreProps {
 
   get documentsForSign() {
     return this._documentsForSign;
+  }
+
+  get documentsSentForSign() {
+    return this._documents.filter(
+      (doc) =>
+        doc.state === DocumentState.PENDING_CONTRACTOR_SIGN ||
+        doc.state === DocumentState.PENDING_AUTHOR_SIGN
+    );
   }
 
   get loading() {
@@ -88,27 +97,36 @@ class DocumentsStore implements DocumentsStoreProps {
     }
   }
 
-  async fetchDocumentById(id: number) {
+  fetchDocumentById = (id: number) => {
     return this._responseHandler(
       () => ApiDocumentController.getDocumentById(id),
       (response) => {
         this._document = response.data;
       }
     );
-  }
+  };
 
-  async fetchDocuments(page?: number, size?: number) {
+  fetchDocuments = (
+    page?: number,
+    size?: number,
+    initiator: Initiator = 'owner'
+  ) => {
     return this._responseHandler(
-      () => ApiDocumentController.getDocuments(page, size),
+      () => ApiDocumentController.getDocuments(page, size, initiator),
       (response) => {
         const { content, ...res } = response.data;
-        this._documents = [...content];
         this._pagination = res;
+
+        if (initiator === 'owner') {
+          this._documents = [...content];
+        } else {
+          this._documentsForSign = [...content];
+        }
       }
     );
-  }
+  };
 
-  async createDocument(document: CreateDocument) {
+  createDocument = (document: CreateDocument) => {
     return this._responseHandler(
       () => ApiDocumentController.createDocument(document),
       (response) => {
@@ -116,9 +134,9 @@ class DocumentsStore implements DocumentsStoreProps {
         toast(TOASTS.SUCCESS_CREATE_DOCUMENT);
       }
     );
-  }
+  };
 
-  async updateDocument(id: number, document: ChangeDocument) {
+  updateDocument = (id: number, document: ChangeDocument) => {
     return this._responseHandler(
       () => ApiDocumentController.updateDocumentById(id, document),
       (response) => {
@@ -129,9 +147,9 @@ class DocumentsStore implements DocumentsStoreProps {
         toast(TOASTS.SUCCESS_UPDATE_DOCUMENT);
       }
     );
-  }
+  };
 
-  async deleteDocument(id: number) {
+  deleteDocument = (id: number) => {
     return this._responseHandler(
       () => ApiDocumentController.deleteDocumentById(id),
       () => {
@@ -139,13 +157,39 @@ class DocumentsStore implements DocumentsStoreProps {
         toast(TOASTS.SUCCESS_DELETE_DOCUMENT);
       }
     );
-  }
+  };
 
-  fetchDocumentsForSign = async () => {
+  fetchDocumentsForSign = () => {
     return this._responseHandler(
       () => ApiDocumentController.getDocumentsForSign(),
       (response) => {
         this._documentsForSign = response.data.content;
+      }
+    );
+  };
+
+  signDocumentById = (id: number, status: DocumentState) => {
+    return this._responseHandler(
+      () => ApiDocumentController.signDocumentById(id, status),
+      () => {
+        const index = this._documentsForSign.findIndex((doc) => doc.id === id);
+        if (index !== -1) {
+          this._documentsForSign[index].state = status;
+        }
+        toast(TOASTS.SUCCESS_SIGN_DOCUMENT);
+      }
+    );
+  };
+
+  sendForSignDocumentById = (id: number, userId: string) => {
+    return this._responseHandler(
+      () => ApiDocumentController.sendForSignDocumentById(id, userId),
+      (response) => {
+        const index = this._documents.findIndex((doc) => doc.id === id);
+        if (index !== -1) {
+          this._documents[index].state = response.data.status;
+        }
+        toast(TOASTS.SUCCESS_SEND_FOR_SIGN_DOCUMENT);
       }
     );
   };

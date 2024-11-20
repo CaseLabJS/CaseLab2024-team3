@@ -8,6 +8,7 @@ export const TOASTS = {
   SUCCESS_UPDATE_TYPE: {
     description: 'Тип успешно обновлен',
   },
+
   SUCCESS_DELETE_USER: {
     description: 'Пользователь успешно удален',
   },
@@ -20,6 +21,7 @@ export const TOASTS = {
   SUCCESS_UPDATE_PASSWORD: {
     description: 'Пароль успешно обновлен',
   },
+
   SUCCESS_DELETE_DOCUMENT: {
     description: 'Документ успешно удален',
   },
@@ -29,6 +31,7 @@ export const TOASTS = {
   SUCCESS_UPDATE_DOCUMENT: {
     description: 'Документ успешно обновлен',
   },
+
   SUCCESS_DELETE_ATTRIBUTE: {
     description: 'Атрибут успешно удален',
   },
@@ -37,5 +40,12 @@ export const TOASTS = {
   },
   SUCCESS_UPDATE_ATTRIBUTE: {
     description: 'Атрибут успешно обновлен',
+  },
+
+  SUCCESS_SIGN_DOCUMENT: {
+    description: 'Документ успешно подписан',
+  },
+  SUCCESS_SEND_FOR_SIGN_DOCUMENT: {
+    description: 'Документ успешно отправлен на подпись',
   },
 };
