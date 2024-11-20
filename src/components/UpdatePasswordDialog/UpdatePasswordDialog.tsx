@@ -56,7 +56,7 @@ function UpdatePasswordDialog() {
       <div>
         {isAdmin ? (
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger>
+            <DialogTrigger  asChild>
               <Button variant="outline" className="max-w-fit">
                 Изменить пароль пользователя
               </Button>

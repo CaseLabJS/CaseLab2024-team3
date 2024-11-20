@@ -1,5 +1,4 @@
 import { observer } from 'mobx-react-lite';
-import { Tooltip } from 'react-tooltip';
 import { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +10,10 @@ import {
   CardContent,
   CardFooter,
   Form,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
 } from 'src/components/UI';
 import { authStore, usersStore } from 'src/stores';
 import type { UserLogin } from 'src/types';
@@ -71,15 +74,16 @@ const SignInPage: FC<SignInPageProps> = observer(() => {
             </Form>
           </CardContent>
           <CardFooter>
-            <Button
-              variant="link"
-              className="p-0 h-auto"
-              data-tooltip-id="forgot-password-tooltip"
-              data-tooltip-content="Обратитесь к администратору для сброса пароля."
-            >
-              Забыли пароль?
-            </Button>
-            <Tooltip place="right" id="forgot-password-tooltip" />
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <a className="text-xs text-indigo-700">Забыли пароль?</a>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Обратитесь к администратору для сброса пароля.</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </CardFooter>
         </Card>
       </div>
