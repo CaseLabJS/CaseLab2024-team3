@@ -1,4 +1,5 @@
 import { toast } from '@/hooks/use-toast';
+import ApiAttributeController from '@api/ApiAttributeController';
 import ApiDocumentController from '@api/ApiDocumentController';
 import {
   NETWORK_ERROR_MESSAGE,
@@ -14,17 +15,21 @@ import {
   GetDocument,
   Initiator,
   Pagination,
+  ChangeAttribute,
+  CreateDocumentResponse,
 } from 'src/types';
 import { DocumentsStoreProps } from './types';
 
 class DocumentsStore implements DocumentsStoreProps {
   private _pagination: Pagination | null = null;
-  private _document: GetDocument | null = null;
-  private _documents: GetDocument[] = [];
+  private _document: CreateDocumentResponse | null = null;
+  private _documents: CreateDocumentResponse[] = [];
 
   private _documentsForSign: GetDocument[] = [];
   private _loading: boolean = false;
   private _error: string | null = null;
+
+  private _attributes: ChangeAttribute[] = [];
 
   constructor() {
     makeAutoObservable(this, undefined, { autoBind: true });
@@ -60,6 +65,10 @@ class DocumentsStore implements DocumentsStoreProps {
 
   get error() {
     return this._error;
+  }
+
+  get attributes() {
+    return this._attributes;
   }
 
   private async _responseHandler<T>(
@@ -193,6 +202,27 @@ class DocumentsStore implements DocumentsStoreProps {
       }
     );
   };
+
+  async downloadDocument(url: string) {
+    return this._responseHandler(
+      () => ApiDocumentController.downloadDocument(url),
+      (response) => {
+        const link = document.createElement('a');
+        link.href = response.data.link;
+        link.target = '_blank';
+        link.click();
+      }
+    );
+  }
+
+  async fetchAttributes(page?: number, size?: number) {
+    return this._responseHandler(
+      () => ApiAttributeController.getAttributes(page, size),
+      (response) => {
+        this._attributes = [...response.data.content];
+      }
+    );
+  }
 }
 
 export default new DocumentsStore();

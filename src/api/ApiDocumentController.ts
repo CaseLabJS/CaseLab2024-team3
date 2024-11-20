@@ -15,7 +15,7 @@ class ApiDocumentController {
   public static async getDocumentById(
     id: number
   ): Promise<AxiosResponse<CreateDocumentResponse>> {
-    return api.get(`/document/${id}`);
+    return api.get(`/document/owner/${id}/versions/last`);
   }
 
   public static async updateDocumentById(
@@ -75,6 +75,12 @@ class ApiDocumentController {
     userId: string
   ): Promise<AxiosResponse<SendDocumentForSignResponse>> {
     return api.post(`/document/${id}/sign?userId=${userId}`);
+  }
+
+  public static async downloadDocument(
+    url: string
+  ): Promise<AxiosResponse<{ link: string }>> {
+    return api.get(`/document/download?url=${url}`);
   }
 }
 

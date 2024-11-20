@@ -1,5 +1,6 @@
 import { DocAttributesAdminPage } from '@pages/DocAttributesAdminPage';
 import { DocTypesAdminPage } from '@pages/DocTypesAdminPage';
+import { DocumentPage } from '@pages/DocumentPage';
 import { UserAwaitingSignPage } from '@pages/UserAwaitingSignPage';
 import { UserDashboardIndexPage } from '@pages/UserDashboardIndexPage';
 import UserDocumentsPage from '@pages/UserDocumentsPage/UserDocumentsPage';
@@ -40,6 +41,10 @@ const AppRouter = () => {
               <Route
                 path={ROUTE_CONSTANTS.USER_DOCUMENTS}
                 element={<UserDocumentsPage />}
+              />
+              <Route
+                path={ROUTE_CONSTANTS.USER_DOCUMENT}
+                element={<DocumentPage />}
               />
               <Route
                 path={ROUTE_CONSTANTS.USER_SENT_FOR_SIGN}
