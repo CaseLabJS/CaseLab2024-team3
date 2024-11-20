@@ -19,7 +19,10 @@ class AuthStore implements AuthStoreProps {
   private _userId = '';
 
   constructor() {
-    void this.checkAuth();
+    const refreshToken = this.getToken();
+    if (refreshToken) {
+      void this.checkAuth();
+    }
     makeAutoObservable(this, undefined, { autoBind: true });
   }
 
