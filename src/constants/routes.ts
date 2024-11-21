@@ -5,6 +5,7 @@ export const ROUTE_CONSTANTS = {
   APP: 'app',
   USER_DASHBOARD_INDEX: '',
   USER_DOCUMENTS: 'documents',
+  USER_DOCUMENT: ':documentId',
   USER_SENT_FOR_SIGN: 'sent-for-sign',
   USER_AWAITING_SIGN: 'awaiting-sign',
 
