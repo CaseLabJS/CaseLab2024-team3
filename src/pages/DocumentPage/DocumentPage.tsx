@@ -45,7 +45,7 @@ const DocumentPage = observer(() => {
   return (
     document &&
     documentId !== 'undefined' && (
-      <div className="flex justify-center w-full">
+      <div className="p-4 flex flex-col h-[calc(100vh-130px)] overflow-y-auto">
         <div className="relative p-4 pr-6">
           <Badge state={document.state} />
           <h1 className="mb-1 text-4xl">
@@ -74,13 +74,13 @@ const DocumentPage = observer(() => {
                   <Input
                     name={`attribute-${attributeId.attributeId}`}
                     value={attributeId.value}
-                    className="col-span-3"
+                    className="col-span-3 disabled:opacity-100"
                     disabled
                   ></Input>
                 </div>
               ))}
           </div>
-          <div className="flex justify-between gap-2">
+          <div className="flex justify-between flex-wrap gap-2">
             <Button onClick={() => downloadDocument(document.contentUrl)}>
               <DownloadIcon />
               Скачать

@@ -1,6 +1,6 @@
 import { format, isValid, parseISO } from 'date-fns';
 interface DocumentDateProps {
-  date: string;
+  date: number | string;
 }
 
 export const DocumentDate: React.FC<DocumentDateProps> = ({ date }) => {
