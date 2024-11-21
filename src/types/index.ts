@@ -142,7 +142,7 @@ export type CreateDocument = ChangeDocument & {
 export type CreateDocumentResponse = {
   author?: string;
   documentName: string;
-  createdAt: string;
+  createdAt: number | string;
   contentUrl: string;
   state: DocumentState;
   documentId: number;
@@ -153,7 +153,7 @@ export type CreateDocumentResponse = {
 export type GetDocument = {
   id: number;
   author: string;
-  createdAt: string;
+  createdAt: number | string;
   documentName: string;
   contentUrl: string;
   state: DocumentState;
@@ -167,7 +167,7 @@ export interface SendDocumentForSignResponse {
   id: number;
   approvementProcessId: number | null;
   userId: string;
-  createdAt: string;
+  createdAt: number | string;
   status: DocumentState;
   documentVersionId: number;
   signatureId: number | null;

@@ -1,14 +1,17 @@
 import { format, isValid, parseISO } from 'date-fns';
-
 interface DocumentDateProps {
   date: string;
 }
 
 export const DocumentDate: React.FC<DocumentDateProps> = ({ date }) => {
+  const newDate =
+    typeof date === 'number' ? new Date(date * 1000).toISOString() : date;
+
   return (
     <p className="text-xs italic text-gray-500">
       Создан{' '}
-      {isValid(parseISO(date)) && format(parseISO(date), 'dd.MM.yyyy | H:mm')}
+      {isValid(parseISO(newDate)) &&
+        format(parseISO(newDate), 'dd.MM.yyyy | H:mm')}
     </p>
   );
 };
