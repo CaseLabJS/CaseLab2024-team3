@@ -5,7 +5,7 @@ import Header from 'src/components/Header/Header';
 
 const Layout = () => {
   return (
-    <main className="flex flex-col min-h-screen bg-bg-white">
+    <main className="flex flex-col min-h-screen">
       <Header />
       <div className="flex flex-grow flex-col">
         <Outlet />

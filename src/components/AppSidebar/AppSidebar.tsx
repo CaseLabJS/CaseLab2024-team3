@@ -33,7 +33,7 @@ export function AppSidebar({ menuItems, sidebarName }: SidebarProps) {
   return (
     <Sidebar
       collapsible="offcanvas"
-      className="absolute h-[calc(100vh-130px)] md:ml-8 lg:ml-40"
+      className="absolute h-layout md:ml-8 lg:ml-40"
     >
       <SidebarContent>
         <SidebarGroup>

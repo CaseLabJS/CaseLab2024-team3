@@ -22,7 +22,7 @@ export const getCommonPinningStyles = <T>(
     },
     className: cn(
       isPinned ? 'sticky' : 'relative',
-      isPinned ? 'bg-muted' : 'transparent',
+      isPinned ? 'bg-background' : 'transparent',
       isPinned ? 'z-[1]' : 'z-[0]',
       className
     ),

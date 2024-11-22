@@ -149,14 +149,14 @@ export const CreateDocumentForm = ({
           .reduce((acc, byte) => acc + String.fromCharCode(byte), '');
         const base64 = btoa(binary);
         resolve(base64);
-        setBase64str(base64); 
+        setBase64str(base64);
         setUploadedFileName(file.name);
       };
       reader.onerror = () => reject(new Error('Ошибка при чтении файла'));
       reader.readAsArrayBuffer(file);
     });
   }
-  
+
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -179,7 +179,8 @@ export const CreateDocumentForm = ({
             <div className="col-span-3">
               <Select
                 placeholder="Выберите тип документа"
-                className="col-span-3"
+                className="basic-multi-select col-span-3"
+                classNamePrefix="select"
                 options={documentTypesOptions}
                 defaultValue={documentTypesOptions.find(
                   (option) => option.isSelected

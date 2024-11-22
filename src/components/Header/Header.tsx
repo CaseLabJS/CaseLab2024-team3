@@ -12,7 +12,7 @@ const Header = observer(() => {
   const hasRole = (roleName) =>
     usersStore.user?.roles.some((roleUser) => roleUser.name === roleName);
   return (
-    <header className="bg-[#283593] px-4 md:px-8 lg:px-40">
+    <header className="bg-bg-header h-header px-4 md:px-8 lg:px-40">
       <nav className="py-2.5">
         <div className="flex justify-between items-center ">
           <Link to="/" className="flex items-center">
@@ -77,7 +77,7 @@ const Header = observer(() => {
 
         {/* Мобильное меню */}
         {isMenuOpen && (
-          <div className="fixed top-0 right-0 h-full w-64 bg-[#283593] text-white transform transition-transform duration-300 ease-in-out z-50">
+          <div className="fixed top-0 right-0 h-full w-64 bg-bg-header text-white transform transition-transform duration-300 ease-in-out z-50">
             <div className="flex justify-between items-center p-4">
               <span className="text-white font-medium">Иванов А.А.</span>
               <button

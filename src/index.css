@@ -8,8 +8,42 @@
   box-sizing: border-box;
 }
 
+
+.basic-multi-select .select__control {
+  @apply bg-background border-border shadow-none
+}
+.basic-multi-select .select__control:hover {
+  @apply border-ring
+}
+
+.basic-multi-select .select__menu {
+  @apply bg-background border border-border
+}
+
+.basic-multi-select .select__menu-list {
+  @apply bg-background border-border
+}
+
+.basic-multi-select .select__option--is-focused {
+  @apply bg-muted
+}
+
+.basic-multi-select .select__multi-value {
+  @apply bg-muted text-foreground
+}
+
+.basic-multi-select .select__multi-value__label {
+  @apply text-foreground
+}
+
+.basic-multi-select .select__control--is-focused {
+  @apply focus-visible:ring-2
+}
+
 @layer base {
   :root {
+    --header-height: 60px;
+    --footer-height: 75px;
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
