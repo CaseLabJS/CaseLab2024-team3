@@ -5,6 +5,7 @@ import {
   CreateDocument,
   CreateDocumentResponse,
   DocumentState,
+  GetDocument,
   GetDocumentsResponse,
   Initiator,
   SendDocumentForSignResponse,
@@ -70,11 +71,17 @@ class ApiDocumentController {
     return api.get(`/document/signer`);
   }
 
+  public static async getDocumentForSign(id: number): Promise<
+    AxiosResponse<CreateDocumentResponse>
+  > {
+    return api.get(`/document/signer/${id}/versions/last`);
+  }
+
   public static async sendForSignDocumentById(
     id: number,
     userId: string
   ): Promise<AxiosResponse<SendDocumentForSignResponse>> {
-    return api.post(`/document/${id}/sign?userId=${userId}`);
+    return api.post(`/document/${id}/send_for_signature?userId=${userId}`);
   }
 
   public static async downloadDocument(
