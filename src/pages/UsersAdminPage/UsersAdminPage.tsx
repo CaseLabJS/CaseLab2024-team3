@@ -25,7 +25,7 @@ const UsersAdminPage = observer(() => {
     );
   }
   return (
-    <div className="p-10 flex flex-col h-[calc(100vh-130px)] gap-4 overflow-y-auto">
+    <div className="p-10 flex flex-col h-layout gap-4 overflow-y-auto">
       {users && users.length > 0 ? (
         <>
           <div style={{ display: 'flex', gap: '30px' }}>

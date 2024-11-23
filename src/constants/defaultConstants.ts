@@ -1,8 +1,29 @@
 import { DocumentState, RecordStateInfo } from '@/types/state';
+import { Theme } from '@components/ThemeProvider/types';
 
 export const BUTTONS_NAMES = {
   edit: 'Редактировать',
 };
+
+export const KEY_THEME_LS = 'theme';
+
+export const THEME_CONFIG: {
+  title: string;
+  value: Theme;
+}[] = [
+  {
+    title: 'Светлая',
+    value: 'light',
+  },
+  {
+    title: 'Тёмная',
+    value: 'dark',
+  },
+  {
+    title: 'Системная',
+    value: 'system',
+  },
+];
 
 export const DOCUMENT_STATE: RecordStateInfo<DocumentState> = {
   [DocumentState.DRAFT]: {

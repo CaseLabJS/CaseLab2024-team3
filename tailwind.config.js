@@ -68,6 +68,11 @@ export default {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      height: {
+        header: 'var(--header-height)',
+        footer: 'var(--footer-height)',
+        layout: 'calc(100vh - var(--header-height) - var(--footer-height))',
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],

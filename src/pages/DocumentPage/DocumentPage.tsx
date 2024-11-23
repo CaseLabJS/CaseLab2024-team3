@@ -45,7 +45,7 @@ const DocumentPage = observer(() => {
   return (
     document &&
     documentId !== 'undefined' && (
-      <div className="p-4 flex flex-col h-[calc(100vh-130px)] overflow-y-auto">
+      <div className="p-4 flex flex-col h-layout overflow-y-auto">
         <div className="relative p-4 pr-6">
           <Badge state={document.state} />
           <h1 className="mb-1 text-4xl">
@@ -101,7 +101,7 @@ const DocumentPage = observer(() => {
             className="absolute top-2 -right-4 bg-transparent border"
             onClick={() => navigate('../documents')}
           >
-            <Cross1Icon className="text-black" />
+            <Cross1Icon className="text-foreground" />
           </Button>
         </div>
       </div>

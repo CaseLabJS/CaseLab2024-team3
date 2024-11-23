@@ -14,9 +14,12 @@ interface TableHeaderProps<TData> {
 
 export const TableHeader = <TData,>({ table }: TableHeaderProps<TData>) => {
   return (
-    <TableHeaderComp className="sticky bg-muted top-[-1px] z-[2]">
+    <TableHeaderComp className="sticky bg-background top-[-1px] z-[2]">
       {table.getHeaderGroups().map((headerGroup) => (
-        <TableRow key={headerGroup.id}>
+        <TableRow
+          key={headerGroup.id}
+          className="relative border-none after:content-[''] after:absolute after:inset-0 after:top-[1px] after:pointer-events-none after:z-[1] after:border after:border-border"
+        >
           {headerGroup.headers.map((header) => {
             const { style, className } = getCommonPinningStyles(header.column);
             return (
@@ -29,9 +32,9 @@ export const TableHeader = <TData,>({ table }: TableHeaderProps<TData>) => {
                 {header.isPlaceholder
                   ? null
                   : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
+                    header.column.columnDef.header,
+                    header.getContext()
+                  )}
                 <TableSorting header={header} />
                 <TableResize header={header} />
               </TableHead>

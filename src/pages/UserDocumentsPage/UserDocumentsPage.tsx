@@ -23,7 +23,7 @@ const UserDocumentsPage = observer(() => {
     page: NumberParam,
     limit: NumberParam,
   });
-  
+
 
   // eslint-disable-next-line @typescript-eslint/unbound-method
   const {
@@ -68,7 +68,7 @@ const UserDocumentsPage = observer(() => {
   };
 
   return (
-    <div className="p-10 flex flex-col h-[calc(100vh-130px)] overflow-y-auto">
+    <div className="w-full p-10 flex flex-col h-layout overflow-y-auto">
       <div>
         <CreateDocumentForm
           dialogTexts={DIALOGS_VALUES.docTypesCreate}

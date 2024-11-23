@@ -11,7 +11,7 @@ export const TableSelectCountRow = <TData,>({
     <div className="flex gap-3 items-center">
       <span>Показать на странице</span>
       <select
-        className="h-10 pl-2 rounded-md border border-indigo-700"
+        className="h-10 pl-2 rounded-md border bg-background border-indigo-700"
         value={table.getState().pagination.pageSize}
         onChange={(e) => {
           table.setPageSize(Number(e.target.value));

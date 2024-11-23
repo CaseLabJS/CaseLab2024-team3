@@ -86,7 +86,7 @@ export const DataTable2 = observer(
       <div
         className={cn('overflow-auto flex flex-col flex-grow gap-4', className)}
       >
-        <TableComp className="rounded-md border mb-3">
+        <TableComp className="rounded-md mb-3">
           <TableHeader table={table} />
           <TableBody table={table} />
         </TableComp>

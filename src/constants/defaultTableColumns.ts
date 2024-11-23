@@ -20,8 +20,8 @@ export const idColumn = <T>(props?: ColumnDef<T>): ColumnDef<T> => {
   return defaultColumn({
     accessorKey: 'id',
     header: 'ID',
-    size: 50,
-    minSize: 50,
+    size: 55,
+    minSize: 55,
     maxSize: 100,
     enableSorting: true,
     ...props,

@@ -14,7 +14,7 @@ export const TableBody = <TData,>({ table }: TableBodyProps<TData>) => {
   const actionItem = table.options.meta?.actionItem;
   const TableRowLink = actionItem ? 'a' : TableRow;
   return (
-    <TableBodyComp>
+    <TableBodyComp className="border">
       {table.getRowModel().rows?.length ? (
         table.getRowModel().rows.map((row) => {
           if (!row) return null;
@@ -22,7 +22,7 @@ export const TableBody = <TData,>({ table }: TableBodyProps<TData>) => {
           return (
             <TableRowLink
               key={row.id}
-              className="table-row border last:border-none"
+              className="relative table-row border last:border-none after:content-[''] after:absolute after:inset-0 after:inset-y-[-1px] after:hover:bg-foreground/5 after:pointer-events-none after:z-[1] dark:after:hover:bg-muted/20"
               {...props}
               data-state={row.getIsSelected() && 'selected'}
             >
