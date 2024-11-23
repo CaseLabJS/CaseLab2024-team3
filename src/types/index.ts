@@ -181,3 +181,11 @@ export type Attribute = {
 export type Initiator = 'owner' | 'signer';
 
 //____________________ Document end ____________________
+
+//____________________ Voting start ____________________
+export type Voting = {
+  documentId: number;
+  deadline: string | number;
+  agreementPercent: number;
+  usersIds: string[];
+};

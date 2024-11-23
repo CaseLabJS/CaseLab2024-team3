@@ -13,7 +13,7 @@ class ApiUserController {
     data: UserRegister,
     id: string
   ): Promise<AxiosResponse<UserRegister>> {
-    return api.put(`/users/${id}`, data);
+    return api.patch(`/users/${id}`, data);
   }
 
   public static async deleteUserById(id: string): Promise<AxiosResponse> {

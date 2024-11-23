@@ -30,7 +30,7 @@ const Header = observer(() => {
                 className="block py-2 text-white font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
-                UserDashboard
+                Панель пользователя
               </NavLink>
             )}
             {hasRole('ADMIN') && (
@@ -39,7 +39,7 @@ const Header = observer(() => {
                 className="block py-2 text-white font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Admin
+                Панель администратора
               </NavLink>
             )}
           </div>
@@ -95,7 +95,7 @@ const Header = observer(() => {
                     className="block py-2 text-white font-medium"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    UserDashboard
+                    Панель пользователя
                   </NavLink>
                 </li>
               )}
@@ -106,7 +106,7 @@ const Header = observer(() => {
                     className="block py-2 text-white font-medium"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Admin
+                    Панель администратора
                   </NavLink>
                 </li>
               )}
