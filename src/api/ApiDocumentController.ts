@@ -11,7 +11,6 @@ import {
   Voting,
 } from 'src/types';
 import api from './index';
-import { number } from 'zod';
 
 class ApiDocumentController {
   public static async getDocumentById(
