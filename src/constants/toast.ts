@@ -48,4 +48,11 @@ export const TOASTS = {
   SUCCESS_SEND_FOR_SIGN_DOCUMENT: {
     description: 'Документ успешно отправлен на подпись',
   },
+
+  SUCCESS_VOTING_DOCUMENT: {
+    description: 'Документ успешно утвержден',
+  },
+  SUCCESS_SEND_FOR_VOTING_DOCUMENT: {
+    description: 'Документ успешно отправлен на утверждение',
+  },
 };

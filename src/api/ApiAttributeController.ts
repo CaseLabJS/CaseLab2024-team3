@@ -17,7 +17,7 @@ class ApiAttributeController {
     id: number,
     data: CreateAttribute
   ): Promise<AxiosResponse<ChangeAttribute>> {
-    return api.put(`/attributes/${id}`, data);
+    return api.patch(`/attributes/${id}`, data);
   }
 
   public static async deleteAttributeById(id: number): Promise<AxiosResponse> {

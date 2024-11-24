@@ -2,7 +2,7 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import ApiAuthController from 'src/api/ApiAuthController';
 import { AuthStoreProps, LocalStorageHelperProps } from './types';
 import { STATUS } from 'src/types/status';
-import { REFRESH_TOKEN, TOKEN } from 'src/constants/authConstants';
+import { REFRESH_TOKEN, TOKEN, TIME_TOKEN } from 'src/constants/authConstants';
 import { UserLogin } from 'src/types';
 import { usersStore } from '../Users';
 import { toast } from '@/hooks/use-toast';
@@ -17,6 +17,7 @@ class AuthStore implements AuthStoreProps {
   private _status = STATUS.INITIAL;
   private _error: string | null = null;
   private _userId = '';
+  private tokenRefreshTimeout: NodeJS.Timeout | null = null;
 
   constructor() {
     const refreshToken = this.getToken();
@@ -44,6 +45,37 @@ class AuthStore implements AuthStoreProps {
   get userId() {
     return this._userId;
   }
+
+  private setTokenRefreshTimer = () => {
+    if (this.tokenRefreshTimeout) {
+      clearTimeout(this.tokenRefreshTimeout);
+    }
+    const expiresAt = localStorage.getItem('token_expiry');
+    const now = Date.now();
+    const timeUntilRefresh = expiresAt
+      ? Math.max(Number(expiresAt) - now, 0)
+      : TIME_TOKEN;
+
+    // Если время некорректное, не запускаем таймер
+    if (timeUntilRefresh <= 0) {
+      if (this._isAuth) {
+        toast({
+          title: 'Сессия истекла',
+          description: 'Вам необходимо заново войти в систему.',
+          variant: 'destructive',
+        });
+        this.logout();
+      }
+      return;
+    }
+    this.tokenRefreshTimeout = setTimeout(async () => {
+      try {
+        await this.checkAuth();
+      } catch (error) {
+        console.error('Ошибка при обновлении токена:', error);
+      }
+    }, timeUntilRefresh);
+  };
 
   private async _responseHandler<T>(
     action: () => Promise<T>,
@@ -97,6 +129,9 @@ class AuthStore implements AuthStoreProps {
         this._isAuth = true;
         this._userId = data.userId;
         void usersStore.fetchUserData();
+        this.helperLocalStorage({ action: 'setItem', data });
+        localStorage.setItem('token_expiry', String(Date.now() + TIME_TOKEN));
+        this.setTokenRefreshTimer();
       }
     );
   }
@@ -114,11 +149,17 @@ class AuthStore implements AuthStoreProps {
         this._userId = data.userId;
         this._isAuth = true;
         void usersStore.fetchUserData();
+        this.setTokenRefreshTimer();
       }
     );
   }
 
   logout = () => {
+    if (this.tokenRefreshTimeout) {
+      localStorage.removeItem('token_expiry');
+      clearTimeout(this.tokenRefreshTimeout);
+      this.tokenRefreshTimeout = null;
+    }
     return this._responseHandler(
       () => {
         this.helperLocalStorage({ action: 'removeItem' });
