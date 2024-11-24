@@ -8,6 +8,7 @@ import {
   GetDocumentsResponse,
   Initiator,
   SendDocumentForSignResponse,
+  Voting,
 } from 'src/types';
 import api from './index';
 
@@ -16,6 +17,21 @@ class ApiDocumentController {
     id: number
   ): Promise<AxiosResponse<CreateDocumentResponse>> {
     return api.get(`/document/owner/${id}/versions/last`);
+  }
+  public static async getDocumentSignerById(
+    id: number
+  ): Promise<AxiosResponse<CreateDocumentResponse>> {
+    return api.get(`/document/signer/${id}/versions/last`);
+  }
+  public static async getAllDocumentById(
+    id: number
+  ): Promise<AxiosResponse<CreateDocumentResponse>> {
+    return api.get(`/document/owner/${id}/versions`);
+  }
+  public static async getAllDocumentSignerById(
+    id: number
+  ): Promise<AxiosResponse<CreateDocumentResponse>> {
+    return api.get(`/document/signer/${id}/versions`);
   }
 
   public static async updateDocumentById(
@@ -81,6 +97,12 @@ class ApiDocumentController {
     url: string
   ): Promise<AxiosResponse<{ link: string }>> {
     return api.get(`/document/download?url=${url}`);
+  }
+
+  /*Согласование */
+
+  public static async startVoting(data: Voting): Promise<AxiosResponse> {
+    return api.post(`/document/approvement/start`, data);
   }
 }
 
