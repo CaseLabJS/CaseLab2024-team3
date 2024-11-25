@@ -13,6 +13,7 @@ import ProtectedRoute from 'src/components/ProtectedRoute/ProtectedRoute';
 import { Spinner } from 'src/components/UI';
 import { ROUTE_CONSTANTS } from 'src/constants/routes';
 import { AdminPage } from 'src/pages/AdminPage';
+import { AdminIndexPage } from '@pages/AdminIndexPage';
 import NotFoundPage from 'src/pages/NotFoundPage';
 import { SignInPage } from 'src/pages/SignInPage';
 import { SignUpPage } from 'src/pages/SignUpPage';
@@ -58,6 +59,10 @@ const AppRouter = () => {
           </Route>
           <Route element={<ProtectedRoute role="ADMIN" />}>
             <Route path={ROUTE_CONSTANTS.ADMIN} element={<AdminPage />}>
+              <Route
+                path={ROUTE_CONSTANTS.ADMIN_INDEX}
+                element={<AdminIndexPage />}
+              />
               <Route
                 path={ROUTE_CONSTANTS.USERS}
                 element={<UsersAdminPage />}
