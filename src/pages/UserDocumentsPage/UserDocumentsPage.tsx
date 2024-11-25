@@ -1,10 +1,10 @@
-import { documentsStore, documentTypesStore } from '@/stores';
+import { documentsStore, documentTypesStore, usersStore } from '@/stores';
 import { CreateDocumentForm } from '@components/CreateDocument/CreateDocument';
 import { Spinner } from '@components/UI';
 import { DIALOGS_VALUES, EMPTY_DOC } from '@constants/createDocument';
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
-import { ActionDelete, ActionEdit } from '@components/Action';
+import { ActionDelete, ActionEdit, ActionSendForSign, ActionSignByAuthor } from '@components/Action';
 import { DataTable2 } from '@components/DataTable2';
 import {
   CONFIG_FIELDS_USER_EDIT,
@@ -16,6 +16,7 @@ import {
 } from '@constants/userDocument';
 import { useNavigate } from 'react-router-dom';
 import { NumberParam, useQueryParams } from 'use-query-params';
+import { DocumentState } from '@/types/state';
 
 const UserDocumentsPage = observer(() => {
   const navigate = useNavigate();
@@ -23,8 +24,7 @@ const UserDocumentsPage = observer(() => {
     page: NumberParam,
     limit: NumberParam,
   });
-
-
+  
   // eslint-disable-next-line @typescript-eslint/unbound-method
   const {
     documents,
@@ -34,6 +34,8 @@ const UserDocumentsPage = observer(() => {
     updateDocument,
     fetchDocuments,
     createDocument,
+    signDocumentById,
+    sendForSignDocumentById,
   } = documentsStore;
 
   useEffect(() => {
@@ -50,9 +52,16 @@ const UserDocumentsPage = observer(() => {
     isLoading,
   } = documentTypesStore;
 
+  const {
+    user,
+    users,
+    fetchUsers,
+  } = usersStore;
+
   useEffect(() => {
     fetchDocTypesAndAttributes(0, 100);
     fetchDocuments(0, 100);
+
   }, []);
 
   if (loading || isLoading) {
@@ -65,6 +74,20 @@ const UserDocumentsPage = observer(() => {
 
   const refreshTableData = () => {
     documentsStore.fetchDocuments()
+  };
+
+  const onSignByAuthor = async (id: number, status: DocumentState) => {
+    if (status === DocumentState.DRAFT) {
+      if (user?.id){
+        await documentsStore.sendForSignDocumentById(id, user.id);
+      }
+    }
+
+    await signDocumentById(id, DocumentState.APPROVED);
+    await fetchDocuments(
+      (query.page ?? 0),
+      query.limit ?? 20
+    )
   };
 
   return (
@@ -122,6 +145,19 @@ const UserDocumentsPage = observer(() => {
                   mapSubmitPayload={mapSubmitPayloadUserEdit}
                   dialogTexts={DIALOGS_USER.EDIT}
                   configFields={CONFIG_FIELDS_USER_EDIT}
+                  {...props}
+                />
+              ),
+              onSignByAuthor: (props) => (
+                <ActionSignByAuthor
+                  onSignByAuthor={onSignByAuthor}
+                  {...props}
+                />
+              ),
+              onSendForSign: (props) => (
+                <ActionSendForSign
+                  onSendForSign={sendForSignDocumentById}
+                  users={users}
                   {...props}
                 />
               ),

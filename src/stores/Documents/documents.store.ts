@@ -168,6 +168,15 @@ class DocumentsStore implements DocumentsStoreProps {
     );
   };
 
+  fetchDocumentForSign = (id: number) => {
+    return this._responseHandler(
+      () => ApiDocumentController.getDocumentForSign(id),
+      (response) => {
+        this._document = response.data;
+      }
+    );
+  }
+
   fetchDocumentsForSign = () => {
     return this._responseHandler(
       () => ApiDocumentController.getDocumentsForSign(),
