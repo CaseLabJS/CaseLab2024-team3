@@ -31,19 +31,19 @@ export const DOCUMENT_STATE: RecordStateInfo<DocumentState> = {
     className: 'bg-gray-500 text-white',
   },
   [DocumentState.AUTHOR_SIGNED]: {
-    title: 'Подписать автора',
+    title: 'Подписан автором',
     className: 'bg-red-700 text-white',
   },
   [DocumentState.PENDING_AUTHOR_SIGN]: {
-    title: 'Ожидание подписи автора',
+    title: 'Ожидает подписи автора',
     className: 'bg-blue-500 text-white',
   },
   [DocumentState.PENDING_CONTRACTOR_SIGN]: {
-    title: 'Ожидание подписи контрактом',
+    title: 'Ожидает подписи контрагентом',
     className: 'bg-blue-500 text-white',
   },
   [DocumentState.DELETED]: {
-    title: 'Удалено',
+    title: 'Удален',
     className: 'bg-red-700 text-white',
   },
   [DocumentState.REJECTED]: {
@@ -51,11 +51,11 @@ export const DOCUMENT_STATE: RecordStateInfo<DocumentState> = {
     className: 'bg-red-700 text-white',
   },
   [DocumentState.APPROVED]: {
-    title: 'Одобрено',
+    title: 'Одобрен',
     className: 'bg-green-500 text-white',
   },
   [DocumentState.REWORK_REQUIRED]: {
-    title: 'Требуются переработка',
+    title: 'Требуется переработка',
     className: 'bg-yellow-500 text-white',
   },
   [DocumentState.IN_VOTING]: {

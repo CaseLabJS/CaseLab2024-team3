@@ -44,7 +44,11 @@ const AppRouter = () => {
               />
               <Route
                 path={ROUTE_CONSTANTS.USER_DOCUMENT}
-                element={<DocumentPage />}
+                element={<DocumentPage type="user-document" />}
+              />
+              <Route
+                path={ROUTE_CONSTANTS.USER_AWAITING_SIGN_DOCUMENT}
+                element={<DocumentPage type="awaiting-sign" />}
               />
               <Route
                 path={ROUTE_CONSTANTS.USER_SENT_FOR_SIGN}

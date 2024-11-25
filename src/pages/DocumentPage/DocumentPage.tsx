@@ -1,19 +1,30 @@
-import { documentsStore, documentTypesStore } from '@/stores';
+import { documentsStore, documentTypesStore, usersStore } from '@/stores';
 import { observer } from 'mobx-react-lite';
-import { useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Badge, DocumentDate } from './ui';
 import { Button, Input, Label, Spinner } from '@components/UI';
 import { Cross1Icon, DownloadIcon } from '@radix-ui/react-icons';
 import { DIALOGS_VALUES } from '@constants/updateDocument';
 import { UpdateDocumentForm } from '@components/UpdateDocument/UpdateDocument';
+import { DocumentState } from '@/types/state';
+import { UserSelectDialog } from '@components/UserSelectDialog/UserSelectDialog';
 
-const DocumentPage = observer(() => {
+interface DocumentPageProps {
+  type: string;
+}
+
+const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const navigate = useNavigate();
   const { documentId } = useParams();
   const {
     document,
     fetchDocumentById,
+    fetchDocumentForSign,
+    signDocumentById,
+    sendForSignDocumentById,
     downloadDocument,
     updateDocument,
     deleteDocument,
@@ -24,8 +35,15 @@ const DocumentPage = observer(() => {
 
   const { documentTypes, isLoading } = documentTypesStore;
 
+  const { user, users, fetchUsers } = usersStore;
+
   useEffect(() => {
-    fetchDocumentById(Number(documentId));
+    if (type === 'user-document') {
+      fetchDocumentById(Number(documentId));
+      fetchUsers(0, 1000);
+    } else {
+      fetchDocumentForSign(Number(documentId));
+    }
     fetchAttributes(0, 1000);
   }, []);
 
@@ -38,8 +56,26 @@ const DocumentPage = observer(() => {
   }
 
   const handleOnDelete = () => {
-    deleteDocument(+documentId);
+    deleteDocument(+documentId!);
     navigate('../documents');
+  };
+
+  const handleSignDocument = (status: DocumentState) => {
+    signDocumentById(+documentId!, status);
+    navigate('../awaiting-sign');
+  };
+
+  const handleSignDocumentByAuthor = async (status: DocumentState) => {
+    if (user?.id) {
+      await sendForSignDocumentById(+documentId!, user?.id);
+      await signDocumentById(+documentId!, status);
+      await fetchDocumentById(+documentId!);
+    }
+  };
+
+  const handleSendToUser = async (userId: string) => {
+    await sendForSignDocumentById(+documentId!, userId);
+    await fetchDocumentById(+documentId!);
   };
 
   return (
@@ -85,21 +121,80 @@ const DocumentPage = observer(() => {
               <DownloadIcon />
               Скачать
             </Button>
-            <UpdateDocumentForm
-              dialogTexts={DIALOGS_VALUES.docTypesCreate}
-              data={document}
-              onSave={updateDocument}
-              documentTypes={documentTypes}
-              documentAttributes={attributes}
-              onSetInputs={fetchDocumentById}
-            />
-            <Button variant="destructive" onClick={handleOnDelete}>
-              Удалить
-            </Button>
+            {type === 'user-document' && (
+              <UpdateDocumentForm
+                dialogTexts={DIALOGS_VALUES.docTypesCreate}
+                data={document}
+                onSave={updateDocument}
+                documentTypes={documentTypes}
+                documentAttributes={attributes}
+                onSetInputs={fetchDocumentById}
+              />
+            )}
+            {type === 'user-document' && (
+              <Button variant="destructive" onClick={handleOnDelete}>
+                Удалить
+              </Button>
+            )}
+            {type === 'user-document' &&
+              document.state === DocumentState.DRAFT && (
+                <Button
+                  className="bg-green-600 hover:opacity-75 hover:bg-green-600"
+                  variant="destructive"
+                  onClick={() =>
+                    handleSignDocumentByAuthor(DocumentState.APPROVED)
+                  }
+                >
+                  Подписать
+                </Button>
+              )}
+            {type === 'user-document' &&
+              document.state === DocumentState.AUTHOR_SIGNED && (
+                <UserSelectDialog
+                  users={users}
+                  triggerButtonText="Отправить документ"
+                  onConfirm={handleSendToUser}
+                />
+              )}
+            {type === 'awaiting-sign' && (
+              <Button
+                className="bg-green-600 hover:opacity-75 hover:bg-green-600"
+                variant="destructive"
+                onClick={() => handleSignDocument(DocumentState.APPROVED)}
+              >
+                Подписать
+              </Button>
+            )}
+            {type === 'awaiting-sign' && (
+              <Button
+                className="bg-red-600 hover:opacity-75 hover:bg-red-600"
+                variant="destructive"
+                onClick={() => handleSignDocument(DocumentState.REJECTED)}
+              >
+                Отклонить
+              </Button>
+            )}
+            {type === 'awaiting-sign' && (
+              <Button
+                className="bg-orange-600 hover:opacity-75 hover:bg-orange-600"
+                variant="destructive"
+                onClick={() =>
+                  handleSignDocument(DocumentState.REWORK_REQUIRED)
+                }
+              >
+                Отправить на доработку
+              </Button>
+            )}
           </div>
           <Button
             className="absolute top-2 -right-4 bg-transparent border"
-            onClick={() => navigate('../documents')}
+            onClick={() => {
+              if (type === 'user-document') {
+                navigate('../documents');
+              } else {
+                navigate('../awaiting-sign');
+              }
+            }}
           >
             <Cross1Icon className="text-foreground" />
           </Button>
