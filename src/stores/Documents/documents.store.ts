@@ -21,10 +21,11 @@ import {
 import { DocumentsStoreProps } from './types';
 
 class DocumentsStore implements DocumentsStoreProps {
-  private _pagination: Pagination | null = null;
+  private _pagination_docuuments: Pagination | null = null;
   private _document: CreateDocumentResponse | null = null;
   private _documents: CreateDocumentResponse[] = [];
 
+  private _pagination_documentsForSign: Pagination | null = null;
   private _documentsForSign: GetDocument[] = [];
   private _loading: boolean = false;
   private _error: string | null = null;
@@ -35,8 +36,12 @@ class DocumentsStore implements DocumentsStoreProps {
     makeAutoObservable(this, undefined, { autoBind: true });
   }
 
-  get pagination() {
-    return this._pagination;
+  get paginationDocuments() {
+    return this._pagination_docuuments;
+  }
+
+  get paginationDocumentsForSign() {
+    return this._pagination_documentsForSign;
   }
 
   get document() {
@@ -124,12 +129,13 @@ class DocumentsStore implements DocumentsStoreProps {
       () => ApiDocumentController.getDocuments(page, size, initiator),
       (response) => {
         const { content, ...res } = response.data;
-        this._pagination = res;
 
         if (initiator === 'owner') {
           this._documents = [...content];
+          this._pagination_docuuments = res;
         } else {
           this._documentsForSign = [...content];
+          this._pagination_documentsForSign = res;
         }
       }
     );

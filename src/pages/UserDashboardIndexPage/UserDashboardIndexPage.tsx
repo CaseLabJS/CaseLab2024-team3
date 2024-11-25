@@ -7,8 +7,8 @@ import { ROUTE_CONSTANTS } from '@constants/routes';
 
 const UserDashboardIndexPage = observer(() => {
   useEffect(() => {
-    void documentsStore.fetchDocuments();
-    void documentsStore.fetchDocumentsForSign();
+    void documentsStore.fetchDocuments(0, 100, 'owner');
+    void documentsStore.fetchDocuments(0, 100, 'signer');
   }, []);
 
   return (
@@ -22,7 +22,7 @@ const UserDashboardIndexPage = observer(() => {
             <FileText className="text-4xl sm:text-5xl mb-4 animate-pulse" />
             <div>
               <h2 className="text-3xl sm:text-4xl font-bold">
-                {documentsStore.documents.length}
+                {documentsStore.paginationDocuments?.totalElements}
               </h2>
               <p className="text-md sm:text-lg mt-2">Всего документов</p>
             </div>
@@ -54,7 +54,7 @@ const UserDashboardIndexPage = observer(() => {
             <Hourglass className="text-4xl sm:text-5xl mb-4 animate-pulse" />
             <div>
               <h2 className="text-3xl sm:text-4xl font-bold">
-                {documentsStore.documentsForSign.length}
+                {documentsStore.paginationDocumentsForSign?.totalElements}
               </h2>
               <p className="text-md sm:text-lg mt-2">Ожидают подписание</p>
             </div>

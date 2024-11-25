@@ -16,12 +16,13 @@ import {
 import { ActionDefaultData } from './types';
 import { PenTool } from 'lucide-react';
 import { DocumentState } from '@/types/state';
-import { ChangeUser } from '@/types/index';
+import { ChangeUser, UserRegister } from '@/types/index';
 
 interface ActionSendForSignProps<TData>
   extends ActionDefaultData<TData>,
     ButtonProps {
   onSendForSign: (id: number, userId: string) => Promise<void>;
+  currentUser: UserRegister | ChangeUser | null;
   users: ChangeUser[];
 }
 
@@ -30,12 +31,13 @@ export const ActionSendForSign = <
 >({
   onSendForSign,
   data,
+  currentUser,
   users,
   ...props
 }: ActionSendForSignProps<TData>) => {
   const [selectedUser, setSelectedUser] = useState<ChangeUser | null>(null);
 
-  const options = users.map((user) => ({
+  const options = users.filter((user) => user.id !== currentUser?.id).map((user) => ({
     value: user.id,
     label: `${user.firstName} ${user.lastName} ${user.email}`,
   }));
