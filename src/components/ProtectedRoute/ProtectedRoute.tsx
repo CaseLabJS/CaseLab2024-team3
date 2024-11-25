@@ -4,7 +4,6 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { authStore, usersStore } from 'src/stores';
 import { STATUS } from 'src/types/status';
 import { Spinner } from '../UI';
-import { UNEXPECTED_ERROR_MESSAGE } from 'src/constants/errorMessage';
 import { ROUTE_CONSTANTS } from 'src/constants/routes';
 
 interface ProtectedRouteProps {
@@ -15,7 +14,7 @@ const MapComponent: Record<STATUS, (props: { role: string }) => JSX.Element> = {
   [STATUS.INITIAL]: () => <ProtectedRouteLoading />,
   [STATUS.LOADING]: () => <ProtectedRouteLoading />,
   [STATUS.SUCCESS]: (props) => <ProtectedRouteSuccess {...props} />,
-  [STATUS.ERROR]: () => <ProtectedRouteError />,
+  [STATUS.ERROR]: () => <Navigate to={ROUTE_CONSTANTS.SIGN_IN} />
 };
 
 const ProtectedRouteLoading = () => {
@@ -50,9 +49,6 @@ const ProtectedRouteSuccess: FC<{ role: string }> = observer(({ role }) => {
   }
 });
 
-const ProtectedRouteError = observer(() => {
-  throw new Error(UNEXPECTED_ERROR_MESSAGE);
-});
 
 const ProtectedRoute: FC<ProtectedRouteProps> = observer(({ role }) => {
   const Component = MapComponent[authStore.status] ?? null;
