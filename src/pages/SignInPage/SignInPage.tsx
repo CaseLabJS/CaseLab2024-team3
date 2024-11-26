@@ -35,12 +35,17 @@ const SignInPage: FC<SignInPageProps> = observer(() => {
   const form = useForm<UserLogin>();
 
   useEffect(() => {
-    if (authStore.isAuth && authStore.status === STATUS.SUCCESS) {
-      const userRoles = usersStore.user?.roles || [];
-      const isAdmin = userRoles.some((role) => role.name === 'ADMIN');
-
-      navigate(isAdmin ? '/admin' : '/app', { replace: true });
+    const navigateToApp = async () => {
+      if (authStore.isAuth && authStore.status === STATUS.SUCCESS) {
+        await usersStore.fetchUserData();
+        const userRoles = usersStore.user?.roles || [];
+        const isAdmin = userRoles.some((role) => role.name === 'ADMIN');
+  
+        navigate(isAdmin ? '/admin' : '/app', { replace: true });
+      }
     }
+    
+    navigateToApp();
   }, [authStore.status, authStore.isAuth]);
 
   const onSubmit = async (payload: UserLogin) => {
