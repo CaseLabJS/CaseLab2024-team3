@@ -11,6 +11,7 @@ export const ROUTE_CONSTANTS = {
   USER_AWAITING_SIGN: 'awaiting-sign',
 
   ADMIN: 'admin',
+  ADMIN_INDEX: '/admin',
   USERS: 'users-admin',
   DOC_TYPES_ADMIN: 'document-types-admin',
   DOC_ATTRIBUTES_ADMIN: 'document-attributes-admin',
