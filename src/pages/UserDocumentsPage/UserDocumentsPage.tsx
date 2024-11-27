@@ -29,7 +29,7 @@ const UserDocumentsPage = observer(() => {
   const {
     documents,
     loading,
-    pagination,
+    paginationDocuments,
     deleteDocument,
     updateDocument,
     fetchDocuments,
@@ -128,7 +128,7 @@ const UserDocumentsPage = observer(() => {
           }}
           meta={{
             pagination: {
-              totalPages: pagination?.totalPages,
+              totalPages: paginationDocuments?.totalPages,
             },
             actionItem: ({ row }) => {
               const to = row?.getValue('id') as string;
@@ -157,6 +157,7 @@ const UserDocumentsPage = observer(() => {
               onSendForSign: (props) => (
                 <ActionSendForSign
                   onSendForSign={sendForSignDocumentById}
+                  currentUser={user}
                   users={users}
                   {...props}
                 />

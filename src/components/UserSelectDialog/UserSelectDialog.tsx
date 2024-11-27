@@ -37,9 +37,9 @@ interface SelectedVoter {
 export const UserSelectDialog: React.FC<UserSelectDialogProps> = ({
   process,
   users,
+  currentUser,
   dialogTitle,
   dialogDescription,
-  currentUser,
   triggerButtonText,
   onConfirmSigning,
   onConfirmVoting,
@@ -58,12 +58,10 @@ export const UserSelectDialog: React.FC<UserSelectDialogProps> = ({
 
   const userOptions = useMemo(
     () =>
-      users
-        .filter((user) => user.id !== currentUser?.id)
-        .map((user) => ({
-          value: user.id,
-          label: `${user.firstName} ${user.lastName} (${user.email})`,
-        })),
+      users.filter((user) => user.id !== currentUser?.id).map((user) => ({
+        value: user.id,
+        label: `${user.firstName} ${user.lastName} (${user.email})`,
+      })),
     [users]
   );
 
