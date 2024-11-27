@@ -9,13 +9,14 @@ import { buttonVariants } from './button';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
+type CustomCalendarProps = CalendarProps & { autoFocus?: boolean };
 
 function Calendar({
   className,
   classNames,
   showOutsideDays = true,
   ...props
-}: CalendarProps) {
+}: CustomCalendarProps) {
   return (
     <DayPicker
       locale={ru}
@@ -56,8 +57,8 @@ function Calendar({
         ...classNames,
       }}
       components={{
-        IconLeft: ({ ...props }) => <ChevronLeftIcon className="h-4 w-4" />,
-        IconRight: ({ ...props }) => <ChevronRightIcon className="h-4 w-4" />,
+        IconLeft: () => <ChevronLeftIcon className="h-4 w-4" />,
+        IconRight: () => <ChevronRightIcon className="h-4 w-4" />,
       }}
       {...props}
     />

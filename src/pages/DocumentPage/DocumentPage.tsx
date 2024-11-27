@@ -23,6 +23,7 @@ interface DocumentPageProps {
 const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
   const navigate = useNavigate();
   const { documentId } = useParams();
+  /* eslint-disable @typescript-eslint/unbound-method */
   const {
     document,
     fetchDocumentById,
@@ -36,11 +37,13 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
     fetchAttributes,
     loading,
   } = documentsStore;
+  /* eslint-enable @typescript-eslint/unbound-method */
 
   const { documentTypes, isLoading } = documentTypesStore;
 
   const { user, users, fetchUsers } = usersStore;
 
+  // eslint-disable-next-line @typescript-eslint/unbound-method
   const { createVoting, votingResult, getVotingResult } = votingStore;
 
   useEffect(() => {

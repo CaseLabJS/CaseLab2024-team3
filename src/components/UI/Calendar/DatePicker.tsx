@@ -28,9 +28,9 @@ const Datepicker: React.FC<DatepickerProps> = ({
   const [month, setMonth] = React.useState(new Date());
 
   const onSelect = (date: Date | undefined) => {
-    if (date) {
+    if (date && getSelectedDate) {
       setDate(date);
-      getSelectedDate && getSelectedDate(date);
+      getSelectedDate(date);
     }
   };
 
@@ -78,7 +78,7 @@ const Datepicker: React.FC<DatepickerProps> = ({
               variant={'outline'}
               className={cn(
                 'w-full h-[38px] justify-between font-normal p-[0px] pl-[12px] overflow-hidden border-none',
-                !date && 'text-muted-foreground',
+                !date && 'text-muted-foreground'
               )}
             >
               {date ? (
@@ -104,12 +104,14 @@ const Datepicker: React.FC<DatepickerProps> = ({
                     after: new Date(maxDate),
                   }}
                   components={{
-                    PreviousMonthButton: ({ ...props }) => (
+                    IconLeft: () => (
+                      // Previous month button
                       <div onClick={handlePrevMonthClick}>
                         <ChevronLeftIcon />
                       </div>
                     ),
-                    NextMonthButton: ({ ...props }) => (
+                    IconRight: () => (
+                      // Next month button
                       <div onClick={handleNextMonthClick}>
                         <ChevronRightIcon />
                       </div>

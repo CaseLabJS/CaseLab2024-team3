@@ -129,8 +129,8 @@ export type ChangeAttributeValue = CreateAttributeValue & {
 // ____________________ Document start ____________________
 export type ChangeDocument = {
   attributeValues: Attribute[];
-  name: string;
-  base64Data: string;
+  name?: string;
+  base64Data?: string;
 };
 
 export type ChangeDocumentResponse = CreateDocumentResponse;
