@@ -16,3 +16,4 @@ export * from './Toast';
 export * from './Badge';
 export * from './Pagination';
 export * from './DropdownMenu';
+export * from './Calendar';

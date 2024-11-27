@@ -1,5 +1,6 @@
 import { DocumentState, RecordStateInfo } from '@/types/state';
 import { Theme } from '@components/ThemeProvider/types';
+import { RecordVotingInfo, VotingStatus } from 'src/types/voting';
 
 export const BUTTONS_NAMES = {
   edit: 'Редактировать',
@@ -61,5 +62,28 @@ export const DOCUMENT_STATE: RecordStateInfo<DocumentState> = {
   [DocumentState.IN_VOTING]: {
     title: 'Голосование',
     className: 'bg-blue-500 text-white',
+  },
+};
+
+export const VOTING_STATUS: RecordVotingInfo<VotingStatus> = {
+  [VotingStatus.DRAFT]: {
+    votingTitle: 'Черновик',
+    votingClassName: 'bg-gray-500 text-white',
+  },
+  [VotingStatus.PUBLISHED_FOR_VOTING]: {
+    votingTitle: 'Опубликовано',
+    votingClassName: 'bg-blue-700 text-white',
+  },
+  [VotingStatus.VOTING_COMPLETED]: {
+    votingTitle: 'Завершено',
+    votingClassName: 'bg-orange-500 text-white',
+  },
+  [VotingStatus.VOTING_APPROVED]: {
+    votingTitle: 'Утверждено',
+    votingClassName: 'bg-green-500 text-white',
+  },
+  [VotingStatus.VOTING_REJECTED]: {
+    votingTitle: 'Отклонено',
+    votingClassName: 'bg-red-700 text-white',
   },
 };
