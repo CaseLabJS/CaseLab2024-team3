@@ -5,11 +5,11 @@ import {
   CreateDocument,
   CreateDocumentResponse,
   DocumentState,
-  GetDocument,
   GetDocumentsResponse,
   Initiator,
   SendDocumentForSignResponse,
   Voting,
+  VotingResult,
 } from 'src/types';
 import api from './index';
 
@@ -110,6 +110,12 @@ class ApiDocumentController {
 
   public static async startVoting(data: Voting): Promise<AxiosResponse> {
     return api.post(`/document/approvement/start`, data);
+  }
+
+  public static async getVotingResult(
+    documentId: number
+  ): Promise<AxiosResponse<VotingResult>> {
+    return api.post(`/document/approvement/${documentId}/result`);
   }
 }
 

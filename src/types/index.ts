@@ -1,4 +1,5 @@
 import { DocumentState } from 'src/types/state';
+import { VotingStatus } from './voting';
 
 export * from './assignComponent';
 export * from './adminTypes';
@@ -126,7 +127,6 @@ export type ChangeAttributeValue = CreateAttributeValue & {
 //____________________ Document attribute value end ____________________
 
 // ____________________ Document start ____________________
-
 export type ChangeDocument = {
   attributeValues: Attribute[];
   name: string;
@@ -186,6 +186,15 @@ export type Initiator = 'owner' | 'signer';
 export type Voting = {
   documentId: number;
   deadline: string | number;
-  agreementPercent: number;
+  agreementPercent?: number;
   usersIds: string[];
 };
+
+export type VotingResult = {
+  documentId: number;
+  deadline: number[];
+  agreementPercent: number;
+  status: VotingStatus;
+};
+
+//____________________ Voting end ____________________

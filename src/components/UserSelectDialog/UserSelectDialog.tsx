@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import Select from "react-select";
+import Select, { MultiValue } from "react-select";
 import {
   Button,
   Dialog,
@@ -9,34 +9,62 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  Input,
+  Label,
 } from "src/components/UI";
 
-import { ChangeUser } from "@/types/index";
+import { ChangeUser, Voting } from "@/types/index";
+import { authStore } from "@/stores";
+import { DateTimePicker } from "@components/UI/DateTimePicker";
+import { useParams } from "react-router-dom";
 
 interface UserSelectDialogProps {
+  process: 'signing' | 'voting';
   users: ChangeUser[];
   dialogTitle?: string;
   dialogDescription?: string;
   triggerButtonText: string;
-  onConfirm: (selectedUserId: string) => void;
+  onConfirmSigning?: (selectedUserId: string) => Promise<void>;
+  onConfirmVoting?: (votingData: Voting) => Promise<void>;
+  getVotingResult?: (id: number) => Promise<void>;
+}
+
+interface SelectedVoter {
+  value: string;
+  label: string;
 }
 
 export const UserSelectDialog: React.FC<UserSelectDialogProps> = ({
+  process,
   users,
-  dialogTitle = "Отправка на подпись",
-  dialogDescription = "Выберите пользователя, которому хотите отправить документ на подпись.",
+  dialogTitle,
+  dialogDescription,
   triggerButtonText,
-  onConfirm,
+  onConfirmSigning,
+  onConfirmVoting,
+  getVotingResult,
 }) => {
+  const { documentId } = useParams();
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<ChangeUser | null>(null);
+  // voting fields
+  const [deadline, setDeadline] = useState<Date>();
+  const [agreementPercent, setAgreementPercent] = useState<number | null>(null);
+  const [selectedVoters, setSelectedVoters] = useState<
+    { value: string; label: string }[] | []
+  >([]);
+
+  const { userId } = authStore;
 
   const userOptions = useMemo(
     () =>
-      users.map((user) => ({
-        value: user.id,
-        label: `${user.firstName} ${user.lastName} (${user.email})`,
-      })),
+      users
+        .filter((user) => user.id !== userId)
+        .map((user) => ({
+          value: user.id,
+          label: `${user.firstName} ${user.lastName} (${user.email})`,
+        })),
     [users]
   );
 
@@ -45,19 +73,48 @@ export const UserSelectDialog: React.FC<UserSelectDialogProps> = ({
     setSelectedUser(user);
   };
 
+  const handleSelectVoters = (newValue: MultiValue<SelectedVoter>) => {
+    setSelectedVoters(newValue as SelectedVoter[]);
+  };
+
   const handleConfirm = () => {
+    if (
+      process === 'voting' &&
+      documentId &&
+      documentId !== undefined &&
+      selectedVoters.length > 0 &&
+      deadline
+    ) {
+      const votingData: Voting = {
+        documentId: +documentId,
+        deadline: deadline.toISOString(),
+        ...(agreementPercent && { agreementPercent: agreementPercent }),
+        usersIds: selectedVoters.map((voter) => voter.value),
+      };
+      onConfirmVoting?.(votingData)
+        .then(() => getVotingResult?.(+documentId))
+        .catch((err) => console.error('Ошибка при отправке', err));
+    }
     if (selectedUser) {
-      onConfirm(selectedUser.id);
+      // process === 'signing'
+      onConfirmSigning?.(selectedUser.id);
       setIsDialogOpen(false);
     }
+  };
+
+  const buttonColors = {
+    signing: 'border-green-600 bg-green-600 text-white hover:bg-green-700',
+    voting: 'border-blue-600 bg-blue-600 text-white hover:bg-blue-700',
   };
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="border-green-600 bg-green-600 text-white hover:bg-green-700">
-          {triggerButtonText}
-        </Button>
+        {
+          <Button variant="outline" className={buttonColors[process]}>
+            {triggerButtonText}
+          </Button>
+        }
       </DialogTrigger>
 
       <DialogContent className="">
@@ -66,15 +123,63 @@ export const UserSelectDialog: React.FC<UserSelectDialogProps> = ({
           <DialogDescription>{dialogDescription}</DialogDescription>
         </DialogHeader>
 
-        <div className="py-4">
-          <Select
-            options={userOptions}
-            placeholder="Выберите пользователя"
-            value={selectedUser ? { value: selectedUser.id, label: `${selectedUser.firstName} ${selectedUser.lastName} (${selectedUser.email})` } : null}
-            onChange={handleSelectChange}
-            classNamePrefix="select"
-            className="basic-multi-select"
-          />
+        <div className="grid gap-4 py-4">
+          {process === 'signing' && (
+            <Select
+              options={userOptions}
+              placeholder="Выберите пользователя"
+              value={selectedUser ? { value: selectedUser.id, label: `${selectedUser.firstName} ${selectedUser.lastName} (${selectedUser.email})` } : null}
+              onChange={handleSelectChange}
+              classNamePrefix="select"
+              className="basic-multi-select"
+            />
+          )}
+          {process === 'voting' && (
+            <>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label>Голосущие: </Label>
+                <div className="col-span-3">
+                  <Select
+                    options={userOptions}
+                    isMulti
+                    placeholder="Выберите голосующих"
+                    value={selectedVoters}
+                    onChange={handleSelectVoters}
+                    classNamePrefix="select"
+                    className="basic-multi-select"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label>Процент одобрения: </Label>
+                <div className="col-span-3">
+                  <Input
+                    type="number"
+                    required
+                    value={agreementPercent || ''}
+                    onChange={(e) =>
+                      setAgreementPercent(
+                        Math.min(100, Math.max(0, parseInt(e.target.value)))
+                      )
+                    }
+                    min={0}
+                    max={100}
+                    step={1}
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label>Крайний срок голосования: </Label>
+                <div className="col-span-3">
+                  {/* source: https://time.openstatus.dev/ */}
+                  <DateTimePicker
+                    setDeadline={setDeadline}
+                    deadline={deadline}
+                  />
+                </div>
+              </div>
+            </>
+          )}
         </div>
 
         <DialogFooter>
@@ -84,17 +189,32 @@ export const UserSelectDialog: React.FC<UserSelectDialogProps> = ({
           >
             Отмена
           </Button>
-          <Button
-            onClick={handleConfirm}
-            disabled={!selectedUser}
-            className={`${
-              selectedUser
-                ? "bg-green-600 text-white hover:bg-green-700"
-                : "bg-gray-200 text-gray-500 cursor-not-allowed"
-            }`}
-          >
-            Отправить
-          </Button>
+          {process === 'signing' && (
+            <Button
+              onClick={handleConfirm}
+              disabled={!selectedUser}
+              className={`${
+                selectedUser
+                  ? "bg-green-600 text-white hover:bg-green-700"
+                  : "bg-gray-200 text-gray-500 cursor-not-allowed"
+              }`}
+            >
+              Отправить
+            </Button>
+          )}
+          {process === 'voting' && (
+            <Button
+              onClick={handleConfirm}
+              disabled={!selectedVoters.length || !deadline}
+              className={`${
+                selectedVoters.length && deadline
+                  ? 'bg-green-600 text-white hover:bg-blue-700'
+                  : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+              }`}
+            >
+              Отправить
+            </Button>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>
