@@ -14,10 +14,7 @@ export interface UpdateDocumentProps<
 > {
   dialogTexts: DialogTexts;
   data: TData;
-  onSave?: {
-    (data: TData): Promise<void>;
-    (id: number, data: Partial<TData>): Promise<void>;
-  };
+  onSave?: (id: number, document: ChangeDocument) => Promise<void>;
   documentTypes?: TType[];
   documentAttributes: TAttributes;
   onSetInputs: {

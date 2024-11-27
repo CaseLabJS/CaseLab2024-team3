@@ -43,7 +43,6 @@ export const UpdateDocumentForm = ({
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
-  const [base64str, setBase64str] = useState<string>('');
   const { btnTriggerText, dialogDescriptionText, dialogTitleText } =
     dialogTexts;
 
@@ -69,7 +68,7 @@ export const UpdateDocumentForm = ({
   };
 
   const handleOnSave = () => {
-    const newData: Partial<ChangeDocument> = {
+    const newData: ChangeDocument = {
       attributeValues: inputs.map((input) => ({
         attributeId: input.attributeId,
         value: input.value,
@@ -104,7 +103,6 @@ export const UpdateDocumentForm = ({
         );
         const base64 = btoa(binary);
         resolve(base64);
-        setBase64str(base64);
         setUploadedFileName(file.name);
       };
       reader.onerror = () => reject(new Error('Ошибка при чтении файла'));
