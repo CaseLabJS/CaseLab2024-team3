@@ -13,14 +13,14 @@ import {
   Label,
 } from "src/components/UI";
 
-import { ChangeUser, Voting } from "@/types/index";
-import { authStore } from "@/stores";
+import { ChangeUser, UserRegister, Voting } from "@/types/index";
 import { DateTimePicker } from "@components/UI/DateTimePicker";
 import { useParams } from "react-router-dom";
 
 interface UserSelectDialogProps {
   process: 'signing' | 'voting';
   users: ChangeUser[];
+  currentUser: UserRegister | ChangeUser | null;
   dialogTitle?: string;
   dialogDescription?: string;
   triggerButtonText: string;
@@ -39,6 +39,7 @@ export const UserSelectDialog: React.FC<UserSelectDialogProps> = ({
   users,
   dialogTitle,
   dialogDescription,
+  currentUser,
   triggerButtonText,
   onConfirmSigning,
   onConfirmVoting,
@@ -55,12 +56,10 @@ export const UserSelectDialog: React.FC<UserSelectDialogProps> = ({
     { value: string; label: string }[] | []
   >([]);
 
-  const { userId } = authStore;
-
   const userOptions = useMemo(
     () =>
       users
-        .filter((user) => user.id !== userId)
+        .filter((user) => user.id !== currentUser?.id)
         .map((user) => ({
           value: user.id,
           label: `${user.firstName} ${user.lastName} (${user.email})`,

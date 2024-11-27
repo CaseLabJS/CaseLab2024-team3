@@ -177,6 +177,7 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
               document.state === DocumentState.AUTHOR_SIGNED && (
                 <UserSelectDialog
                   process="signing"
+                  currentUser={user}
                   users={users}
                   dialogTitle="Отправка на подпись"
                   dialogDescription="Выберите пользователя, которому хотите отправить документ на подпись."
@@ -188,6 +189,7 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
               document.state === DocumentState.DRAFT && (
                 <UserSelectDialog
                   process="voting"
+                  currentUser={user}
                   users={users}
                   dialogTitle="Отправка на голосование"
                   dialogDescription="Выберите пользователей, которым хотите отправить документ на голосование."
