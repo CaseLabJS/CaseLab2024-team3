@@ -9,7 +9,7 @@ import UpdatePasswordDialog from '@components/UpdatePasswordDialog/UpdatePasswor
 
 const Header = observer(() => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const hasRole = (roleName) =>
+  const hasRole = (roleName:string) =>
     usersStore.user?.roles.some((roleUser) => roleUser.name === roleName);
   return (
     <header className="bg-bg-header h-header px-4 md:px-8 lg:px-40">

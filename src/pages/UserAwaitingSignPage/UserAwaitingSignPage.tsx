@@ -45,10 +45,6 @@ const UserAwaitingSignPage = observer(() => {
     );
   }
 
-  const onSign = (id: number, status: DocumentState) => {
-    signDocumentById(id, status);
-  };
-
   return (
     <div className="p-10 flex flex-col h-[calc(100vh-130px)] overflow-y-auto">
       <section className="flex-grow overflow-auto flex py-5">

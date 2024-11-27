@@ -1,8 +1,8 @@
 import { ChangeDocument, CreateDocument, GetDocument } from 'src/types';
 
 export interface DocumentsStoreProps {
-  document: GetDocument | null;
-  documents: GetDocument[];
+  document: GetDocument | null; //тут больше подходит CreateDocumentResponse
+  documents: GetDocument[]; //тут тоже CreateDocumentResponse
   loading: boolean;
   error: string | null;
   fetchDocumentById: (id: number) => Promise<void>;

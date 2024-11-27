@@ -85,7 +85,7 @@ class AttributesStore implements AttributesStoreProps {
   fetchDocTypesAndAttributes = async (
     page?: number,
     size?: number,
-    sizeForAttributes = 1000
+    sizeForAttributes = 100
   ) => {
     return this._responseHandler(
       () =>

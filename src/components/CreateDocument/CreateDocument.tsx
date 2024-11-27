@@ -112,6 +112,7 @@ export const CreateDocumentForm = ({
       ...inputs,
       documentTypeId: inputs.documentTypeId ?? 0,
       attributeValues: inputs.attributeValues ?? [],
+      base64Data: base64str,
     };
 
     const id = 'id' in data ? data.id : undefined;

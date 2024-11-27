@@ -68,7 +68,7 @@ export const mapSubmitPayloadUserEdit = <NewData>(
   payload: ChangeDocument
 ): NewData => {
   return {
-    name: payload.documentName,
+    name: payload.name,
   } as NewData;
 };
 

@@ -55,7 +55,6 @@ const UserDocumentsPage = observer(() => {
   const {
     user,
     users,
-    fetchUsers,
   } = usersStore;
 
   useEffect(() => {

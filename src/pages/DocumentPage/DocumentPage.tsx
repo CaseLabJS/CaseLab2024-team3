@@ -1,6 +1,6 @@
 import { documentsStore, documentTypesStore, usersStore } from '@/stores';
 import { observer } from 'mobx-react-lite';
-import { FC, useEffect, useState } from 'react';
+import { FC, Key, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Badge, DocumentDate } from './ui';
 import { Button, Input, Label, Spinner } from '@components/UI';
@@ -15,7 +15,6 @@ interface DocumentPageProps {
 }
 
 const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navigate = useNavigate();
   const { documentId } = useParams();
@@ -40,11 +39,11 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
   useEffect(() => {
     if (type === 'user-document') {
       fetchDocumentById(Number(documentId));
-      fetchUsers(0, 1000);
+      fetchUsers(0, 100);
     } else {
       fetchDocumentForSign(Number(documentId));
     }
-    fetchAttributes(0, 1000);
+    fetchAttributes(0, 100);
   }, []);
 
   if (loading || isLoading) {
@@ -94,7 +93,7 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
           {document.createdAt && <DocumentDate date={document.createdAt} />}
           <div className="grid gap-4 py-4">
             {document.attributeValues &&
-              document.attributeValues.map((attributeId, index) => (
+              document.attributeValues.map((attributeId: { attributeId: number; value: string | number | readonly string[] | undefined; }, index: Key | null | undefined) => (
                 <div
                   key={index}
                   className="grid grid-cols-4 items-center gap-4"
