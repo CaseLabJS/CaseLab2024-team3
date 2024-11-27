@@ -54,13 +54,18 @@ export type AuthUserResponse = {
   jwt: string;
 };
 
+type Role = {
+  id: number;
+  name: string;
+};
+
 export type UserRegister = UserLogin & {
   id?: string;
   email: string;
   firstName: string;
   lastName: string;
   patronymic?: string;
-  roles: string[];
+  roles: Role[];
 };
 
 export type ChangeUser = Omit<UserRegister, 'password'> & {
