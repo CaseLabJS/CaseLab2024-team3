@@ -111,9 +111,9 @@ class DocumentsStore implements DocumentsStoreProps {
     }
   }
 
-  fetchDocumentById = (id: number) => {
+  fetchDocumentById = (documentId: number) => {
     return this._responseHandler(
-      () => ApiDocumentController.getDocumentById(id),
+      () => ApiDocumentController.getDocumentById(documentId),
       (response) => {
         this._document = response.data;
       }

@@ -55,7 +55,7 @@ export const TYPES_TABLE_COLUMNS: ColumnDef<AdminDialogData>[] = [
   {
     accessorKey: 'attributeIds',
     header: 'Атрибуты',
-    size: 1000,
+    size: 100,
   },
   {
     accessorKey: 'edit',
@@ -85,7 +85,7 @@ export const ATTRIBUTES_TABLE_COLUMNS: ColumnDef<AdminDialogData>[] = [
   {
     accessorKey: 'documentTypeIds',
     header: 'Связанные типы документов',
-    size: 1000,
+    size: 100,
   },
   {
     accessorKey: 'required',

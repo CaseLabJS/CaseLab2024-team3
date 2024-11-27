@@ -5,7 +5,7 @@ import { AdminDialogData, RecordStateInfo } from 'src/types/index';
 export interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  relatedData: TData[];
+  relatedData: { id: number; name: string }[];
   onDelete: (id: number) => Promise<void>;
   onEdit: (data: Partial<AdminDialogData>, id?: number) => Promise<void>;
 }
@@ -16,7 +16,7 @@ export interface CustomTableMeta<TData> {
   actionItem?: (props: ActionItem<TData>) => unknown;
   actionMore?: ActionMore<TData>;
   state?: RecordStateInfo<string>;
-  relatedData?: TData[];
+  relatedData?: { id: number; name: string }[];
   onDelete?: (id: number) => Promise<void>;
   onEdit?: (data: Partial<AdminDialogData>, id?: number) => Promise<void>;
 }

@@ -47,10 +47,10 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
   const { createVoting, votingResult, getVotingResult } = votingStore;
 
   useEffect(() => {
-    if (type === 'user-document') {
+    if (type === 'user-document') {hUsers(0, 100);
       (async () => {
         await fetchDocumentById(Number(documentId));
-        await fetchUsers(0, 1000);
+        await fetchUsers(0, 100);
         {
           /* Т.к. результаты голосования есть только у документов со статусом "IN_VOTING,
           надо сначала дождаться загрузки документа, а затем проверить его статус */
@@ -63,7 +63,7 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
     } else {
       fetchDocumentForSign(Number(documentId));
     }
-    fetchAttributes(0, 1000);
+    fetchAttributes(0, 100);
   }, []);
 
   if (loading || isLoading) {
@@ -122,7 +122,7 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
           {document.createdAt && <DocumentDate date={document.createdAt} />}
           <div className="grid gap-4 py-4">
             {document.attributeValues &&
-              document.attributeValues.map((attributeId, index) => (
+              document.attributeValues.map((attributeId: { attributeId: number; value: string | number | readonly string[] | undefined; }, index: Key | null | undefined) => (
                 <div
                   key={index}
                   className="grid grid-cols-4 items-center gap-4"

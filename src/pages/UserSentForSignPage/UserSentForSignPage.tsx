@@ -38,8 +38,8 @@ const UserSentForSignPage = observer(() => {
   } = documentTypesStore;
 
   useEffect(() => {
-    fetchDocTypesAndAttributes(0, 1000);
-    fetchDocuments(0, 1000);
+    fetchDocTypesAndAttributes(0, 100);
+    fetchDocuments(0, 100);
   }, []);
 
   if (loading || isLoading) {

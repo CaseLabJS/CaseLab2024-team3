@@ -72,6 +72,7 @@ export const UpdateDocumentForm = ({
       attributeValues: inputs.map((input) => ({
         attributeId: input.attributeId,
         value: input.value,
+        base64Data: base64str,
       })),
       name: documentName,
       ...(file !== null && { base64Data: file }),

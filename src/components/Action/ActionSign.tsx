@@ -13,7 +13,6 @@ import {
 } from '@components/UI';
 import { ActionDefaultData } from './types';
 import { isEmpty } from '@/lib';
-import { LucideProps } from 'lucide-react';
 import { DocumentState } from '@/types/state';
 
 interface ActionSignProps<TData>
