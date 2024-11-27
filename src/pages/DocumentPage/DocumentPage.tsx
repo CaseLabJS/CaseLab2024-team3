@@ -150,6 +150,7 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
             {type === 'user-document' &&
               document.state === DocumentState.AUTHOR_SIGNED && (
                 <UserSelectDialog
+                  currentUser={user}
                   users={users}
                   triggerButtonText="Отправить документ"
                   onConfirm={handleSendToUser}

@@ -11,10 +11,11 @@ import {
   DialogTrigger,
 } from "src/components/UI";
 
-import { ChangeUser } from "@/types/index";
+import { ChangeUser, UserRegister } from "@/types/index";
 
 interface UserSelectDialogProps {
   users: ChangeUser[];
+  currentUser: UserRegister | ChangeUser | null;
   dialogTitle?: string;
   dialogDescription?: string;
   triggerButtonText: string;
@@ -23,6 +24,7 @@ interface UserSelectDialogProps {
 
 export const UserSelectDialog: React.FC<UserSelectDialogProps> = ({
   users,
+  currentUser,
   dialogTitle = "Отправка на подпись",
   dialogDescription = "Выберите пользователя, которому хотите отправить документ на подпись.",
   triggerButtonText,
@@ -33,7 +35,7 @@ export const UserSelectDialog: React.FC<UserSelectDialogProps> = ({
 
   const userOptions = useMemo(
     () =>
-      users.map((user) => ({
+      users.filter((user) => user.id !== currentUser?.id).map((user) => ({
         value: user.id,
         label: `${user.firstName} ${user.lastName} (${user.email})`,
       })),

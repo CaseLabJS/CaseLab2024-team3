@@ -54,10 +54,10 @@ export type AuthUserResponse = {
   jwt: string;
 };
 
-interface Role {
+type Role = {
   id: number;
   name: string;
-}
+};
 
 export type UserRegister = UserLogin & {
   id?: string;
