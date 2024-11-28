@@ -6,7 +6,12 @@ import {
   UNKNOWN_ERROR_MESSAGE,
 } from '@constants/errorMessage';
 import { toast } from '@/hooks/use-toast';
-import { ChangeUser, CreateDocumentResponse, Voting } from '@/types/index';
+import {
+  ChangeUser,
+  CreateDocumentResponse,
+  Voting,
+  VotingResult,
+} from '@/types/index';
 import { VotingStoreProps } from './types';
 import ApiDocumentController from '@api/ApiDocumentController';
 import ApiUserController from '@api/ApiUserController';
@@ -16,6 +21,7 @@ export class VotingStore implements VotingStoreProps {
   private _error: string | null = null;
   private _users: ChangeUser[] = [];
   private _document: CreateDocumentResponse | null = null;
+  private _votingResult: VotingResult | null = null;
 
   constructor() {
     makeAutoObservable(this, undefined, { autoBind: true });
@@ -31,6 +37,10 @@ export class VotingStore implements VotingStoreProps {
 
   get document() {
     return this._document;
+  }
+
+  get votingResult() {
+    return this._votingResult;
   }
 
   get error() {
@@ -78,6 +88,13 @@ export class VotingStore implements VotingStoreProps {
       () => {
         toast(TOASTS.SUCCESS_SEND_FOR_VOTING_DOCUMENT);
       }
+    );
+  }
+
+  async getVotingResult(documentId: number) {
+    return this._responseHandler(
+      () => ApiDocumentController.getVotingResult(documentId),
+      (response) => (this._votingResult = response.data)
     );
   }
 

@@ -22,7 +22,7 @@ const DocTypesAdminPage = observer(() => {
   } = documentTypesStore;
 
   useEffect(() => {
-    void fetchDocTypesAndAttributes(0, 1000);
+    void fetchDocTypesAndAttributes(0, 100);
   }, [fetchDocTypesAndAttributes]);
 
   if (isLoading) {

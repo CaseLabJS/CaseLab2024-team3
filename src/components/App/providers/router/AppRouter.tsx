@@ -13,10 +13,12 @@ import ProtectedRoute from 'src/components/ProtectedRoute/ProtectedRoute';
 import { Spinner } from 'src/components/UI';
 import { ROUTE_CONSTANTS } from 'src/constants/routes';
 import { AdminPage } from 'src/pages/AdminPage';
+import { AdminIndexPage } from '@pages/AdminIndexPage';
 import NotFoundPage from 'src/pages/NotFoundPage';
 import { SignInPage } from 'src/pages/SignInPage';
 import { SignUpPage } from 'src/pages/SignUpPage';
 import { UserDashboardPage } from 'src/pages/UserDashboardPage';
+import { UserSignedDocuments } from '@pages/UserSignedDocuments';
 
 const AppRouter = () => {
   return (
@@ -51,6 +53,10 @@ const AppRouter = () => {
                 element={<DocumentPage type="awaiting-sign" />}
               />
               <Route
+                path={ROUTE_CONSTANTS.USER_AFTER_SIGN_DOCUMENT}
+                element={<DocumentPage type="after-sign" />}
+              />
+              <Route
                 path={ROUTE_CONSTANTS.USER_SENT_FOR_SIGN}
                 element={<UserSentForSignPage />}
               />
@@ -58,10 +64,18 @@ const AppRouter = () => {
                 path={ROUTE_CONSTANTS.USER_AWAITING_SIGN}
                 element={<UserAwaitingSignPage />}
               />
+              <Route
+                path={ROUTE_CONSTANTS.USER_AFTER_SIGN}
+                element={<UserSignedDocuments />}
+              />U
             </Route>
           </Route>
           <Route element={<ProtectedRoute role="ADMIN" />}>
             <Route path={ROUTE_CONSTANTS.ADMIN} element={<AdminPage />}>
+              <Route
+                path={ROUTE_CONSTANTS.ADMIN_INDEX}
+                element={<AdminIndexPage />}
+              />
               <Route
                 path={ROUTE_CONSTANTS.USERS}
                 element={<UsersAdminPage />}

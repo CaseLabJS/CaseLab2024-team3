@@ -40,6 +40,14 @@
   @apply focus-visible:ring-2
 }
 
+.basic-multi-select .select__input-container {
+  @apply text-foreground
+}
+
+.basic-multi-select .select__single-value {
+  @apply text-foreground
+}
+
 @layer base {
   :root {
     --header-height: 60px;

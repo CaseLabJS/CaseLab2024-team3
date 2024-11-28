@@ -5,11 +5,11 @@ import {
   CreateDocument,
   CreateDocumentResponse,
   DocumentState,
-  GetDocument,
   GetDocumentsResponse,
   Initiator,
   SendDocumentForSignResponse,
   Voting,
+  VotingResult,
 } from 'src/types';
 import api from './index';
 
@@ -50,7 +50,7 @@ class ApiDocumentController {
     page?: number,
     size?: number,
     initiator: Initiator = 'owner'
-  ): Promise<AxiosResponse<GetDocumentsResponse>> {
+  ): Promise<AxiosResponse<CreateDocumentResponse>> {
     if (page && size) {
       return api.get(`/document/${initiator}?page=${page}&size=${size}`);
     }
@@ -81,15 +81,29 @@ class ApiDocumentController {
     });
   }
 
-  public static async getDocumentsForSign(): Promise<
-    AxiosResponse<GetDocumentsResponse>
-  > {
-    return api.get(`/document/signer`);
+  public static async getDocumentsForSign(
+    page?: number,
+    size?: number,
+    type: 'before_signer' | 'after_signer' = 'before_signer'
+  ): Promise<AxiosResponse<GetDocumentsResponse>> {
+    if (page && size) {
+      return api.get(`/document/signer/${type}?page=${page}&size=${size}`);
+    }
+
+    if (page) {
+      return api.get(`/document/signer/${type}?page=${page}`);
+    }
+
+    if (size) {
+      return api.get(`/document/signer/${type}?size=${size}`);
+    }
+
+    return api.get(`/document/signer/${type}`);
   }
 
-  public static async getDocumentForSign(id: number): Promise<
-    AxiosResponse<CreateDocumentResponse>
-  > {
+  public static async getDocumentForSign(
+    id: number
+  ): Promise<AxiosResponse<CreateDocumentResponse>> {
     return api.get(`/document/signer/${id}/versions/last`);
   }
 
@@ -110,6 +124,12 @@ class ApiDocumentController {
 
   public static async startVoting(data: Voting): Promise<AxiosResponse> {
     return api.post(`/document/approvement/start`, data);
+  }
+
+  public static async getVotingResult(
+    documentId: number
+  ): Promise<AxiosResponse<VotingResult>> {
+    return api.post(`/document/approvement/${documentId}/result`);
   }
 }
 

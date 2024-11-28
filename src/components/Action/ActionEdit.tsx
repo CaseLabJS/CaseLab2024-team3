@@ -16,7 +16,7 @@ import { useForm } from 'react-hook-form';
 import { ActionDefaultData } from './types';
 import { DialogTexts } from '@/types/adminTypes';
 import { Pencil } from 'lucide-react';
-import { BaseFieldProps } from '@components/UI/Form/types';
+import { BaseFieldProps, FieldTypes } from '@components/UI/Form/types';
 import { isEmpty } from '@/lib';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z, ZodType } from 'zod';
@@ -70,7 +70,7 @@ export const ActionEdit = <TData extends { id: number }>({
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             {configFields.map((field) => (
-              <FormSwitcher key={field.name} {...field} />
+              <FormSwitcher key={field.name} {...field} type={FieldTypes.Input} />
             ))}
             <DialogFooter>
               <Button type="submit" loading={form.formState.isSubmitting}>

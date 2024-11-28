@@ -69,10 +69,11 @@ export const UpdateDocumentForm = ({
   };
 
   const handleOnSave = () => {
-    const newData: Partial<ChangeDocument> = {
+    const newData: ChangeDocument = {
       attributeValues: inputs.map((input) => ({
         attributeId: input.attributeId,
         value: input.value,
+        base64Data: base64str,
       })),
       name: documentName,
       ...(file !== null && { base64Data: file }),

@@ -21,11 +21,16 @@ import {
 import { DocumentsStoreProps } from './types';
 
 export class DocumentsStore implements DocumentsStoreProps {
-  private _pagination: Pagination | null = null;
+  private _pagination_docuuments: Pagination | null = null;
   private _document: CreateDocumentResponse | null = null;
   private _documents: CreateDocumentResponse[] = [];
 
+  private _pagination_documentsForSign: Pagination | null = null;
   private _documentsForSign: GetDocument[] = [];
+
+  private _pagination_documentsAfterSign: Pagination | null = null;
+  private _documentsAfterSign: GetDocument[] = [];
+
   private _loading: boolean = false;
   private _error: string | null = null;
 
@@ -35,8 +40,16 @@ export class DocumentsStore implements DocumentsStoreProps {
     makeAutoObservable(this, undefined, { autoBind: true });
   }
 
-  get pagination() {
-    return this._pagination;
+  get paginationDocuments() {
+    return this._pagination_docuuments;
+  }
+
+  get paginationDocumentsForSign() {
+    return this._pagination_documentsForSign;
+  }
+
+  get paginationDocumentsAfterSign() {
+    return this._pagination_documentsAfterSign;
   }
 
   get document() {
@@ -57,6 +70,10 @@ export class DocumentsStore implements DocumentsStoreProps {
         doc.state === DocumentState.PENDING_CONTRACTOR_SIGN ||
         doc.state === DocumentState.PENDING_AUTHOR_SIGN
     );
+  }
+
+  get documentsAfterSign() {
+    return this._documentsAfterSign;
   }
 
   get loading() {
@@ -106,9 +123,9 @@ export class DocumentsStore implements DocumentsStoreProps {
     }
   }
 
-  fetchDocumentById = (id: number) => {
+  fetchDocumentById = (documentId: number) => {
     return this._responseHandler(
-      () => ApiDocumentController.getDocumentById(id),
+      () => ApiDocumentController.getDocumentById(documentId),
       (response) => {
         this._document = response.data;
       }
@@ -124,12 +141,13 @@ export class DocumentsStore implements DocumentsStoreProps {
       () => ApiDocumentController.getDocuments(page, size, initiator),
       (response) => {
         const { content, ...res } = response.data;
-        this._pagination = res;
 
         if (initiator === 'owner') {
           this._documents = [...content];
+          this._pagination_docuuments = res;
         } else {
           this._documentsForSign = [...content];
+          this._pagination_documentsForSign = res;
         }
       }
     );
@@ -177,11 +195,23 @@ export class DocumentsStore implements DocumentsStoreProps {
     );
   };
 
-  fetchDocumentsForSign = () => {
+  fetchDocumentsForSign = (
+    page?: number,
+    size?: number,
+    type: 'before_signer' | 'after_signer' = 'before_signer'
+  ) => {
     return this._responseHandler(
-      () => ApiDocumentController.getDocumentsForSign(),
+      () => ApiDocumentController.getDocumentsForSign(page, size, type),
       (response) => {
-        this._documentsForSign = response.data.content;
+        const { content, ...res } = response.data;
+
+        if (type === 'before_signer') {
+          this._documentsForSign = [...content];
+          this._pagination_documentsForSign = res;
+        } else {
+          this._documentsAfterSign = [...content];
+          this._pagination_documentsAfterSign = res;
+        }
       }
     );
   };

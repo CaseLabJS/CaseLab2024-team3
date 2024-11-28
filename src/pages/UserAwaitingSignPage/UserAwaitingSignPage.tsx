@@ -25,15 +25,14 @@ const UserAwaitingSignPage = observer(() => {
   const {
     documentsForSign,
     loading,
-    pagination,
+    paginationDocumentsForSign,
     signDocumentById,
   } = documentsStore;
 
   useEffect(() => {
-    void documentsStore.fetchDocuments(
+    void documentsStore.fetchDocumentsForSign(
       (query.page ?? 0),
-      query.limit ?? 20,
-      'signer'
+      query.limit ?? 20
     );
   }, [query.limit, query.page]);
 
@@ -44,10 +43,6 @@ const UserAwaitingSignPage = observer(() => {
       </section>
     );
   }
-
-  const onSign = (id: number, status: DocumentState) => {
-    signDocumentById(id, status);
-  };
 
   return (
     <div className="p-10 flex flex-col h-[calc(100vh-130px)] overflow-y-auto">
@@ -77,7 +72,7 @@ const UserAwaitingSignPage = observer(() => {
           }}
           meta={{
             pagination: {
-              totalPages: pagination?.totalPages,
+              totalPages: paginationDocumentsForSign?.totalPages,
             },
             actionItem: ({ row }) => {
               const to = row?.getValue('id') as string;
