@@ -27,6 +27,10 @@ class DocumentsStore implements DocumentsStoreProps {
 
   private _pagination_documentsForSign: Pagination | null = null;
   private _documentsForSign: GetDocument[] = [];
+
+  private _pagination_documentsAfterSign: Pagination | null = null;
+  private _documentsAfterSign: GetDocument[] = [];
+
   private _loading: boolean = false;
   private _error: string | null = null;
 
@@ -42,6 +46,10 @@ class DocumentsStore implements DocumentsStoreProps {
 
   get paginationDocumentsForSign() {
     return this._pagination_documentsForSign;
+  }
+
+  get paginationDocumentsAfterSign() {
+    return this._pagination_documentsAfterSign;
   }
 
   get document() {
@@ -62,6 +70,10 @@ class DocumentsStore implements DocumentsStoreProps {
         doc.state === DocumentState.PENDING_CONTRACTOR_SIGN ||
         doc.state === DocumentState.PENDING_AUTHOR_SIGN
     );
+  }
+
+  get documentsAfterSign() {
+    return this._documentsAfterSign;
   }
 
   get loading() {
@@ -181,13 +193,25 @@ class DocumentsStore implements DocumentsStoreProps {
         this._document = response.data;
       }
     );
-  }
+  };
 
-  fetchDocumentsForSign = () => {
+  fetchDocumentsForSign = (
+    page?: number,
+    size?: number,
+    type: 'before_signer' | 'after_signer' = 'before_signer'
+  ) => {
     return this._responseHandler(
-      () => ApiDocumentController.getDocumentsForSign(),
+      () => ApiDocumentController.getDocumentsForSign(page, size, type),
       (response) => {
-        this._documentsForSign = response.data.content;
+        const { content, ...res } = response.data;
+
+        if (type === 'before_signer') {
+          this._documentsForSign = [...content];
+          this._pagination_documentsForSign = res;
+        } else {
+          this._documentsAfterSign = [...content];
+          this._pagination_documentsAfterSign = res;
+        }
       }
     );
   };

@@ -9,6 +9,8 @@ export const ROUTE_CONSTANTS = {
   USER_AWAITING_SIGN_DOCUMENT: 'awaiting-sign/:documentId',
   USER_SENT_FOR_SIGN: 'sent-for-sign',
   USER_AWAITING_SIGN: 'awaiting-sign',
+  USER_AFTER_SIGN: 'after-sign',
+  USER_AFTER_SIGN_DOCUMENT: 'after-sign/:documentId',
 
   ADMIN: 'admin',
   ADMIN_INDEX: '/admin',
