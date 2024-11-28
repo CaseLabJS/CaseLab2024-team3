@@ -10,7 +10,7 @@ import {
 import { Input, InputProps } from '..';
 import { LabelProps } from '@radix-ui/react-label';
 import { UseControllerProps } from 'react-hook-form';
-import { cn } from 'src/lib';
+import { cn } from '@/lib';
 import { AssignComponent } from 'src/types/assignComponent';
 import { BaseFieldProps } from './types';
 

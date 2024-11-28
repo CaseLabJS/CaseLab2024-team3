@@ -1,6 +1,6 @@
 import { VariantProps, cva } from 'class-variance-authority';
 import { FC, HTMLAttributes } from 'react';
-import { cn } from 'src/lib';
+import { cn } from '@/lib';
 
 export interface SpinnerProps
   extends HTMLAttributes<HTMLSpanElement>,

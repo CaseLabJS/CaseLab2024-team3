@@ -15,7 +15,7 @@ import {
 import { AttributesStoreProps } from './types';
 import ApiDocumentTypeController from '@api/ApiDocumentTypeController';
 
-class AttributesStore implements AttributesStoreProps {
+export class AttributesStore implements AttributesStoreProps {
   private _attribute: ChangeAttribute | null = null;
   private _attributes: ChangeAttribute[] = [];
   private _documentTypes: ChangeDocumentType[] = [];

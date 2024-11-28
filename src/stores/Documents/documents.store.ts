@@ -17,10 +17,10 @@ import {
   Pagination,
   ChangeAttribute,
   CreateDocumentResponse,
-} from 'src/types';
+} from '@/types';
 import { DocumentsStoreProps } from './types';
 
-class DocumentsStore implements DocumentsStoreProps {
+export class DocumentsStore implements DocumentsStoreProps {
   private _pagination: Pagination | null = null;
   private _document: CreateDocumentResponse | null = null;
   private _documents: CreateDocumentResponse[] = [];
@@ -175,7 +175,7 @@ class DocumentsStore implements DocumentsStoreProps {
         this._document = response.data;
       }
     );
-  }
+  };
 
   fetchDocumentsForSign = () => {
     return this._responseHandler(
