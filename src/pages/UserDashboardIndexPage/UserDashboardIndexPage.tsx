@@ -1,6 +1,6 @@
 import { documentsStore } from '@/stores';
 import { useEffect } from 'react';
-import { FileText, FileCheck, Hourglass } from 'lucide-react';
+import { FileText, FileCheck, Hourglass, Check } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
 import { ROUTE_CONSTANTS } from '@constants/routes';
@@ -8,12 +8,13 @@ import { ROUTE_CONSTANTS } from '@constants/routes';
 const UserDashboardIndexPage = observer(() => {
   useEffect(() => {
     void documentsStore.fetchDocuments(0, 100, 'owner');
-    void documentsStore.fetchDocuments(0, 100, 'signer');
+    void documentsStore.fetchDocumentsForSign(0, 100, 'after_signer');
+    void documentsStore.fetchDocumentsForSign(0, 100, 'before_signer');
   }, []);
 
   return (
     <section className="p-4 md:p-6 flex items-center justify-center w-full overflow-y-auto">
-      <div className="max-h-full grid gap-4 sm:gap-6 grid-cols-1 xl:grid-cols-3 max-w-5xl w-full">
+      <div className="max-h-full grid gap-4 sm:gap-6 grid-cols-1 xl:grid-cols-2 max-w-5xl w-full">
         <Link
           to={ROUTE_CONSTANTS.USER_DOCUMENTS}
           className="bg-gradient-to-r from-blue-400 to-blue-600 text-white text-center rounded-xl p-6 sm:p-8 shadow-lg transform hover:scale-105 transition-transform duration-300 ease-out"
@@ -57,6 +58,21 @@ const UserDashboardIndexPage = observer(() => {
                 {documentsStore.paginationDocumentsForSign?.totalElements}
               </h2>
               <p className="text-md sm:text-lg mt-2">Ожидают подписание</p>
+            </div>
+          </article>
+        </Link>
+
+        <Link
+          to={ROUTE_CONSTANTS.USER_AFTER_SIGN}
+          className="bg-gradient-to-r from-purple-400 to-purple-600 text-white text-center rounded-xl p-6 sm:p-8 shadow-lg transform hover:scale-105 transition-transform duration-300 ease-out"
+        >
+          <article className="flex flex-col text-center items-center">
+            <Check className="text-4xl sm:text-5xl mb-4 animate-pulse" />
+            <div>
+              <h2 className="text-3xl sm:text-4xl font-bold">
+                {documentsStore.paginationDocumentsAfterSign?.totalElements}
+              </h2>
+              <p className="text-md sm:text-lg mt-2">Подписанные документы</p>
             </div>
           </article>
         </Link>
