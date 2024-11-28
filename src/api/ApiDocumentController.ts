@@ -81,15 +81,29 @@ class ApiDocumentController {
     });
   }
 
-  public static async getDocumentsForSign(): Promise<
-    AxiosResponse<GetDocumentsResponse>
-  > {
-    return api.get(`/document/signer`);
+  public static async getDocumentsForSign(
+    page?: number,
+    size?: number,
+    type: 'before_signer' | 'after_signer' = 'before_signer'
+  ): Promise<AxiosResponse<GetDocumentsResponse>> {
+    if (page && size) {
+      return api.get(`/document/signer/${type}?page=${page}&size=${size}`);
+    }
+
+    if (page) {
+      return api.get(`/document/signer/${type}?page=${page}`);
+    }
+
+    if (size) {
+      return api.get(`/document/signer/${type}?size=${size}`);
+    }
+
+    return api.get(`/document/signer/${type}`);
   }
 
-  public static async getDocumentForSign(id: number): Promise<
-    AxiosResponse<CreateDocumentResponse>
-  > {
+  public static async getDocumentForSign(
+    id: number
+  ): Promise<AxiosResponse<CreateDocumentResponse>> {
     return api.get(`/document/signer/${id}/versions/last`);
   }
 

@@ -25,15 +25,14 @@ const UserAwaitingSignPage = observer(() => {
   const {
     documentsForSign,
     loading,
-    pagination,
+    paginationDocumentsForSign,
     signDocumentById,
   } = documentsStore;
 
   useEffect(() => {
-    void documentsStore.fetchDocuments(
+    void documentsStore.fetchDocumentsForSign(
       (query.page ?? 0),
-      query.limit ?? 20,
-      'signer'
+      query.limit ?? 20
     );
   }, [query.limit, query.page]);
 
@@ -73,7 +72,7 @@ const UserAwaitingSignPage = observer(() => {
           }}
           meta={{
             pagination: {
-              totalPages: pagination?.totalPages,
+              totalPages: paginationDocumentsForSign?.totalPages,
             },
             actionItem: ({ row }) => {
               const to = row?.getValue('id') as string;

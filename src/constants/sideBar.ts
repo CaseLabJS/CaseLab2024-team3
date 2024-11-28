@@ -5,6 +5,7 @@ import {
   Calendar,
   FileInput,
   FileOutput,
+  PencilLine,
 } from 'lucide-react';
 
 export const adminMenuItems = [
@@ -40,5 +41,10 @@ export const userMenuItems = [
     title: 'Ожидают подписания',
     url: ROUTE_CONSTANTS.USER_AWAITING_SIGN,
     icon: FileInput,
+  },
+  {
+    title: 'Подписанные документы',
+    url: ROUTE_CONSTANTS.USER_AFTER_SIGN,
+    icon: PencilLine,
   },
 ];
