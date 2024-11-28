@@ -56,7 +56,7 @@ export const DOCUMENT_STATE: RecordStateInfo<DocumentState> = {
     className: 'bg-green-500 text-white',
   },
   [DocumentState.REWORK_REQUIRED]: {
-    title: 'Требуется переработка',
+    title: 'Требуется доработка',
     className: 'bg-yellow-500 text-white',
   },
   [DocumentState.IN_VOTING]: {

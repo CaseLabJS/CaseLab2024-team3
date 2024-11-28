@@ -47,7 +47,7 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
   const { createVoting, votingResult, getVotingResult } = votingStore;
 
   useEffect(() => {
-    if (type === 'user-document') {//hUsers(0, 100);
+    if (type === 'user-document') {
       (async () => {
         await fetchDocumentById(Number(documentId));
         await fetchUsers(0, 100);
