@@ -107,7 +107,8 @@ export const CreateDocumentForm = ({
     }));
   };
 
-  const handleOnSave = () => {
+  const handleOnSave = (event: React.FormEvent) => {
+    event.preventDefault();
     const newData: CreateDocument = {
       ...inputs,
       documentTypeId: inputs.documentTypeId ?? 0,
@@ -172,7 +173,7 @@ export const CreateDocumentForm = ({
           <DialogDescription>{dialogDescriptionText}</DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleOnSave}>
+        <form onSubmit={handleOnSave} name="createDocument">
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="documentTypeId" className="text-right">
@@ -180,6 +181,7 @@ export const CreateDocumentForm = ({
               </Label>
               <div className="col-span-3">
                 <Select
+                  name="Выбор типа документа"
                   placeholder="Выберите тип документа"
                   required
                   className="basic-multi-select col-span-3"

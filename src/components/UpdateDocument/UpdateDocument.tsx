@@ -68,7 +68,8 @@ export const UpdateDocumentForm = ({
     }
   };
 
-  const handleOnSave = () => {
+  const handleOnSave = (event: React.FormEvent) => {
+    event.preventDefault();
     const newData: ChangeDocument = {
       attributeValues: inputs.map((input) => ({
         attributeId: input.attributeId,
