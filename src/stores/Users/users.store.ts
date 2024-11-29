@@ -12,7 +12,7 @@ import { AxiosError } from 'axios';
 import { TOASTS } from '@constants/toast';
 import { UsersStoreProps } from './types';
 
-class UsersStore implements UsersStoreProps {
+export class UsersStore implements UsersStoreProps {
   private _user: UserRegister | ChangeUser | null = null;
   private _users: ChangeUser[] = [];
   private _status = STATUS.INITIAL;

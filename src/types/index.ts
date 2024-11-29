@@ -4,6 +4,7 @@ import { VotingStatus } from './voting';
 export * from './assignComponent';
 export * from './adminTypes';
 export * from './state';
+export * from './status';
 
 // ____________________ Pagination start ____________________
 export type Pagination = {

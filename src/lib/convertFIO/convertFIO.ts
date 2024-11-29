@@ -9,5 +9,5 @@ export const convertFIO = ({
   firstName?: string;
   patronymic?: string;
 }): string => {
-  return `${lastName} ${firstName?.length! > 0 ? `${getOneCharacter(firstName!)}.` : ''}${patronymic?.length! > 0 ? `${getOneCharacter(patronymic!)}.` : ''}`;
+  return `${lastName} ${(firstName?.length ?? 0 > 0) ? `${getOneCharacter(firstName!)}.` : ''}${(patronymic?.length ?? 0 > 0) ? `${getOneCharacter(patronymic!)}.` : ''}`.trim();
 };

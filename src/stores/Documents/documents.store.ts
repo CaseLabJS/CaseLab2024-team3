@@ -17,10 +17,10 @@ import {
   Pagination,
   ChangeAttribute,
   CreateDocumentResponse,
-} from 'src/types';
+} from '@/types';
 import { DocumentsStoreProps } from './types';
 
-class DocumentsStore implements DocumentsStoreProps {
+export class DocumentsStore implements DocumentsStoreProps {
   private _pagination_docuuments: Pagination | null = null;
   private _document: CreateDocumentResponse | null = null;
   private _documents: CreateDocumentResponse[] = [];

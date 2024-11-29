@@ -16,7 +16,7 @@ import { VotingStoreProps } from './types';
 import ApiDocumentController from '@api/ApiDocumentController';
 import ApiUserController from '@api/ApiUserController';
 
-class VotingStore implements VotingStoreProps {
+export class VotingStore implements VotingStoreProps {
   private _isLoading: boolean = false;
   private _error: string | null = null;
   private _users: ChangeUser[] = [];

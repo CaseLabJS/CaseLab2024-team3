@@ -1,18 +1,18 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-import ApiAuthController from 'src/api/ApiAuthController';
 import { AuthStoreProps, LocalStorageHelperProps } from './types';
-import { STATUS } from 'src/types/status';
-import { REFRESH_TOKEN, TOKEN, TIME_TOKEN } from 'src/constants/authConstants';
-import { UserLogin } from 'src/types';
-import { usersStore } from '../Users';
+
 import { toast } from '@/hooks/use-toast';
 import {
   UNKNOWN_ERROR_MESSAGE,
   NETWORK_ERROR_MESSAGE,
 } from '@constants/errorMessage';
 import { AxiosError } from 'axios';
+import ApiAuthController from '@/api/ApiAuthController';
+import { REFRESH_TOKEN, TIME_TOKEN, TOKEN } from '@/constants/authConstants';
+import { STATUS, UserLogin } from '@/types';
+import { usersStore } from '../Users';
 
-class AuthStore implements AuthStoreProps {
+export class AuthStore implements AuthStoreProps {
   private _isAuth = false;
   private _status = STATUS.INITIAL;
   private _error: string | null = null;
