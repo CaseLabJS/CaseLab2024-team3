@@ -1,4 +1,6 @@
+import { documentsStore } from '@/stores';
 import {
+  Badge,
   Sidebar,
   SidebarContent,
   SidebarGroup,
@@ -8,13 +10,15 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@components/UI';
-import { useState } from 'react';
+import { observer } from 'mobx-react-lite';
+import { FC, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 interface MenuItem {
   title: string;
   url: string;
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  id: number;
 }
 
 interface SidebarProps {
@@ -22,42 +26,62 @@ interface SidebarProps {
   sidebarName?: string;
 }
 
-export function AppSidebar({ menuItems, sidebarName }: SidebarProps) {
-  const { pathname } = useLocation();
-  const lastPart = pathname.split('/').filter(Boolean).pop();
+export const AppSidebar: FC<SidebarProps> = observer(
+  ({ menuItems, sidebarName }) => {
+    const { pathname } = useLocation();
+    const lastPart = pathname.split('/').filter(Boolean).pop();
 
-  const [activeName, setActiveName] = useState(
-    menuItems.find((item) => item.url === lastPart)?.title
-  );
+    const [activeName, setActiveName] = useState(
+      menuItems.find((item) => item.url === lastPart)?.title
+    );
 
-  return (
-    <Sidebar
-      collapsible="offcanvas"
-      className="absolute h-layout md:ml-8 lg:ml-40"
-    >
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>{sidebarName}</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {menuItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={activeName === item.title}
-                    onClick={() => setActiveName(item.title)}
-                  >
-                    <Link to={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-    </Sidebar>
-  );
-}
+    useEffect(() => {
+      void documentsStore.fetchDocuments(0, 100, 'owner');
+      void documentsStore.fetchDocumentsForSign(0, 100, 'after_signer');
+      void documentsStore.fetchDocumentsForSign(0, 100, 'before_signer');
+    }, []);
+
+    const quantityMapping: Record<number, number> = {
+      1: documentsStore.paginationDocuments?.totalElements || 0,
+      2: documentsStore.documentsSentForSign.length || 0,
+      3: documentsStore.paginationDocumentsForSign?.totalElements || 0,
+      4: documentsStore.paginationDocumentsAfterSign?.totalElements || 0,
+    };
+
+    return (
+      <Sidebar
+        collapsible="offcanvas"
+        className="absolute h-layout md:ml-8 lg:ml-40"
+      >
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupLabel>{sidebarName}</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {menuItems.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={activeName === item.title}
+                      onClick={() => setActiveName(item.title)}
+                    >
+                      <Link to={item.url}>
+                        <item.icon />
+                        <div className="mr-auto">{item.title}</div>
+                        {item.id && (
+                          <Badge className="bg-slate-500">
+                            {quantityMapping[item.id]}
+                          </Badge>
+                        )}
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
+      </Sidebar>
+    );
+  }
+);

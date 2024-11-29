@@ -125,89 +125,108 @@ export const UpdateDocumentForm = ({
           <DialogDescription>{dialogDescriptionText}</DialogDescription>
         </DialogHeader>
 
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label>{fieldLabels.name.label}:</Label>
-            <Input
-              name={fieldLabels.name.label}
-              value={documentName}
-              onChange={handleOnFieldsChange}
-              className="col-span-3"
-            />
-          </div>
-          {inputs &&
-            inputs.map((input) => (
-              <div
-                key={input.attributeId}
-                className="grid grid-cols-4 items-center gap-4"
-              >
-                <Label>
-                  {documentAttributes &&
-                    documentAttributes?.find(
-                      (attr) => attr.id === input.attributeId
-                    )?.name}
-                  :
-                </Label>
-                <Input
-                  name={input.attributeId.toString()}
-                  value={input.value}
-                  onChange={handleOnChange}
-                  className="col-span-3"
-                />
-              </div>
-            ))}
-        </div>
-
-        <div className="grid grid-cols-4 items-center gap-4">
-          <Label>Файл:</Label>
-          <div className="col-span-3">
-            {file ? (
-              <div className="flex items-center gap-4">
-                <div className="text-sm text-green-600">
-                  Файл <strong>{uploadedFileName}</strong> успешно загружен
-                </div>
-                <Button variant="outline" size="sm" onClick={() => setFile('')}>
-                  Заменить файл
-                </Button>
-              </div>
-            ) : (
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() => {
-                  const fileInput = document.createElement('input');
-                  fileInput.type = 'file';
-                  fileInput.onchange = async (event: Event) => {
-                    const target = event.target as HTMLInputElement;
-                    const file = target?.files?.[0];
-                    if (file) {
-                      try {
-                        const base64 = await convertFileToBase64(file);
-                        setFile(base64);
-                        setUploadedFileName(file.name);
-                      } catch (error) {
-                        console.error('Ошибка при загрузке файла', error);
-                      }
+        <form onSubmit={handleOnSave}>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              {/* Название документа */}
+              <Label>{fieldLabels.name.label}*:</Label>
+              <Input
+                name={fieldLabels.name.label}
+                required
+                value={documentName}
+                onChange={handleOnFieldsChange}
+                className="col-span-3"
+              />
+            </div>
+            {inputs &&
+              inputs.map((input) => (
+                <div
+                  key={input.attributeId}
+                  className="grid grid-cols-4 items-center gap-4"
+                >
+                  <Label>
+                    {(() => {
+                      const attribute = documentAttributes?.find(
+                        (attr) => attr.id === input.attributeId
+                      );
+                      return (
+                        <>
+                          {attribute?.name}
+                          {attribute?.required ? '*' : ''}:
+                        </>
+                      );
+                    })()}
+                  </Label>
+                  <Input
+                    name={input.attributeId.toString()}
+                    value={input.value}
+                    required={
+                      documentAttributes &&
+                      documentAttributes?.find(
+                        (attr) => attr.id === input.attributeId
+                      )?.required
                     }
-                  };
-                  fileInput.click();
-                }}
-              >
-                Загрузить файл
-              </Button>
-            )}
+                    onChange={handleOnChange}
+                    className="col-span-3"
+                  />
+                </div>
+              ))}
           </div>
-        </div>
 
-        <DialogFooter>
-          <Button
-            className="block hover:opacity-75 mb-3 bg-bg-header hover:bg-bg-header"
-            type="submit"
-            onClick={handleOnSave}
-          >
-            Сохранить
-          </Button>
-        </DialogFooter>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label>Файл:</Label>
+            <div className="col-span-3">
+              {file ? (
+                <div className="flex items-center gap-4">
+                  <div className="text-sm text-green-600">
+                    Файл <strong>{uploadedFileName}</strong> успешно загружен
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setFile('')}
+                  >
+                    Заменить файл
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => {
+                    const fileInput = document.createElement('input');
+                    fileInput.type = 'file';
+                    fileInput.onchange = async (event: Event) => {
+                      const target = event.target as HTMLInputElement;
+                      const file = target?.files?.[0];
+                      if (file) {
+                        try {
+                          const base64 = await convertFileToBase64(file);
+                          setFile(base64);
+                          setUploadedFileName(file.name);
+                        } catch (error) {
+                          console.error('Ошибка при загрузке файла', error);
+                        }
+                      }
+                    };
+                    fileInput.click();
+                  }}
+                >
+                  Загрузить файл
+                </Button>
+              )}
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button
+              className="block hover:opacity-75 my-3 bg-bg-header hover:bg-bg-header"
+              type="submit"
+            >
+              Сохранить
+            </Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );
