@@ -44,6 +44,12 @@ export const TABLE_USER_DOCUMENTS_CONFIG: ColumnDef<CreateDocumentResponse>[] =
     actionMoreColumn(),
   ];
 
+export const TABLE_USER_DOCUMENTS_COLUMN_VISIBLE = {
+  [DOCUMENT_ID]: false,
+  [UPDATED_AT]: false,
+  [CONTENT_URL]: false,
+};
+
 export const TABLE_USER_COLUMN_VISIBLE = {
   [DOCUMENT_ID]: false,
   [UPDATED_AT]: false,

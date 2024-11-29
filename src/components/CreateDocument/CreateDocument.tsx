@@ -116,19 +116,7 @@ export const CreateDocumentForm = ({
       base64Data: base64str,
     };
 
-    const id = 'id' in data ? data.id : undefined;
-    const patchData = calculateDiff(data, newData);
-
-    if (typeof id === 'number' && Object.keys(patchData).length > 0) {
-      onSave?.(id, patchData as Partial<CreateDocument>)
-        .then(() => {
-          setIsDialogOpen(false);
-          updateTableData?.();
-        })
-        .catch((error) => {
-          console.error('Ошибка при сохранении', error);
-        });
-    } else if (!id) {
+    if (onSave) {
       onSave?.(newData)
         .then(() => {
           setIsDialogOpen(false);
@@ -147,8 +135,10 @@ export const CreateDocumentForm = ({
       const reader = new FileReader();
       reader.onload = () => {
         const arrayBuffer = reader.result as ArrayBuffer;
-        const binary = new Uint8Array(arrayBuffer)
-          .reduce((acc, byte) => acc + String.fromCharCode(byte), '');
+        const binary = new Uint8Array(arrayBuffer).reduce(
+          (acc, byte) => acc + String.fromCharCode(byte),
+          ''
+        );
         const base64 = btoa(binary);
         resolve(base64);
         setBase64str(base64);
@@ -158,7 +148,6 @@ export const CreateDocumentForm = ({
       reader.readAsArrayBuffer(file);
     });
   }
-
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

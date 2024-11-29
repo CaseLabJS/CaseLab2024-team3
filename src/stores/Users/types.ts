@@ -10,7 +10,7 @@ export interface UsersStoreProps {
   fetchUserById: (id: string | number) => Promise<void>;
   fetchUsers: () => Promise<void>;
   createUser: (user: UserRegister) => Promise<void>;
-  updateUser: (user: UserRegister, id: string) => Promise<void>;
+  updateUser: (id: string, user: UserRegister) => Promise<void>;
   deleteUser: (id: string) => Promise<void>;
   updateUserPasswordForAdmin: (id: string, password: string) => Promise<void>;
   updateUserPasswordForUser: (

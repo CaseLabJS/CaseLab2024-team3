@@ -1,8 +1,10 @@
 export enum FieldTypes {
   Input = 'Input',
+  Select = 'Select',
 }
 
 export type BaseFieldProps = {
+  type: FieldTypes;
   name: string;
   disabled?: boolean;
   label?: string;

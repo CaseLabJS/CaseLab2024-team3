@@ -66,6 +66,7 @@ export type UserRegister = UserLogin & {
   email: string;
   firstName: string;
   lastName: string;
+  password?: string;
   patronymic?: string;
   roles: Role[];
 };
@@ -73,6 +74,7 @@ export type UserRegister = UserLogin & {
 export type ChangeUser = Omit<UserRegister, 'password'> & {
   // GET, PUT
   id: string;
+  password?: string;
 };
 
 export type GetUsersResponse = Pagination & {

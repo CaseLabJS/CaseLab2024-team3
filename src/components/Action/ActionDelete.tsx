@@ -18,10 +18,12 @@ import { Trash } from 'lucide-react';
 interface ActionDeleteProps<TData>
   extends ActionDefaultData<TData>,
     ButtonProps {
-  onDelete: (id: number) => Promise<void>;
+  onDelete: (id: number | string | undefined) => Promise<void>;
 }
 
-export const ActionDelete = <TData extends { id: number }>({
+export const ActionDelete = <
+  TData extends { id: number | string | undefined },
+>({
   onDelete,
   data,
   ...props
@@ -49,7 +51,6 @@ export const ActionDelete = <TData extends { id: number }>({
           <AlertDialogAction
             className="hover:opacity-75 mb-3 bg-bg-header hover:bg-bg-header"
             onClick={() => {
-              console.log(data);
               if (!isEmpty(data) && data?.id) {
                 onDelete(data.id);
               }

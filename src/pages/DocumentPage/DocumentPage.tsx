@@ -122,27 +122,36 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
           {document.createdAt && <DocumentDate date={document.createdAt} />}
           <div className="grid gap-4 py-4">
             {document.attributeValues &&
-              document.attributeValues.map((attributeId: { attributeId: number; value: string | number | readonly string[] | undefined; }, index: Key | null | undefined) => (
-                <div
-                  key={index}
-                  className="grid grid-cols-4 items-center gap-4"
-                >
-                  <Label>
-                    {
-                      attributes.find(
-                        (attribute) => attribute.id === attributeId.attributeId
-                      )?.name
-                    }
-                    :
-                  </Label>
-                  <Input
-                    name={`attribute-${attributeId.attributeId}`}
-                    value={attributeId.value}
-                    className="col-span-3 disabled:opacity-100"
-                    disabled
-                  ></Input>
-                </div>
-              ))}
+              document.attributeValues.map(
+                (
+                  attributeId: {
+                    attributeId: number;
+                    value: string | number | readonly string[] | undefined;
+                  },
+                  index: Key | null | undefined
+                ) => (
+                  <div
+                    key={index}
+                    className="grid grid-cols-4 items-center gap-4"
+                  >
+                    <Label>
+                      {
+                        attributes.find(
+                          (attribute) =>
+                            attribute.id === attributeId.attributeId
+                        )?.name
+                      }
+                      :
+                    </Label>
+                    <Input
+                      name={`attribute-${attributeId.attributeId}`}
+                      value={attributeId.value}
+                      className="col-span-3 disabled:opacity-100"
+                      disabled
+                    ></Input>
+                  </div>
+                )
+              )}
           </div>
           <div className="flex justify-between flex-wrap gap-2">
             <Button onClick={() => downloadDocument(document.contentUrl)}>

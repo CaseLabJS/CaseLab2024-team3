@@ -1,11 +1,15 @@
 import { documentsStore, documentTypesStore, usersStore } from '@/stores';
+import { DocumentState } from '@/types/state';
+import {
+  ActionDelete,
+  ActionEdit,
+  ActionSendForSign,
+  ActionSignByAuthor,
+} from '@components/Action';
 import { CreateDocumentForm } from '@components/CreateDocument/CreateDocument';
+import { DataTable2 } from '@components/DataTable2';
 import { Spinner } from '@components/UI';
 import { DIALOGS_VALUES, EMPTY_DOC } from '@constants/createDocument';
-import { observer } from 'mobx-react-lite';
-import { useEffect } from 'react';
-import { ActionDelete, ActionEdit, ActionSendForSign, ActionSignByAuthor } from '@components/Action';
-import { DataTable2 } from '@components/DataTable2';
 import {
   CONFIG_FIELDS_USER_EDIT,
   DIALOGS_USER,
@@ -14,9 +18,10 @@ import {
   TABLE_USER_COLUMN_VISIBLE,
   TABLE_USER_DOCUMENTS_CONFIG,
 } from '@constants/userDocument';
+import { observer } from 'mobx-react-lite';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NumberParam, useQueryParams } from 'use-query-params';
-import { DocumentState } from '@/types/state';
 
 const UserDocumentsPage = observer(() => {
   const navigate = useNavigate();
@@ -24,8 +29,7 @@ const UserDocumentsPage = observer(() => {
     page: NumberParam,
     limit: NumberParam,
   });
-  
-  // eslint-disable-next-line @typescript-eslint/unbound-method
+
   const {
     documents,
     loading,
@@ -40,7 +44,7 @@ const UserDocumentsPage = observer(() => {
 
   useEffect(() => {
     void documentsStore.fetchDocuments(
-      (query.page ?? 0) ,//+ 1
+      query.page ?? 0, //+ 1
       query.limit ?? 20
     );
   }, [query.limit, query.page]);
@@ -52,16 +56,12 @@ const UserDocumentsPage = observer(() => {
     isLoading,
   } = documentTypesStore;
 
-  const {
-    user,
-    users,
-    fetchUsers,
-  } = usersStore;
+  const { user, users, fetchUsers } = usersStore;
 
   useEffect(() => {
     fetchDocTypesAndAttributes(0, 100);
     fetchDocuments(
-      (query.page ?? 0) ,//+ 1
+      query.page ?? 0, //+ 1
       query.limit ?? 20
     );
     fetchUsers(0, 100);
@@ -76,21 +76,18 @@ const UserDocumentsPage = observer(() => {
   }
 
   const refreshTableData = () => {
-    documentsStore.fetchDocuments()
+    documentsStore.fetchDocuments();
   };
 
   const onSignByAuthor = async (id: number, status: DocumentState) => {
     if (status === DocumentState.DRAFT) {
-      if (user?.id){
+      if (user?.id) {
         await documentsStore.sendForSignDocumentById(id, user.id);
       }
     }
 
     await signDocumentById(id, DocumentState.APPROVED);
-    await fetchDocuments(
-      (query.page ?? 0),
-      query.limit ?? 20
-    )
+    await fetchDocuments(query.page ?? 0, query.limit ?? 20);
   };
 
   return (
