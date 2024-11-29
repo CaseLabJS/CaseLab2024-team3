@@ -13,10 +13,11 @@ interface TableBodyProps<TData> {
 export const TableBody = <TData,>({ table }: TableBodyProps<TData>) => {
   const actionItem = table.options.meta?.actionItem;
   const TableRowLink = actionItem ? 'a' : TableRow;
+
   return (
     <TableBodyComp className="border">
-      {table.getRowModel().rows?.length ? (
-        table.getRowModel().rows.map((row) => {
+      {table.getCoreRowModel().rows?.length ? (
+        table.getCoreRowModel().rows.map((row) => {
           if (!row) return null;
           const props = actionItem?.({ row }) ?? {};
           return (

@@ -39,7 +39,10 @@ const UserSentForSignPage = observer(() => {
 
   useEffect(() => {
     fetchDocTypesAndAttributes(0, 100);
-    fetchDocuments(0, 100);
+    fetchDocuments(
+      (query.page ?? 0) ,//+ 1
+      query.limit ?? 20
+    );
   }, []);
 
   if (loading || isLoading) {

@@ -237,6 +237,8 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
             onClick={() => {
               if (type === 'user-document') {
                 navigate('../documents');
+              } else if (type == 'after-sign') {
+                navigate('../after-sign');
               } else {
                 navigate('../awaiting-sign');
               }
