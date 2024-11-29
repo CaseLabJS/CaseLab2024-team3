@@ -1,4 +1,4 @@
-import { ChangeUser, DialogTexts, UserRegister } from '@/types/index';
+import { DialogTexts, UserRegister } from '@/types/index';
 import { BUTTONS_NAMES } from './defaultConstants';
 type Role = {
   id: number;

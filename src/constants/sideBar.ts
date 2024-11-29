@@ -1,12 +1,11 @@
 import { ROUTE_CONSTANTS } from '@constants/routes';
-import { id } from 'date-fns/locale';
 import {
-  Users,
-  FileStack,
   Calendar,
   FileInput,
   FileOutput,
+  FileStack,
   PencilLine,
+  Users,
 } from 'lucide-react';
 
 export const adminMenuItems = [

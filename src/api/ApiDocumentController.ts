@@ -50,7 +50,7 @@ class ApiDocumentController {
     page?: number,
     size?: number,
     initiator: Initiator = 'owner'
-  ): Promise<AxiosResponse<CreateDocumentResponse>> {
+  ): Promise<AxiosResponse<GetDocumentsResponse>> {
     if (page && size) {
       return api.get(`/document/${initiator}?page=${page}&size=${size}`);
     }

@@ -11,12 +11,11 @@ import {
   Label,
 } from '@/components/UI';
 
+import { fieldLabels } from '@constants/createDocument';
 import { useMemo, useState } from 'react';
 import Select from 'react-select';
-import { CreateDocumentProps, OptionItem } from './createDocuments.types';
 import { ChangeAttribute, CreateDocument } from 'src/types/index';
-import { calculateDiff } from '@components/AdminDialog/adminDialog.utils';
-import { fieldLabels } from '@constants/createDocument';
+import { CreateDocumentProps, OptionItem } from './createDocuments.types';
 
 const DEFAULT_DIALOG_FORM_WIDTH = 625;
 
@@ -257,7 +256,8 @@ export const CreateDocumentForm = ({
                               const file = target?.files?.[0];
                               if (file) {
                                 try {
-                                  const base64 = await convertFileToBase64(file);
+                                  const base64 =
+                                    await convertFileToBase64(file);
                                   setInputs((prev) => ({
                                     ...prev,
                                     base64Data: base64,
