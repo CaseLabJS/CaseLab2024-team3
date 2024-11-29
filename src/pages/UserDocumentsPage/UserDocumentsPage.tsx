@@ -55,12 +55,16 @@ const UserDocumentsPage = observer(() => {
   const {
     user,
     users,
+    fetchUsers,
   } = usersStore;
 
   useEffect(() => {
     fetchDocTypesAndAttributes(0, 100);
-    fetchDocuments(0, 100);
-
+    fetchDocuments(
+      (query.page ?? 0) ,//+ 1
+      query.limit ?? 20
+    );
+    fetchUsers(0, 100);
   }, []);
 
   if (loading || isLoading) {
