@@ -1,4 +1,4 @@
-import { documentsStore } from '@/stores';
+import { documentsStore, usersStore } from '@/stores';
 import {
   Badge,
   Sidebar,
@@ -36,9 +36,11 @@ export const AppSidebar: FC<SidebarProps> = observer(
     );
 
     useEffect(() => {
-      void documentsStore.fetchDocuments(0, 100, 'owner');
-      void documentsStore.fetchDocumentsForSign(0, 100, 'after_signer');
-      void documentsStore.fetchDocumentsForSign(0, 100, 'before_signer');
+      if (usersStore.user?.roles.some((role) => role.name === 'USER')) {
+        void documentsStore.fetchDocuments(0, 100, 'owner');
+        void documentsStore.fetchDocumentsForSign(0, 100, 'after_signer');
+        void documentsStore.fetchDocumentsForSign(0, 100, 'before_signer');
+      }
     }, []);
 
     const quantityMapping: Record<number, number> = {
