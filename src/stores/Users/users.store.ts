@@ -80,13 +80,13 @@ export class UsersStore implements UsersStoreProps {
     }
   }
 
-  fetchUserById(id: string | number) {
+  fetchUserById = (id: string | number) => {
     return this._responseHandler(
       () => ApiUserController.getUserById(id as string),
       (response) =>
         (this._user = response.data.id ? (response.data as ChangeUser) : null)
     );
-  }
+  };
 
   fetchUsers = async (page?: number, size?: number) => {
     return await this._responseHandler(
@@ -105,9 +105,9 @@ export class UsersStore implements UsersStoreProps {
     );
   };
 
-  updateUser = async (user: UserRegister, id: string | number) => {
+  updateUser = async (id: string | number, user: UserRegister) => {
     return this._responseHandler(
-      () => ApiUserController.updateUserById(user, id as string),
+      () => ApiUserController.updateUserById(id as string, user),
       (response) => {
         const index = this._users.findIndex((u) => u.id === id);
         if (index !== -1) {
@@ -120,7 +120,7 @@ export class UsersStore implements UsersStoreProps {
     );
   };
 
-  deleteUser = async (id: string | number) => {
+  deleteUser = async (id: string | number | undefined) => {
     return this._responseHandler(
       () => ApiUserController.deleteUserById(id as string),
       () => {
@@ -130,7 +130,7 @@ export class UsersStore implements UsersStoreProps {
     );
   };
 
-  async fetchUserData() {
+  fetchUserData = async () => {
     return this._responseHandler(
       async () => {
         const userId = authStore.userId;
@@ -143,7 +143,7 @@ export class UsersStore implements UsersStoreProps {
         this._user = response.data;
       }
     );
-  }
+  };
 
   //метод для обновления пароля от роли администратора
   updateUserPasswordForAdmin = (id: string, password: string) => {

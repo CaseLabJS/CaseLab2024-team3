@@ -7,6 +7,7 @@ export enum FieldTypes {
 }
 
 export type BaseFieldProps = {
+  type: FieldTypes;
   name: string;
   disabled?: boolean;
   label?: string;

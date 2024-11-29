@@ -10,14 +10,14 @@ export type DocumentType = CreateDocument;
 
 export interface CreateDocumentProps<
   TData = CreateDocument,
-  TType = any,
-  TAttributes = any,
+  TType = unknown,
+  TAttributes = unknown,
 > {
   dialogTexts: DialogTexts;
   data: TData;
   onSave?: {
     (data: TData): Promise<void>;
-    (id: number, data: Partial<TData>): Promise<void>;
+    //(id: number, data: Partial<TData>): Promise<void>;
   };
   documentTypes?: TType[];
   documentAttributes?: TAttributes[];

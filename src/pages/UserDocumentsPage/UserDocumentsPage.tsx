@@ -1,16 +1,16 @@
 import { documentsStore, documentTypesStore, usersStore } from '@/stores';
-import { CreateDocumentForm } from '@components/CreateDocument/CreateDocument';
-import { Spinner } from '@components/UI';
-import { DIALOGS_VALUES, EMPTY_DOC } from '@constants/createDocument';
-import { observer } from 'mobx-react-lite';
-import { useEffect } from 'react';
+import { DocumentState } from '@/types/state';
 import {
   ActionDelete,
   ActionEdit,
   ActionSendForSign,
   ActionSignByAuthor,
 } from '@components/Action';
+import { CreateDocumentForm } from '@components/CreateDocument/CreateDocument';
 import { DataTable2 } from '@components/DataTable2';
+import { Spinner } from '@components/UI';
+import { DIALOGS_VALUES, EMPTY_DOC } from '@constants/createDocument';
+import { userMenuItems } from '@constants/sideBar';
 import {
   CONFIG_FIELDS_USER_EDIT,
   DIALOGS_USER,
@@ -19,10 +19,10 @@ import {
   TABLE_USER_COLUMN_VISIBLE,
   TABLE_USER_DOCUMENTS_CONFIG,
 } from '@constants/userDocument';
+import { observer } from 'mobx-react-lite';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NumberParam, useQueryParams } from 'use-query-params';
-import { DocumentState } from '@/types/state';
-import { userMenuItems } from '@constants/sideBar';
 
 const UserDocumentsPage = observer(() => {
   const navigate = useNavigate();
