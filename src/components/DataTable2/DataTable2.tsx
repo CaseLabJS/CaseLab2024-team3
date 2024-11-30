@@ -4,7 +4,6 @@ import { Table as TableComp } from '@components/UI';
 import {
   ColumnDef,
   getCoreRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   InitialTableState as InitialTableStateLib,
   OnChangeFn,
@@ -64,7 +63,6 @@ export const DataTable2 = observer(
       meta,
       getCoreRowModel: getCoreRowModel(),
       getSortedRowModel: getSortedRowModel(),
-      getPaginationRowModel: getPaginationRowModel(),
       onColumnVisibilityChange: setColumnVisibility,
       onSortingChange: setSorting,
       onColumnSizingChange: setColumnSizing,
