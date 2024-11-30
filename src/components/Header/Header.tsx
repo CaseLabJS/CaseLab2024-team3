@@ -12,11 +12,14 @@ const Header = observer(() => {
   const hasRole = (roleName: string) =>
     usersStore.user?.roles.some((roleUser) => roleUser.name === roleName);
 
+  const isUser = hasRole('USER');
+  const isAdmin = hasRole('ADMIN');
+
   return (
     <header className="bg-bg-header h-header px-4 md:px-8 lg:px-40">
       <nav className="py-2.5">
         <div className="flex justify-between items-center ">
-          <Link to="/" className="flex items-center">
+          <Link to={isUser ? '/' : '/admin'} className="flex items-center">
             <img src={Logo} className="mr-3 h-6 sm:h-9" alt="Logo" />
             <span className="text-sm font-semibold text-white">
               CaseLab team3
@@ -24,33 +27,36 @@ const Header = observer(() => {
           </Link>
 
           {/* Десктопное меню */}
-          <div className="hidden lg:flex lg:items-center lg:space-x-8">
-            {hasRole('USER') && (
+          {isUser && isAdmin && (
+            <div className="hidden lg:text-sm lg:flex lg:items-center lg:space-x-8 xl:text-base">
               <NavLink
                 to="app"
-                className="block py-2 text-white font-medium"
+                className={({ isActive }) =>
+                  `block py-2 text-white font-medium ${isActive && isUser && isAdmin ? 'decoration-2 rounded-lg underline underline-offset-[5px]' : 'hover:text-gray-200'}`
+                }
                 onClick={() => setIsMenuOpen(false)}
               >
                 Панель пользователя
               </NavLink>
-            )}
-            {hasRole('ADMIN') && (
+
               <NavLink
                 to="admin"
-                className="block py-2 text-white font-medium"
+                className={({ isActive }) =>
+                  `block py-2 text-white font-medium ${isActive && isUser && isAdmin ? 'decoration-2 underline underline-offset-[5px]' : 'hover:text-gray-200'}`
+                }
                 onClick={() => setIsMenuOpen(false)}
               >
                 Панель администратора
               </NavLink>
-            )}
-          </div>
+            </div>
+          )}
 
           {/* Блок пользователя */}
           <div className="flex items-center space-x-4">
             <User />
 
             {/* Кнопка выхода на десктопе */}
-            {hasRole('USER') && !hasRole('ADMIN') && <UpdatePasswordDialog />}
+            {isUser && !isAdmin && <UpdatePasswordDialog />}
             <div className="hidden lg:block">
               <button
                 className="border border-white text-white bg-transparent rounded-lg text-sm px-4 py-2 focus:ring-4 focus:ring-white/50 hover:bg-white/10"

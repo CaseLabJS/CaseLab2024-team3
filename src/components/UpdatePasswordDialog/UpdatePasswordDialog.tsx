@@ -108,7 +108,7 @@ function UpdatePasswordDialog() {
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
               <span title="Изменить пароль">
-                <Lock className="text-indigo-200" />
+                <Lock className="text-indigo-200 cursor-pointer" />
               </span>
             </DialogTrigger>
             <DialogContent>
