@@ -14,6 +14,6 @@ export interface DocumentTypesStoreProps {
   fetchDocumentTypes: (page?: number, size?: number) => Promise<void>;
   createDocumentType: (data: CreateDocumentType) => Promise<void>;
   fetchDocumentTypeById: (id: number) => Promise<void>;
-  updateDocumentType: (data: CreateDocumentType, id: number) => Promise<void>;
+  updateDocumentType: (id: number, data: CreateDocumentType) => Promise<void>;
   deleteDocumentType: (id: number) => Promise<void>;
 }

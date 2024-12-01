@@ -130,3 +130,17 @@
     @apply bg-background text-foreground;
   }
 }
+
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  appearance: none;
+
+  @apply bg-background border border-border rounded cursor-pointer;
+  width: 1.25rem;
+  height: 1.25rem;
+  padding: 0;
+}
+
+input[type="checkbox"]:checked {
+  @apply bg-bg-header;
+}

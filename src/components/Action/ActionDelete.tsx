@@ -49,7 +49,6 @@ export const ActionDelete = <TData extends { id: number }>({
           <AlertDialogAction
             className="hover:opacity-75 mb-3 bg-bg-header hover:bg-bg-header"
             onClick={() => {
-              console.log(data);
               if (!isEmpty(data) && data?.id) {
                 onDelete(data.id);
               }

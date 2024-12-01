@@ -16,7 +16,9 @@ export const ROUTE_CONSTANTS = {
   ADMIN_INDEX: '/admin',
   USERS: 'users-admin',
   DOC_TYPES_ADMIN: 'document-types-admin',
+  DOC_TYPES_ADMIN1: 'document-types-admin1',
   DOC_ATTRIBUTES_ADMIN: 'document-attributes-admin',
+  DOC_ATTRIBUTES_ADMIN1: 'document-attributes-admin1',
 
   NOT_FOUND: '*',
 };

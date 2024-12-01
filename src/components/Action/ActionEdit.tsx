@@ -1,3 +1,5 @@
+import { isEmpty } from '@/lib';
+import { DialogTexts } from '@/types/adminTypes';
 import {
   Button,
   ButtonProps,
@@ -11,26 +13,26 @@ import {
   Form,
   FormSwitcher,
 } from '@components/UI';
+import { FormSwitcherProps } from '@components/UI/Form/types';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Pencil } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { ActionDefaultData } from './types';
-import { DialogTexts } from '@/types/adminTypes';
-import { Pencil } from 'lucide-react';
-import { BaseFieldProps, FieldTypes } from '@components/UI/Form/types';
-import { isEmpty } from '@/lib';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { z, ZodType } from 'zod';
+import { ActionDefaultData } from './types';
 
-interface ActionEditProps<TData> extends ActionDefaultData<TData>, ButtonProps {
+interface ActionEditProps<TData, UData>
+  extends ActionDefaultData<TData>,
+    ButtonProps {
   dialogTexts: DialogTexts;
-  configFields: BaseFieldProps[];
-  onUpdate: (id: number, payload: TData) => Promise<void>;
-  mapSubmitPayload: <TNewData>(payload: TData) => TNewData;
+  configFields: FormSwitcherProps[];
+  onUpdate: (id: number, payload: UData) => Promise<void>;
+  mapSubmitPayload: <TNewData>(payload: UData) => TNewData;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formSchemaValidate?: z.infer<ZodType<any, any, any>>;
 }
 
-export const ActionEdit = <TData extends { id: number }>({
+export const ActionEdit = <TData extends { id: number }, UData>({
   dialogTexts,
   configFields,
   onUpdate,
@@ -38,7 +40,7 @@ export const ActionEdit = <TData extends { id: number }>({
   formSchemaValidate,
   data,
   ...props
-}: ActionEditProps<TData>) => {
+}: ActionEditProps<TData, UData>) => {
   const form = useForm<TData>({
     resolver: formSchemaValidate ? zodResolver(formSchemaValidate) : undefined,
     values: data,
@@ -47,7 +49,7 @@ export const ActionEdit = <TData extends { id: number }>({
   const { btnTriggerText, dialogDescriptionText, dialogTitleText } =
     dialogTexts;
 
-  const onSubmit = async (payload: TData) => {
+  const onSubmit = async (payload: UData) => {
     if (data?.id && !isEmpty(payload)) {
       await onUpdate(data.id, mapSubmitPayload(payload));
       setIsDialogOpen(false);
@@ -70,7 +72,7 @@ export const ActionEdit = <TData extends { id: number }>({
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             {configFields.map((field) => (
-              <FormSwitcher key={field.name} {...field} type={FieldTypes.Input} />
+              <FormSwitcher key={field.baseFieldProps.name} {...field} />
             ))}
             <DialogFooter>
               <Button type="submit" loading={form.formState.isSubmitting}>

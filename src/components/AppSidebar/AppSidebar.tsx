@@ -18,7 +18,7 @@ interface MenuItem {
   title: string;
   url: string;
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-  id: number;
+  id?: number;
 }
 
 interface SidebarProps {

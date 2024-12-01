@@ -44,10 +44,7 @@ const UserDocumentsPage = observer(() => {
   } = documentsStore;
 
   useEffect(() => {
-    void documentsStore.fetchDocuments(
-      query.page ?? 0, //+ 1
-      query.limit ?? 20
-    );
+    void documentsStore.fetchDocuments(query.page ?? 0, query.limit ?? 20);
   }, [query.limit, query.page]);
 
   const {
@@ -61,10 +58,7 @@ const UserDocumentsPage = observer(() => {
 
   useEffect(() => {
     fetchDocTypesAndAttributes(0, 100);
-    fetchDocuments(
-      query.page ?? 0, //+ 1
-      query.limit ?? 20
-    );
+    fetchDocuments(query.page ?? 0, query.limit ?? 20);
     fetchUsers(0, 100);
   }, []);
 

@@ -1,11 +1,13 @@
+import { RecordStateInfo } from '@/types/state';
 import { ActionMore } from '@components/Action';
 import {
+  DocTypesCell,
   TableActiveColumns,
   TableDateCell,
   TableStatusCell,
 } from '@components/DataTable2/ui';
+import { AttributeCell } from '@components/DataTable2/ui/TableAttributeCell';
 import type { ColumnDef } from '@tanstack/react-table';
-import { RecordStateInfo } from '@/types/state';
 
 export const defaultColumn = <T>(props: ColumnDef<T>): ColumnDef<T> => {
   return {
@@ -43,6 +45,32 @@ export const stateColumn = <T>(props?: StateColumnProps<T>): ColumnDef<T> => {
     size: 150,
     meta: {
       state,
+      ...meta,
+    },
+    ..._props,
+  });
+};
+
+export const attributeColumn = <T>(props?: ColumnDef<T>): ColumnDef<T> => {
+  const { meta, ..._props } = props as ColumnDef<T>;
+  return defaultColumn<T>({
+    cell: AttributeCell,
+    minSize: 180,
+    size: 150,
+    meta: {
+      ...meta,
+    },
+    ..._props,
+  });
+};
+
+export const DocTypeColumn = <T>(props?: ColumnDef<T>): ColumnDef<T> => {
+  const { meta, ..._props } = props as ColumnDef<T>;
+  return defaultColumn<T>({
+    cell: DocTypesCell,
+    minSize: 180,
+    size: 150,
+    meta: {
       ...meta,
     },
     ..._props,

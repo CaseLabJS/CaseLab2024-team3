@@ -15,9 +15,7 @@ import { ActionDefaultData } from './types';
 import { isEmpty } from '@/lib';
 import { DocumentState } from '@/types/state';
 
-interface ActionSignProps<TData>
-  extends ActionDefaultData<TData>,
-    ButtonProps {
+interface ActionSignProps<TData> extends ActionDefaultData<TData>, ButtonProps {
   onSign: (id: number, status: DocumentState) => Promise<void>;
   action_text: string;
   action_color: string;
@@ -36,7 +34,6 @@ export const ActionSign = <TData extends { id: number }>({
   children,
   ...props
 }: ActionSignProps<TData>) => {
-  console.log(data)
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>

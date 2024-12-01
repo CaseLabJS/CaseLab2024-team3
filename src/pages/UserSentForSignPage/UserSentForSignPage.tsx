@@ -18,29 +18,22 @@ const UserSentForSignPage = observer(() => {
     limit: NumberParam,
   });
 
-  const {
-    documentsSentForSign,
-    loading,
-    pagination,
-    fetchDocuments,
-  } = documentsStore;
+  const { documentsSentForSign, loading, paginationDocuments, fetchDocuments } =
+    documentsStore;
 
   useEffect(() => {
     void documentsStore.fetchDocuments(
-      (query.page ?? 0) ,//+ 1
+      query.page ?? 0, //+ 1
       query.limit ?? 20
     );
   }, [query.limit, query.page]);
 
-  const {
-    fetchDocTypesAndAttributes,
-    isLoading,
-  } = documentTypesStore;
+  const { fetchDocTypesAndAttributes, isLoading } = documentTypesStore;
 
   useEffect(() => {
     fetchDocTypesAndAttributes(0, 100);
     fetchDocuments(
-      (query.page ?? 0) ,//+ 1
+      query.page ?? 0, //+ 1
       query.limit ?? 20
     );
   }, []);
@@ -82,7 +75,7 @@ const UserSentForSignPage = observer(() => {
           }}
           meta={{
             pagination: {
-              totalPages: pagination?.totalPages,
+              totalPages: paginationDocuments?.totalPages,
             },
             actionItem: ({ row }) => {
               const to = row?.getValue('id') as string;

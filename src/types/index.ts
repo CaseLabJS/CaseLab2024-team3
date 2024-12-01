@@ -8,7 +8,7 @@ export * from './status';
 
 // ____________________ Pagination start ____________________
 export type Pagination = {
-  page: number;
+  number: number;
   size: number;
   totalPages: number;
   totalElements: number;

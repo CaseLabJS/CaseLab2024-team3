@@ -10,7 +10,7 @@ describe('DocumentsStore', () => {
 
   it('Следует инициализировать store с значениями по умолчанию', () => {
     expect(store.documents).toEqual([]);
-    expect(store.pagination).toEqual(null);
+    expect(store.paginationDocuments).toEqual(null);
     expect(store.attributes).toEqual([]);
     expect(store.document).toEqual(null);
     expect(store.documents).toEqual([]);

@@ -41,15 +41,19 @@ const DIALOGS = {
 
 const CONFIG_FIELDS = [
   {
-    name: 'id',
-    disabled: true,
-    type: FieldTypes.Input,
-    label: 'ID',
+    baseFieldProps: {
+      name: 'id',
+      disabled: true,
+      type: FieldTypes.Input,
+      label: 'ID',
+    },
   },
   {
-    name: 'documentName',
-    type: FieldTypes.Input,
-    label: 'Название документа',
+    baseFieldProps: {
+      name: 'documentName',
+      type: FieldTypes.Input,
+      label: 'Название документа',
+    },
   },
 ];
 

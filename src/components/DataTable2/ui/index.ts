@@ -8,3 +8,5 @@ export { TableDateCell } from './TableDateCell';
 export { TableResize } from './TableResize';
 export { TableStatusCell } from './TableStatusCell';
 export { TableSorting } from './TableSorting';
+export { DocTypesCell } from './TableDocTypesCell';
+export { AttributeCell } from './TableAttributeCell';
