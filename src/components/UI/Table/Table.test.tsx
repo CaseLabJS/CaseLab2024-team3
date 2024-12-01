@@ -52,7 +52,7 @@ describe('UI Table', () => {
   });
 
   it('Отображает компонент TableRow', () => {
-    const ref = createRef<HTMLTableSectionElement>();
+    const ref = createRef<HTMLTableRowElement>();
     const { container } = render(<TableRow ref={ref} className="test-class" />);
     expect(container.querySelector('tr')).toBeInTheDocument();
     expect(ref.current).not.toBeNull();

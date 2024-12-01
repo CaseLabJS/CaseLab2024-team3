@@ -71,13 +71,13 @@ const Datepicker: React.FC<DatepickerProps> = ({
           {title}
         </div>
       )}
-      <div className="flex h-[38px] border border-[#E5E7EB] overflow-hidden rounded-[4px]">
+      <div className="flex h-[38px] border border-border overflow-hidden rounded-[4px]">
         <Popover open={isCalendarOpen} onOpenChange={onHandleOpenChangePopover}>
           <PopoverTrigger asChild>
             <Button
               variant={'outline'}
               className={cn(
-                'w-full h-[38px] justify-between font-normal p-[0px] pl-[12px] overflow-hidden border-none',
+                'w-full h-[38px] justify-between font-normal p-[0px] pl-[12px] overflow-hidden border-none rounded-none',
                 !date && 'text-muted-foreground'
               )}
             >
@@ -125,20 +125,20 @@ const Datepicker: React.FC<DatepickerProps> = ({
                   variant={'outline'}
                   className="rounded-8px h-[36px] pr-[20px] pl-[20px] pt-[10px] pb-[10px] text-[14px] leading-[16px] text-[#4B5563] border-[#D1D5DB] border"
                 >
-                  Cancel
+                  Очистить
                 </Button>
 
                 <Button
                   onClick={onHandleApply}
-                  className="ml-[16px] h-[36px] rounded-8px bg-[#007AFF] text-[white] pr-[20px] pl-[20px] pt-[10px] pb-[10px] text-[14px] leading-[16px]"
+                  className="ml-[16px] h-[36px] rounded-8px text-[white] pr-[20px] pl-[20px] pt-[10px] pb-[10px] text-[14px] leading-[16px]"
                 >
-                  Apply
+                  Применять
                 </Button>
               </div>
             </div>
           </PopoverContent>
         </Popover>
-        <div className="w-[80px] h-full bg-[#F9FAFB] flex justify-center items-center border-l pl-[15px] pr-[15px]">
+        <div className="w-[80px] h-full bg-inherit flex justify-center items-center border-l-2 pl-[15px] pr-[15px]">
           {date && (
             <XIcon
               onClick={onHandleClear}

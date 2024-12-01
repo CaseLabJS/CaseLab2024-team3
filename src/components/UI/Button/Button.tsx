@@ -46,12 +46,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       className,
-      variant,
-      size,
+      variant = 'default',
+      size = 'default',
       asChild = false,
       children,
-      loading,
-      disabled,
+      loading = false,
+      disabled = false,
       ...props
     },
     ref
