@@ -16,8 +16,8 @@ export const TableBody = <TData,>({ table }: TableBodyProps<TData>) => {
 
   return (
     <TableBodyComp className="border">
-      {table.getCoreRowModel().rows?.length ? (
-        table.getCoreRowModel().rows.map((row) => {
+      {table.getRowModel().rows?.length ? (
+        table.getRowModel().rows.map((row) => {
           if (!row) return null;
           const props = actionItem?.({ row }) ?? {};
           return (
