@@ -10,13 +10,15 @@ const MapComponent: Record<FieldTypes, FC<FormSwitcherProps>> = {
   ),
   [FieldTypes.Select]: ({ baseFieldProps, selectFieldProps }) => {
     return (
-      <label className="text-indigo-700 text-sm font-medium mt-4">
-        {baseFieldProps.label}
-        <Select
-          {...selectFieldProps}
-          className="text-base font-normal text-foreground mt-3 basic-multi-select"
-        />
-      </label>
+      <div className="mt-4">
+        <label className="text-indigo-700 text-sm font-medium mt-4">
+          {baseFieldProps.label}
+          <Select
+            {...selectFieldProps}
+            className="text-base font-normal text-foreground mt-3 basic-multi-select"
+          />
+        </label>
+      </div>
     );
   },
   [FieldTypes.Checkbox]: ({ baseFieldProps, checkboxFieldProps }) => {

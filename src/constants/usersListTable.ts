@@ -1,5 +1,5 @@
-import { ColumnDef, VisibilityTableState } from '@tanstack/react-table';
 import { UserRegister } from '@/types';
+import { ColumnDef } from '@tanstack/react-table';
 import { actionMoreColumn, defaultColumn } from './defaultTableColumns';
 
 import { FieldTypes, FormSwitcherProps } from '@components/UI/Form/types';
@@ -20,6 +20,7 @@ export const FIELD_LABELS: { [key: string]: string } = {
   login: 'Логин',
   password: 'Пароль',
 };
+
 export const ROLES = [
   {
     id: 'USER',
@@ -30,6 +31,7 @@ export const ROLES = [
     name: 'ADMIN',
   },
 ];
+
 const USER_LOGIN = `login`;
 const USER_EMAIL = `email`;
 const USER_ROLES = `roles`;
@@ -76,47 +78,63 @@ export const TABLE_USERS_LIST_CONFIG: ColumnDef<UserRegister>[] = [
 
 export const CONFIG_FIELDS_USER_EDIT: FormSwitcherProps[] = [
   {
-    name: 'id',
-    type: FieldTypes.Input,
-    disabled: true,
-    label: 'Ид. номер',
+    baseFieldProps: {
+      name: 'id',
+      type: FieldTypes.Input,
+      disabled: true,
+      label: 'Ид. номер',
+    },
   },
   {
-    name: 'lastName',
-    type: FieldTypes.Input,
-    label: 'Фамилия',
+    baseFieldProps: {
+      name: 'lastName',
+      type: FieldTypes.Input,
+      label: 'Фамилия',
+    },
   },
   {
-    name: 'firstName',
-    type: FieldTypes.Input,
-    label: 'Имя',
+    baseFieldProps: {
+      name: 'firstName',
+      type: FieldTypes.Input,
+      label: 'Имя',
+    },
   },
   {
-    name: 'patronymic',
-    type: FieldTypes.Input,
-    label: 'Отчество',
+    baseFieldProps: {
+      name: 'patronymic',
+      type: FieldTypes.Input,
+      label: 'Отчество',
+    },
   },
   {
-    name: USER_EMAIL,
-    type: FieldTypes.Input,
-    label: 'Эл-ая почта',
+    baseFieldProps: {
+      name: USER_EMAIL,
+      type: FieldTypes.Input,
+      label: 'Эл-ая почта',
+    },
   },
   {
-    name: USER_LOGIN,
-    type: FieldTypes.Input,
-    label: 'Логин',
+    baseFieldProps: {
+      name: USER_LOGIN,
+      type: FieldTypes.Input,
+      label: 'Логин',
+    },
   },
   {
-    name: USER_ROLES,
-    type: FieldTypes.Select,
-    label: 'Роли',
+    baseFieldProps: {
+      name: USER_ROLES,
+      type: FieldTypes.Select,
+      label: 'Роли',
+    },
   },
 ];
+
 export const TABLE_USER_COLUMN_VISIBLE = {
   [USER_EMAIL]: false,
   [USER_LOGIN]: false,
   [USER_ROLES]: false,
 };
+
 export const mapSubmitPayloadUserEdit = <NewData>(
   payload: UserRegister
 ): NewData => {
@@ -129,4 +147,19 @@ export const mapSubmitPayloadUserEdit = <NewData>(
     patronymic: payload.patronymic,
     roles: payload.roles,
   } as NewData;
+};
+
+export const EMPTY_USER_ATTRIBUTE: UserRegister = {
+  lastName: '',
+  firstName: '',
+  patronymic: '',
+  email: '',
+  login: '',
+  password: '',
+  roles: [] as Role[],
+};
+
+type Role = {
+  id: number;
+  name: string;
 };

@@ -10,7 +10,6 @@ import {
   Input,
   Label,
 } from '@/components/UI';
-
 import { useState } from 'react';
 import Select, { MultiValue } from 'react-select';
 import {
@@ -20,9 +19,20 @@ import {
 } from './createUsersForm.types';
 
 import { FIELD_LABELS, ROLES } from '@constants/admin';
-import { formatValueForInput } from '@components/AdminDialog/adminDialog.utils';
 
 const DEFAULT_DIALOG_FORM_WIDTH = 625;
+
+const formatValueForInput = (
+  value: string | number | boolean | number[] | null
+) => {
+  if (typeof value === 'string' || typeof value === 'number') {
+    return value;
+  } else if (typeof value === 'boolean') {
+    return String(value);
+  }
+
+  return '';
+};
 
 export const CreateUserForm = ({
   data,

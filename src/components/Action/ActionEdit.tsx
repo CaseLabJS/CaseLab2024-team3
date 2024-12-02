@@ -13,20 +13,15 @@ import {
   Form,
   FormSwitcher,
 } from '@components/UI';
-import { FormSwitcherProps } from '@components/UI/Form/types';
+import { FieldTypes, FormSwitcherProps } from '@components/UI/Form/types';
+import { ROLES } from '@constants/usersListTable';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Pencil } from 'lucide-react';
 import { useState } from 'react';
 import { Path, PathValue, useForm } from 'react-hook-form';
-import { ActionDefaultData } from './types';
-import { DialogTexts } from '@/types/adminTypes';
-import { Pencil } from 'lucide-react';
-import { BaseFieldProps, FieldTypes } from '@components/UI/Form/types';
-import { isEmpty } from '@/lib';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z, ZodType } from 'zod';
 import Select, { MultiValue } from 'react-select';
-import { ROLES } from '@constants/admin';
+import { z, ZodType } from 'zod';
+import { ActionDefaultData } from './types';
 
 interface ActionEditProps<TData, UData>
   extends ActionDefaultData<TData>,
@@ -107,10 +102,13 @@ export const ActionEdit = <TData extends { id: number }, UData>({
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             {configFields.map((field) => {
               // Условие для рендера Select вместо стандартного поля
-              if (field.type === FieldTypes.Select && field.name === 'roles') {
+              if (
+                field.baseFieldProps.type === FieldTypes.Select &&
+                field.baseFieldProps.name === 'roles'
+              ) {
                 return (
-                  <div key={field.name} className="space-y-2">
-                    <label>{field.label}</label>
+                  <div key={field.baseFieldProps.name} className="space-y-2">
+                    <label>{field.baseFieldProps.label}</label>
                     <Select
                       placeholder="Выберите значение"
                       isMulti
@@ -133,11 +131,7 @@ export const ActionEdit = <TData extends { id: number }, UData>({
               }
 
               return (
-                <FormSwitcher
-                  key={field.name}
-                  {...field}
-                  type={FieldTypes.Input}
-                />
+                <FormSwitcher key={field.baseFieldProps.name} {...field} />
               );
             })}
             <DialogFooter>
