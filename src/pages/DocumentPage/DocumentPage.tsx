@@ -23,7 +23,7 @@ interface DocumentPageProps {
 const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
   const navigate = useNavigate();
   const { documentId } = useParams();
-  /* eslint-disable @typescript-eslint/unbound-method */
+
   const {
     document,
     fetchDocumentById,
@@ -37,13 +37,11 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
     fetchAttributes,
     loading,
   } = documentsStore;
-  /* eslint-enable @typescript-eslint/unbound-method */
 
   const { documentTypes, isLoading } = documentTypesStore;
 
   const { user, users, fetchUsers } = usersStore;
 
-  // eslint-disable-next-line @typescript-eslint/unbound-method
   const { createVoting, votingResult, getVotingResult } = votingStore;
 
   useEffect(() => {
@@ -105,7 +103,7 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
   return (
     document &&
     documentId !== 'undefined' && (
-      <div className="p-4 flex flex-col h-layout overflow-y-auto">
+      <div className="p-4 flex w-full justify-center overflow-y-auto">
         <div className="relative p-4 pr-6">
           {document.state === DocumentState.IN_VOTING && votingResult ? (
             <Badge state={document.state} votingResult={votingResult} />
@@ -122,7 +120,7 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
           {document.createdAt && <DocumentDate date={document.createdAt} />}
           <div className="grid gap-4 py-4">
             {document.attributeValues &&
-              document.attributeValues.map((attributeId: { attributeId: number; value: string | number | readonly string[] | undefined; }, index: Key | null | undefined) => (
+              document.attributeValues.map((attributeId: { attributeId: number; value: string | number | readonly string[] | undefined; }, index) => (
                 <div
                   key={index}
                   className="grid grid-cols-4 items-center gap-4"

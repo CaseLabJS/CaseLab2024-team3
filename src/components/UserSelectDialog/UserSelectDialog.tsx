@@ -134,7 +134,7 @@ export const UserSelectDialog: React.FC<UserSelectDialogProps> = ({
           {process === 'voting' && (
             <>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label>Голосущие: </Label>
+                <Label>Голосующие: </Label>
                 <div className="col-span-3">
                   <Select
                     options={userOptions}

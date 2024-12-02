@@ -14,7 +14,7 @@ import {
 import { useMemo, useState } from 'react';
 import Select from 'react-select';
 import { CreateDocumentProps, OptionItem } from './createDocuments.types';
-import { ChangeAttribute, CreateDocument } from 'src/types/index';
+import { ChangeAttribute, ChangeDocumentType, CreateDocument } from 'src/types/index';
 import { calculateDiff } from '@components/AdminDialog/adminDialog.utils';
 import { fieldLabels } from '@constants/createDocument';
 
@@ -27,7 +27,7 @@ export const CreateDocumentForm = ({
   dialogTexts,
   onSave,
   updateTableData,
-}: CreateDocumentProps<CreateDocument, any, any>) => {
+}: CreateDocumentProps<CreateDocument, ChangeDocumentType, ChangeAttribute>) => {
   const [inputs, setInputs] = useState(data);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
@@ -55,7 +55,7 @@ export const CreateDocumentForm = ({
     const documentTypeId = Number(selectedOption.value);
 
     if (!documentTypes) {
-      console.warn('documentTypes неопределены');
+      console.warn('documentTypes не определены');
       setFilteredAttributes([]);
       return;
     }
@@ -67,7 +67,7 @@ export const CreateDocumentForm = ({
     if (selectedDocumentType) {
       const attributes =
         documentAttributes?.filter((attribute) =>
-          selectedDocumentType.attributeIds.includes(attribute.id)
+          selectedDocumentType.attributeIds?.includes(attribute.id)
         ) || [];
       setFilteredAttributes(attributes);
 

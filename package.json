@@ -12,7 +12,8 @@
     "test:unit": "vitest --root src/",
     "test:unit:dev": "vitest -w --root src/",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "format": "prettier --write ./src"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
