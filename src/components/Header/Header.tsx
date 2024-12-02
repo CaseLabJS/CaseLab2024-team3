@@ -10,7 +10,9 @@ import UpdatePasswordDialog from '@components/UpdatePasswordDialog/UpdatePasswor
 const Header = observer(() => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const hasRole = (roleName: string) =>
-    usersStore.user?.roles.some((roleUser) => roleUser.name === roleName);
+    usersStore.user?.roles.some(
+      (roleUser) => typeof roleUser === 'object' && roleUser.name === roleName
+    );
 
   const isUser = hasRole('USER');
   const isAdmin = hasRole('ADMIN');

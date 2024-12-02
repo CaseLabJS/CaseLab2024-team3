@@ -12,11 +12,7 @@ import {
 } from '@/components/UI';
 import { useState } from 'react';
 import Select, { MultiValue } from 'react-select';
-import {
-  CreateUser,
-  CreateUserProps,
-  OptionItem,
-} from './createUsersForm.types';
+import { CreateUser, CreateUserProps } from './createUsersForm.types';
 
 import { FIELD_LABELS, ROLES } from '@constants/admin';
 
@@ -45,7 +41,9 @@ export const CreateUserForm = ({
     dialogTexts;
 
   // Обработчик для изменения ролей
-  const handleOnRolesChange = (newValue: MultiValue<OptionItem>) => {
+  const handleOnRolesChange = (
+    newValue: MultiValue<{ label: string; value: string }>
+  ) => {
     const newRoles = newValue.map((option) => option.label);
     setInputs((prev) => ({
       ...prev,
@@ -104,10 +102,11 @@ export const CreateUserForm = ({
                       isMulti
                       className="basic-multi-select"
                       classNamePrefix="select"
-                      defaultValue={inputs.roles?.map((role) => ({
-                        label: role.name,
-                        value: role.name,
-                      }))}
+                      defaultValue={inputs.roles?.map((role) =>
+                        typeof role === 'object' && 'name' in role
+                          ? { label: role.name, value: role.name }
+                          : { label: role, value: role }
+                      )}
                       options={ROLES.map((role) => ({
                         label: role.name,
                         value: role.name,
@@ -118,7 +117,7 @@ export const CreateUserForm = ({
                 ) : (
                   <Input
                     name={key}
-                    value={formatValueForInput(value)}
+                    value={formatValueForInput(value as string)}
                     disabled={key === 'id'}
                     className="col-span-3"
                     onChange={handleOnChange}

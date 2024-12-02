@@ -2,7 +2,6 @@ import { documentsStore, documentTypesStore, usersStore } from '@/stores';
 import { DocumentState } from '@/types/state';
 import {
   ActionDelete,
-  ActionEdit,
   ActionSendForSign,
   ActionSignByAuthor,
 } from '@components/Action';
@@ -12,10 +11,6 @@ import { Spinner } from '@components/UI';
 import { DIALOGS_VALUES, EMPTY_DOC } from '@constants/createDocument';
 import { userMenuItems } from '@constants/sideBar';
 import {
-  CONFIG_FIELDS_USER_EDIT,
-  DIALOGS_USER,
-  formSchemaValidate,
-  mapSubmitPayloadUserEdit,
   TABLE_USER_COLUMN_VISIBLE,
   TABLE_USER_DOCUMENTS_CONFIG,
 } from '@constants/userDocument';
@@ -36,7 +31,6 @@ const UserDocumentsPage = observer(() => {
     loading,
     paginationDocuments,
     deleteDocument,
-    updateDocument,
     fetchDocuments,
     createDocument,
     signDocumentById,
@@ -134,16 +128,6 @@ const UserDocumentsPage = observer(() => {
               };
             },
             actionMore: {
-              onEdit: (props) => (
-                <ActionEdit
-                  formSchemaValidate={formSchemaValidate}
-                  onUpdate={updateDocument}
-                  mapSubmitPayload={mapSubmitPayloadUserEdit}
-                  dialogTexts={DIALOGS_USER.EDIT}
-                  configFields={CONFIG_FIELDS_USER_EDIT}
-                  {...props}
-                />
-              ),
               onSignByAuthor: (props) => (
                 <ActionSignByAuthor
                   onSignByAuthor={onSignByAuthor}
@@ -159,7 +143,10 @@ const UserDocumentsPage = observer(() => {
                 />
               ),
               onDelete: (props) => (
-                <ActionDelete onDelete={deleteDocument} {...props} />
+                <ActionDelete
+                  onDeleteWithNumberId={deleteDocument}
+                  {...props}
+                />
               ),
             },
           }}

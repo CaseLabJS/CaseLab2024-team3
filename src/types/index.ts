@@ -68,7 +68,7 @@ export type UserRegister = UserLogin & {
   lastName: string;
   password?: string;
   patronymic?: string;
-  roles: Role[];
+  roles: Role[] | string[];
 };
 
 export type ChangeUser = Omit<UserRegister, 'password'> & {

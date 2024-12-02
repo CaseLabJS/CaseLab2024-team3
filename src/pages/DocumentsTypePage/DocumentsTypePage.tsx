@@ -136,7 +136,10 @@ const DocumentsTypePage: FC<DocumentsTypePageProps> = observer(() => {
                 />
               ),
               onDelete: (props) => (
-                <ActionDelete onDelete={deleteDocumentType} {...props} />
+                <ActionDelete
+                  onDeleteWithNumberId={deleteDocumentType}
+                  {...props}
+                />
               ),
             },
             relatedData: documentAttributes,

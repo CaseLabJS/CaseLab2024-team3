@@ -22,19 +22,20 @@ import { Path, PathValue, useForm } from 'react-hook-form';
 import Select, { MultiValue } from 'react-select';
 import { z, ZodType } from 'zod';
 import { ActionDefaultData } from './types';
+import { UserRegister } from '@/types/index';
 
 interface ActionEditProps<TData, UData>
   extends ActionDefaultData<TData>,
     ButtonProps {
   dialogTexts: DialogTexts;
   configFields: FormSwitcherProps[];
-  onUpdate: (id: number | string, payload: UData) => Promise<void>;
+  onUpdate: (id: string, payload: UData) => Promise<void>;
   mapSubmitPayload: <TNewData>(payload: UData) => TNewData;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formSchemaValidate?: z.infer<ZodType<any, any, any>>;
 }
 
-export const ActionEdit = <TData extends { id: number }, UData>({
+export const ActionEdit = <TData extends UserRegister, UData>({
   dialogTexts,
   configFields,
   onUpdate,
@@ -52,7 +53,6 @@ export const ActionEdit = <TData extends { id: number }, UData>({
   const { btnTriggerText, dialogDescriptionText, dialogTitleText } =
     dialogTexts;
 
-  // Обработчик для изменения ролей
   const handleOnRolesChange = (
     newValue: MultiValue<{ label: string; value: string }>
   ) => {
@@ -65,13 +65,14 @@ export const ActionEdit = <TData extends { id: number }, UData>({
   };
 
   const onSubmit = async (payload: TData) => {
-    console.log('Form data before submit:', payload);
     const isArrayString =
       Array.isArray(payload.roles) &&
       payload.roles.every((role) => typeof role === 'string');
     console.log('isArray', isArrayString, payload.roles);
     if (!isArrayString) {
-      payload.roles = payload.roles?.map((role) => role.name);
+      payload.roles = payload.roles?.map((role) =>
+        typeof role === 'string' ? role : role.name
+      );
     }
     if (data?.id && !isEmpty(payload)) {
       await onUpdate(
@@ -79,7 +80,7 @@ export const ActionEdit = <TData extends { id: number }, UData>({
         mapSubmitPayload({
           ...payload,
           roles: payload.roles,
-        })
+        } as unknown as UData)
       );
       setIsDialogOpen(false);
     }

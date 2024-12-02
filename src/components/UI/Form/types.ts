@@ -4,6 +4,9 @@ export enum FieldTypes {
   Input = 'Input',
   Select = 'Select',
   Checkbox = 'checkbox',
+  Text = 'text',
+  Password = 'password',
+  Email = 'email',
 }
 
 export type BaseFieldProps = {

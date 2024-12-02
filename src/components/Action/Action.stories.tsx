@@ -60,13 +60,17 @@ const CONFIG_FIELDS = [
 export const ActionDelete: Story<typeof ActionDeleteTemplate> = {
   render: ActionDeleteTemplate,
   args: {
-    onDelete: async (id) => {
+    onDeleteWithStringId: async (id) => {
+      console.log(id);
+      return Promise.resolve();
+    },
+    onDeleteWithNumberId: async (id) => {
       console.log(id);
       return Promise.resolve();
     },
     data: {
       id: 1,
-    },
+    } as { id: string | number },
   },
 };
 
@@ -79,7 +83,14 @@ export const ActionEdit: Story<typeof ActionEditTemplate> = {
       return Promise.resolve();
     },
     data: {
-      id: 1,
+      id: '1',
+      email: 'email',
+      firstName: 'firstName',
+      lastName: 'lastName',
+      patronymic: 'patronymic',
+      login: 'login',
+      password: 'password',
+      roles: ['USER', 'ADMIN'],
     },
     mapSubmitPayload: mapSubmitPayloadUserEdit,
     dialogTexts: DIALOGS.EDIT,

@@ -11,8 +11,8 @@ import type { ColumnDef } from '@tanstack/react-table';
 
 export const defaultColumn = <T>(props: ColumnDef<T>): ColumnDef<T> => {
   return {
-    minSize: 200,
-    maxSize: 700,
+    minSize: 55,
+    maxSize: 800,
     enableSorting: false,
     ...props,
   };

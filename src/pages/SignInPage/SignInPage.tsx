@@ -1,3 +1,4 @@
+import { FieldTypes } from '@components/UI/Form/types';
 import { observer } from 'mobx-react-lite';
 import { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -39,12 +40,14 @@ const SignInPage: FC<SignInPageProps> = observer(() => {
       if (authStore.isAuth && authStore.status === STATUS.SUCCESS) {
         await usersStore.fetchUserData();
         const userRoles = usersStore.user?.roles || [];
-        const isAdmin = userRoles.some((role) => role.name === 'ADMIN');
-  
+        const isAdmin = userRoles.some(
+          (role) => typeof role === 'object' && role.name === 'ADMIN'
+        );
+
         navigate(isAdmin ? '/admin' : '/app', { replace: true });
       }
-    }
-    
+    };
+
     navigateToApp();
   }, [authStore.status, authStore.isAuth]);
 
@@ -62,10 +65,14 @@ const SignInPage: FC<SignInPageProps> = observer(() => {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-6"
               >
-                <BaseForm.FormFieldInput name="login" label="Логин" />
+                <BaseForm.FormFieldInput
+                  name="login"
+                  label="Логин"
+                  type={FieldTypes.Text}
+                />
                 <BaseForm.FormFieldInput
                   name="password"
-                  type="password"
+                  type={FieldTypes.Password}
                   label="Пароль"
                 />
                 <Button

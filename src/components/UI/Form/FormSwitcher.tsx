@@ -32,6 +32,7 @@ const MapComponent: Record<FieldTypes, FC<FormSwitcherProps>> = {
       </label>
     );
   },
+ 
 };
 
 export const FormSwitcher: FC<FormSwitcherProps> = (field) => {

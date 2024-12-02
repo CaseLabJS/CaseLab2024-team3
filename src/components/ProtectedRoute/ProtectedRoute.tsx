@@ -14,7 +14,7 @@ const MapComponent: Record<STATUS, (props: { role: string }) => JSX.Element> = {
   [STATUS.INITIAL]: () => <ProtectedRouteLoading />,
   [STATUS.LOADING]: () => <ProtectedRouteLoading />,
   [STATUS.SUCCESS]: (props) => <ProtectedRouteSuccess {...props} />,
-  [STATUS.ERROR]: () => <Navigate to={ROUTE_CONSTANTS.SIGN_IN} />
+  [STATUS.ERROR]: () => <Navigate to={ROUTE_CONSTANTS.SIGN_IN} />,
 };
 
 const ProtectedRouteLoading = () => {
@@ -35,7 +35,9 @@ const ProtectedRouteSuccess: FC<{ role: string }> = observer(({ role }) => {
         if (
           usersStore.user &&
           Array.isArray(usersStore.user.roles) &&
-          usersStore.user.roles.some((roleUser) => roleUser.name === role)
+          usersStore.user.roles.some(
+            (roleUser) => typeof roleUser === 'object' && roleUser.name === role
+          )
         )
           return <Outlet />;
         return <Navigate to={ROUTE_CONSTANTS.NOT_FOUND} />;
@@ -48,7 +50,6 @@ const ProtectedRouteSuccess: FC<{ role: string }> = observer(({ role }) => {
     return <Navigate to={ROUTE_CONSTANTS.SIGN_IN} />;
   }
 });
-
 
 const ProtectedRoute: FC<ProtectedRouteProps> = observer(({ role }) => {
   const Component = MapComponent[authStore.status] ?? null;

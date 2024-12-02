@@ -36,7 +36,11 @@ export const AppSidebar: FC<SidebarProps> = observer(
     );
 
     useEffect(() => {
-      if (usersStore.user?.roles.some((role) => role.name === 'USER')) {
+      if (
+        usersStore.user?.roles.some(
+          (role) => typeof role === 'object' && role.name === 'USER'
+        )
+      ) {
         void documentsStore.fetchDocuments(0, 100, 'owner');
         void documentsStore.fetchDocumentsForSign(0, 100, 'after_signer');
         void documentsStore.fetchDocumentsForSign(0, 100, 'before_signer');

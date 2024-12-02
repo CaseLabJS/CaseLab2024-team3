@@ -11,6 +11,7 @@ import {
   TABLE_USERS_LIST_CONFIG,
   mapSubmitPayloadUserEdit,
 } from '@constants/usersListTable';
+import { UserRegister } from '@/types/index';
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
 import { NumberParam, useQueryParams } from 'use-query-params';
@@ -20,18 +21,18 @@ const UsersAdminPage = observer(() => {
     page: NumberParam,
     limit: NumberParam,
   });
-  const { updateUser, deleteUser, fetchUsers, users, isLoading, createUser } =
-    usersStore;
+  const {
+    updateUser,
+    deleteUser,
+    fetchUsers,
+    users,
+    isLoading,
+    pagination,
+    createUser,
+  } = usersStore;
   useEffect(() => {
-    void usersStore.fetchUsers(
-      query.page ?? 0, //+ 1
-      query.limit ?? 20
-    );
-  }, [query.limit, query.page]);
-
-  useEffect(() => {
-    void fetchUsers(0, 100);
-  }, [fetchUsers]);
+    void fetchUsers(query.page ?? 0, query.limit ?? 20);
+  }, [query.limit, query.page, fetchUsers]);
 
   if (isLoading) {
     return (
@@ -42,7 +43,7 @@ const UsersAdminPage = observer(() => {
   }
 
   const refreshTableData = () => {
-    usersStore.fetchUsers();
+    void fetchUsers();
   };
   return (
     <div className="p-10 flex flex-col h-layout gap-4 overflow-y-auto">
@@ -62,7 +63,7 @@ const UsersAdminPage = observer(() => {
           <section className="flex-grow overflow-auto flex py-5">
             <DataTable2
               columns={TABLE_USERS_LIST_CONFIG}
-              data={users}
+              data={users as UserRegister[]}
               initialState={{
                 page: query.page!,
                 limit: query.limit!,
@@ -84,7 +85,7 @@ const UsersAdminPage = observer(() => {
               }}
               meta={{
                 pagination: {
-                  //totalPages: Pagination.totalPages,
+                  totalPages: pagination?.totalPages,
                 },
                 actionMore: {
                   onEdit: (props) => (
@@ -97,7 +98,10 @@ const UsersAdminPage = observer(() => {
                     />
                   ),
                   onDelete: (props) => (
-                    <ActionDelete onDelete={deleteUser} {...props} />
+                    <ActionDelete
+                      onDeleteWithStringId={deleteUser}
+                      {...props}
+                    />
                   ),
                 },
               }}

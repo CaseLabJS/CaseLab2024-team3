@@ -40,6 +40,7 @@ export const TABLE_USERS_LIST_CONFIG: ColumnDef<UserRegister>[] = [
   defaultColumn({
     accessorKey: 'sequenceNumber',
     header: '№',
+    size: 55,
     cell: ({ row }) => row.index + 1,
   }),
   defaultColumn({
@@ -68,7 +69,9 @@ export const TABLE_USERS_LIST_CONFIG: ColumnDef<UserRegister>[] = [
     cell: ({ row }) => {
       const data = row.original;
       if (Array.isArray(data.roles)) {
-        return data.roles.map((role) => role.name).join(', ');
+        return data.roles
+          .map((role) => (typeof role === 'object' ? role.name : role))
+          .join(', ');
       }
       return 'Нет роли';
     },
@@ -156,10 +159,10 @@ export const EMPTY_USER_ATTRIBUTE: UserRegister = {
   email: '',
   login: '',
   password: '',
-  roles: [] as Role[],
+  roles: [] as Role[] | string[],
 };
 
-type Role = {
+export type Role = {
   id: number;
   name: string;
 };
