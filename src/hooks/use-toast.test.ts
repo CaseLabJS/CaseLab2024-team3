@@ -18,11 +18,8 @@ describe('useToast', () => {
   it('Следует обновить тост', () => {
     const { result } = renderHook(() => useToast());
 
-    let toastId: string;
-
     act(() => {
       const newToast = result.current.toast({ title: 'Test Toast' });
-      toastId = newToast.id;
       newToast.update({
         title: 'Updated Toast',
         id: '',
@@ -44,7 +41,7 @@ describe('useToast', () => {
       newToast.dismiss();
     });
 
-    const toastItem = result.current.toasts.find((item) => (item.id = toastId));
+    const toastItem = result.current.toasts.find((item) => item.id === toastId);
     expect(result.current.toasts).toHaveLength(1);
     expect(toastItem?.open).not.toBeUndefined();
     expect(toastItem?.open).toBe(false);

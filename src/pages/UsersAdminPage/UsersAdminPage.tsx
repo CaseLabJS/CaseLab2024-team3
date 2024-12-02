@@ -1,17 +1,19 @@
 import { usersStore } from '@/stores';
+import { UserRegister } from '@/types/index';
 import { ActionDelete, ActionEdit } from '@components/Action';
 import { CreateUserForm } from '@components/CreateUser/CreateUserForm';
 import { CreateUser } from '@components/CreateUser/createUsersForm.types';
 import { DataTable2 } from '@components/DataTable2';
 import { Spinner } from '@components/UI';
 import UpdatePasswordDialog from '@components/UpdatePasswordDialog/UpdatePasswordDialog';
-import { DIALOGS_VALUES, EMPTY_USER_ATTRIBUTE } from '@constants/admin';
+import { DIALOGS_USER } from '@constants/updateUser';
+
 import {
   CONFIG_FIELDS_USER_EDIT,
+  EMPTY_USER_ATTRIBUTE,
   TABLE_USERS_LIST_CONFIG,
   mapSubmitPayloadUserEdit,
 } from '@constants/usersListTable';
-import { UserRegister } from '@/types/index';
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
 import { NumberParam, useQueryParams } from 'use-query-params';
@@ -52,7 +54,7 @@ const UsersAdminPage = observer(() => {
         <>
           <div style={{ display: 'flex', gap: '30px' }}>
             <CreateUserForm
-              dialogTexts={DIALOGS_VALUES.userCreate}
+              dialogTexts={DIALOGS_USER.CREATE}
               data={EMPTY_USER_ATTRIBUTE}
               onSave={createUser as (data: CreateUser) => Promise<void>}
               updateTableData={refreshTableData}
@@ -92,7 +94,7 @@ const UsersAdminPage = observer(() => {
                     <ActionEdit
                       onUpdate={updateUser}
                       mapSubmitPayload={mapSubmitPayloadUserEdit}
-                      dialogTexts={DIALOGS_VALUES.userEdit}
+                      dialogTexts={DIALOGS_USER.EDIT}
                       configFields={CONFIG_FIELDS_USER_EDIT}
                       {...props}
                     />

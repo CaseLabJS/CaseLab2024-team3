@@ -1,4 +1,3 @@
-import { FieldTypes } from '@components/UI/Form/types';
 import { observer } from 'mobx-react-lite';
 import { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -68,11 +67,11 @@ const SignInPage: FC<SignInPageProps> = observer(() => {
                 <BaseForm.FormFieldInput
                   name="login"
                   label="Логин"
-                  type={FieldTypes.Text}
+                  type="text"
                 />
                 <BaseForm.FormFieldInput
                   name="password"
-                  type={FieldTypes.Password}
+                  type="password"
                   label="Пароль"
                 />
                 <Button

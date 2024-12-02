@@ -31,6 +31,12 @@ export const DIALOGS_USER: Record<string, DialogTexts> = {
       'Здесь можно изменить данные пользователя. После внесения изменений нажмите "Сохранить".',
     btnTriggerText: BUTTONS_NAMES.edit,
   },
+  CREATE: {
+    dialogTitleText: 'Создание нового пользователя',
+    dialogDescriptionText:
+      'Для создания нового пользователя необходимо заполнить поля ниже:',
+    btnTriggerText: 'Создать пользователя',
+  },
 };
 
 export const EMPTY_USER_ATTRIBUTE: UserRegister = {

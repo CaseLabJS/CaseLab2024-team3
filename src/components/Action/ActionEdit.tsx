@@ -68,7 +68,7 @@ export const ActionEdit = <TData extends UserRegister, UData>({
     const isArrayString =
       Array.isArray(payload.roles) &&
       payload.roles.every((role) => typeof role === 'string');
-    console.log('isArray', isArrayString, payload.roles);
+
     if (!isArrayString) {
       payload.roles = payload.roles?.map((role) =>
         typeof role === 'string' ? role : role.name

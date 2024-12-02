@@ -13,8 +13,7 @@ import {
 import { useState } from 'react';
 import Select, { MultiValue } from 'react-select';
 import { CreateUser, CreateUserProps } from './createUsersForm.types';
-
-import { FIELD_LABELS, ROLES } from '@constants/admin';
+import { FIELD_LABELS, ROLES } from '@constants/usersListTable';
 
 const DEFAULT_DIALOG_FORM_WIDTH = 625;
 
