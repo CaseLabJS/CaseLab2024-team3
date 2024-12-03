@@ -12,7 +12,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { NumberParam, useQueryParams } from 'use-query-params';
 import { DocumentState } from '@/types/state';
-
+import { userMenuItems } from '@constants/sideBar';
 
 const UserAwaitingSignPage = observer(() => {
   const navigate = useNavigate();
@@ -20,8 +20,7 @@ const UserAwaitingSignPage = observer(() => {
     page: NumberParam,
     limit: NumberParam,
   });
-  
-  // eslint-disable-next-line @typescript-eslint/unbound-method
+
   const {
     documentsForSign,
     loading,
@@ -45,8 +44,9 @@ const UserAwaitingSignPage = observer(() => {
   }
 
   return (
-    <div className="p-10 flex flex-col h-[calc(100vh-130px)] overflow-y-auto">
-      <section className="flex-grow overflow-auto flex py-5">
+    <div className="w-full p-4 flex flex-col items-center h-[calc(100vh-130px)] overflow-y-auto">
+      <section className="flex-grow flex-col overflow-auto flex py-5">
+        <h1 className="self-start text-4xl pb-5">{userMenuItems[2].title}</h1>
         <DataTable2
           columns={TABLE_SENT_FOR_USER_DOCUMENTS_CONFIG}
           data={documentsForSign}

@@ -82,21 +82,21 @@ export class VotingStore implements VotingStoreProps {
     }
   }
 
-  async createVoting(data: Voting) {
+  createVoting = (data: Voting) => {
     return this._responseHandler(
       () => ApiDocumentController.startVoting(data),
       () => {
         toast(TOASTS.SUCCESS_SEND_FOR_VOTING_DOCUMENT);
       }
     );
-  }
+  };
 
-  async getVotingResult(documentId: number) {
+  getVotingResult = (documentId: number) => {
     return this._responseHandler(
       () => ApiDocumentController.getVotingResult(documentId),
       (response) => (this._votingResult = response.data)
     );
-  }
+  };
 
   fetchUsers = async (page?: number, size?: number) => {
     return await this._responseHandler(

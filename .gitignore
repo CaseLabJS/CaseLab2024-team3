@@ -25,3 +25,5 @@ dist-ssr
 
 *storybook.log
 storybook-static
+tsconfig.app.tsbuildinfo
+tsconfig.node.tsbuildinfo

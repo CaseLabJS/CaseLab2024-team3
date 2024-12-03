@@ -21,7 +21,7 @@ import {
 import { DocumentsStoreProps } from './types';
 
 export class DocumentsStore implements DocumentsStoreProps {
-  private _pagination_docuuments: Pagination | null = null;
+  private _pagination_documents: Pagination | null = null;
   private _document: CreateDocumentResponse | null = null;
   private _documents: CreateDocumentResponse[] = [];
 
@@ -41,7 +41,7 @@ export class DocumentsStore implements DocumentsStoreProps {
   }
 
   get paginationDocuments() {
-    return this._pagination_docuuments;
+    return this._pagination_documents;
   }
 
   get paginationDocumentsForSign() {
@@ -144,7 +144,7 @@ export class DocumentsStore implements DocumentsStoreProps {
 
         if (initiator === 'owner') {
           this._documents = [...content];
-          this._pagination_docuuments = res;
+          this._pagination_documents = res;
         } else {
           this._documentsForSign = [...content];
           this._pagination_documentsForSign = res;
@@ -242,7 +242,7 @@ export class DocumentsStore implements DocumentsStoreProps {
     );
   };
 
-  async downloadDocument(url: string) {
+  downloadDocument = (url: string) => {
     return this._responseHandler(
       () => ApiDocumentController.downloadDocument(url),
       (response) => {
@@ -252,16 +252,16 @@ export class DocumentsStore implements DocumentsStoreProps {
         link.click();
       }
     );
-  }
+  };
 
-  async fetchAttributes(page?: number, size?: number) {
+  fetchAttributes = (page?: number, size?: number) => {
     return this._responseHandler(
       () => ApiAttributeController.getAttributes(page, size),
       (response) => {
         this._attributes = [...response.data.content];
       }
     );
-  }
+  };
 }
 
 export default new DocumentsStore();

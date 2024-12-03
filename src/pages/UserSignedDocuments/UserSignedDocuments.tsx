@@ -7,6 +7,7 @@ import { TABLE_USER_COLUMN_VISIBLE } from '@constants/userDocument';
 import { useNavigate } from 'react-router-dom';
 import { NumberParam, useQueryParams } from 'use-query-params';
 import { TABLE_SENT_FOR_USER_DOCUMENTS_CONFIG } from '@constants/sentForUserDocument';
+import { userMenuItems } from '@constants/sideBar';
 
 const UserSignedDocuments = observer(() => {
   const navigate = useNavigate();
@@ -15,7 +16,6 @@ const UserSignedDocuments = observer(() => {
     limit: NumberParam,
   });
 
-  // eslint-disable-next-line @typescript-eslint/unbound-method
   const {
     documentsAfterSign,
     loading,
@@ -44,8 +44,9 @@ const UserSignedDocuments = observer(() => {
   }
 
   return (
-    <div className="p-10 flex flex-col h-[calc(100vh-130px)] overflow-y-auto">
-      <section className="flex-grow overflow-auto flex py-5">
+    <div className="w-full p-4 flex flex-col items-center h-[calc(100vh-130px)] overflow-y-auto">
+      <section className="flex-grow flex-col overflow-auto flex py-5">
+        <h1 className="self-start text-4xl pb-5">{userMenuItems[3].title}</h1>
         <DataTable2
           columns={TABLE_SENT_FOR_USER_DOCUMENTS_CONFIG}
           data={documentsAfterSign}
