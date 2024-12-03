@@ -36,6 +36,10 @@ export const AppSidebar: FC<SidebarProps> = observer(
     );
 
     useEffect(() => {
+      setActiveName(menuItems.find((item) => item.url === lastPart)?.title);
+    }, [lastPart, menuItems]);
+
+    useEffect(() => {
       if (
         usersStore.user?.roles.some(
           (role) => typeof role === 'object' && role.name === 'USER'

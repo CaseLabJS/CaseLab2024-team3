@@ -41,7 +41,7 @@ const DocumentsTypePage: FC<DocumentsTypePageProps> = observer(() => {
   } = documentTypesStore;
 
   useEffect(() => {
-    void fetchDocTypesAndAttributes(page ?? 0, limit ?? 10);
+    void fetchDocTypesAndAttributes(page ?? 0, limit ?? 20);
   }, [fetchDocTypesAndAttributes, page, limit]);
 
   if (isLoading) {
