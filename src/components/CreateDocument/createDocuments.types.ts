@@ -17,7 +17,6 @@ export interface CreateDocumentProps<
   data: TData;
   onSave?: {
     (data: TData): Promise<void>;
-    //(id: number, data: Partial<TData>): Promise<void>;
   };
   documentTypes?: TType[];
   documentAttributes?: TAttributes[];
