@@ -19,6 +19,6 @@ export interface AttributesStoreProps {
   fetchAttributeById: (id: number) => Promise<void>;
   fetchAttributes: (page?: number, size?: number) => Promise<void>;
   createAttribute: (attribute: CreateAttribute) => Promise<void>;
-  updateAttribute: (attribute: CreateAttribute, id: number) => Promise<void>;
+  updateAttribute: (id: number, attribute: CreateAttribute) => Promise<void>;
   deleteAttribute: (id: number) => Promise<void>;
 }

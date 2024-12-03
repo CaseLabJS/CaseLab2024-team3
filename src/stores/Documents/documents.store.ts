@@ -9,21 +9,21 @@ import { TOASTS } from '@constants/toast';
 import { AxiosError } from 'axios';
 import { makeAutoObservable, runInAction } from 'mobx';
 import {
+  ChangeAttribute,
   ChangeDocument,
   CreateDocument,
+  CreateDocumentResponse,
   DocumentState,
   GetDocument,
   Initiator,
   Pagination,
-  ChangeAttribute,
-  CreateDocumentResponse,
-} from '@/types';
+} from 'src/types';
 import { DocumentsStoreProps } from './types';
 
 export class DocumentsStore implements DocumentsStoreProps {
   private _pagination_documents: Pagination | null = null;
   private _document: CreateDocumentResponse | null = null;
-  private _documents: CreateDocumentResponse[] = [];
+  private _documents: GetDocument[] = [];
 
   private _pagination_documentsForSign: Pagination | null = null;
   private _documentsForSign: GetDocument[] = [];
@@ -156,8 +156,10 @@ export class DocumentsStore implements DocumentsStoreProps {
   createDocument = (document: CreateDocument) => {
     return this._responseHandler(
       () => ApiDocumentController.createDocument(document),
-      (response) => {
-        this._documents = [...this._documents, response.data];
+      ({ data }) => {
+        const newDoc = { ...data, id: data.documentId } as GetDocument;
+
+        this._documents = [...this._documents, newDoc];
         toast(TOASTS.SUCCESS_CREATE_DOCUMENT);
       }
     );
@@ -166,10 +168,11 @@ export class DocumentsStore implements DocumentsStoreProps {
   updateDocument = (id: number, document: ChangeDocument) => {
     return this._responseHandler(
       () => ApiDocumentController.updateDocumentById(id, document),
-      (response) => {
+      ({ data }) => {
         const index = this._documents.findIndex((doc) => doc.id === id);
         if (index !== -1) {
-          this._documents[index] = response.data;
+          const newDoc = { ...data, id: data.documentId } as GetDocument;
+          this._documents[index] = newDoc;
         }
         toast(TOASTS.SUCCESS_UPDATE_DOCUMENT);
       }

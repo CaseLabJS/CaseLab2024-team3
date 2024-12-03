@@ -1,11 +1,13 @@
-import { DocAttributesAdminPage } from '@pages/DocAttributesAdminPage';
-import { DocTypesAdminPage } from '@pages/DocTypesAdminPage';
+import { AdminIndexPage } from '@pages/AdminIndexPage';
+import { AttributesPage } from '@pages/AttributesPage';
 import { DocumentPage } from '@pages/DocumentPage';
+import { DocumentsTypePage } from '@pages/DocumentsTypePage';
 import { UserAwaitingSignPage } from '@pages/UserAwaitingSignPage';
 import { UserDashboardIndexPage } from '@pages/UserDashboardIndexPage';
 import UserDocumentsPage from '@pages/UserDocumentsPage/UserDocumentsPage';
 import { UsersAdminPage } from '@pages/UsersAdminPage';
 import { UserSentForSignPage } from '@pages/UserSentForSignPage';
+import { UserSignedDocuments } from '@pages/UserSignedDocuments';
 import { Suspense } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Layout from 'src/components/Layout/Layout';
@@ -13,12 +15,10 @@ import ProtectedRoute from 'src/components/ProtectedRoute/ProtectedRoute';
 import { Spinner } from 'src/components/UI';
 import { ROUTE_CONSTANTS } from 'src/constants/routes';
 import { AdminPage } from 'src/pages/AdminPage';
-import { AdminIndexPage } from '@pages/AdminIndexPage';
 import NotFoundPage from 'src/pages/NotFoundPage';
 import { SignInPage } from 'src/pages/SignInPage';
 import { SignUpPage } from 'src/pages/SignUpPage';
 import { UserDashboardPage } from 'src/pages/UserDashboardPage';
-import { UserSignedDocuments } from '@pages/UserSignedDocuments';
 
 const AppRouter = () => {
   return (
@@ -67,7 +67,8 @@ const AppRouter = () => {
               <Route
                 path={ROUTE_CONSTANTS.USER_AFTER_SIGN}
                 element={<UserSignedDocuments />}
-              />U
+              />
+              U
             </Route>
           </Route>
           <Route element={<ProtectedRoute role="ADMIN" />}>
@@ -82,11 +83,11 @@ const AppRouter = () => {
               />
               <Route
                 path={ROUTE_CONSTANTS.DOC_TYPES_ADMIN}
-                element={<DocTypesAdminPage />}
+                element={<DocumentsTypePage type="doctype" />}
               />
               <Route
                 path={ROUTE_CONSTANTS.DOC_ATTRIBUTES_ADMIN}
-                element={<DocAttributesAdminPage />}
+                element={<AttributesPage type="attribute" />}
               />
             </Route>
           </Route>

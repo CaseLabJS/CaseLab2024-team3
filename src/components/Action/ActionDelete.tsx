@@ -11,21 +11,34 @@ import {
   Button,
   ButtonProps,
 } from '@components/UI';
-import { ActionDefaultData } from './types';
-import { isEmpty } from '@/lib';
 import { Trash } from 'lucide-react';
+import { ActionDefaultData } from './types';
 
 interface ActionDeleteProps<TData>
   extends ActionDefaultData<TData>,
     ButtonProps {
-  onDelete: (id: number) => Promise<void>;
+  onDeleteWithStringId?: (id: string) => Promise<void>;
+  onDeleteWithNumberId?: (id: number) => Promise<void>;
 }
 
-export const ActionDelete = <TData extends { id: number }>({
-  onDelete,
+export const ActionDelete = <TData,>({
+  onDeleteWithNumberId,
+  onDeleteWithStringId,
   data,
   ...props
 }: ActionDeleteProps<TData>) => {
+  const handleClick = () => {
+    const id = typeof data === 'object' && data && 'id' in data && data?.id;
+
+    if (typeof id === 'number' && onDeleteWithNumberId) {
+      onDeleteWithNumberId(id);
+    } else if (typeof id === 'string' && onDeleteWithStringId) {
+      onDeleteWithStringId(id);
+    } else {
+      console.warn('Missing or invalid "id" property in data');
+    }
+  };
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -48,12 +61,7 @@ export const ActionDelete = <TData extends { id: number }>({
           </AlertDialogCancel>
           <AlertDialogAction
             className="hover:opacity-75 mb-3 bg-bg-header hover:bg-bg-header"
-            onClick={() => {
-              console.log(data);
-              if (!isEmpty(data) && data?.id) {
-                onDelete(data.id);
-              }
-            }}
+            onClick={handleClick}
           >
             Продолжить
           </AlertDialogAction>

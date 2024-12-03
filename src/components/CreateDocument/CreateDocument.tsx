@@ -11,12 +11,15 @@ import {
   Label,
 } from '@/components/UI';
 
+import { fieldLabels } from '@constants/createDocument';
 import { useMemo, useState } from 'react';
 import Select from 'react-select';
+import {
+  ChangeAttribute,
+  ChangeDocumentType,
+  CreateDocument,
+} from 'src/types/index';
 import { CreateDocumentProps, OptionItem } from './createDocuments.types';
-import { ChangeAttribute, ChangeDocumentType, CreateDocument } from 'src/types/index';
-import { calculateDiff } from '@components/AdminDialog/adminDialog.utils';
-import { fieldLabels } from '@constants/createDocument';
 
 const DEFAULT_DIALOG_FORM_WIDTH = 625;
 
@@ -27,7 +30,11 @@ export const CreateDocumentForm = ({
   dialogTexts,
   onSave,
   updateTableData,
-}: CreateDocumentProps<CreateDocument, ChangeDocumentType, ChangeAttribute>) => {
+}: CreateDocumentProps<
+  CreateDocument,
+  ChangeDocumentType,
+  ChangeAttribute
+>) => {
   const [inputs, setInputs] = useState(data);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
@@ -116,19 +123,7 @@ export const CreateDocumentForm = ({
       base64Data: base64str,
     };
 
-    const id = 'id' in data ? data.id : undefined;
-    const patchData = calculateDiff(data, newData);
-
-    if (typeof id === 'number' && Object.keys(patchData).length > 0) {
-      onSave?.(id, patchData as Partial<CreateDocument>)
-        .then(() => {
-          setIsDialogOpen(false);
-          updateTableData?.();
-        })
-        .catch((error) => {
-          console.error('Ошибка при сохранении', error);
-        });
-    } else if (!id) {
+    if (onSave) {
       onSave?.(newData)
         .then(() => {
           setIsDialogOpen(false);
@@ -147,8 +142,10 @@ export const CreateDocumentForm = ({
       const reader = new FileReader();
       reader.onload = () => {
         const arrayBuffer = reader.result as ArrayBuffer;
-        const binary = new Uint8Array(arrayBuffer)
-          .reduce((acc, byte) => acc + String.fromCharCode(byte), '');
+        const binary = new Uint8Array(arrayBuffer).reduce(
+          (acc, byte) => acc + String.fromCharCode(byte),
+          ''
+        );
         const base64 = btoa(binary);
         resolve(base64);
         setBase64str(base64);
@@ -158,7 +155,6 @@ export const CreateDocumentForm = ({
       reader.readAsArrayBuffer(file);
     });
   }
-
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -268,7 +264,8 @@ export const CreateDocumentForm = ({
                               const file = target?.files?.[0];
                               if (file) {
                                 try {
-                                  const base64 = await convertFileToBase64(file);
+                                  const base64 =
+                                    await convertFileToBase64(file);
                                   setInputs((prev) => ({
                                     ...prev,
                                     base64Data: base64,

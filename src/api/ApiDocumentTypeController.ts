@@ -45,8 +45,8 @@ class ApiDocumentTypeController {
   }
 
   public static async updateDocumentTypeById(
-    id: number,
-    data: Partial<CreateDocumentType>
+    data: Partial<CreateDocumentType>,
+    id: number
   ): Promise<AxiosResponse<ChangeDocumentType>> {
     return api.patch(`/document_type/${id}`, data);
   }

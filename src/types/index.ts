@@ -8,7 +8,7 @@ export * from './status';
 
 // ____________________ Pagination start ____________________
 export type Pagination = {
-  page: number;
+  number: number;
   size: number;
   totalPages: number;
   totalElements: number;
@@ -66,13 +66,15 @@ export type UserRegister = UserLogin & {
   email: string;
   firstName: string;
   lastName: string;
+  password?: string;
   patronymic?: string;
-  roles: Role[];
+  roles: Role[] | string[];
 };
 
 export type ChangeUser = Omit<UserRegister, 'password'> & {
   // GET, PUT
   id: string;
+  password?: string;
 };
 
 export type GetUsersResponse = Pagination & {

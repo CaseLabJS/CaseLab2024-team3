@@ -1,7 +1,7 @@
 import authStore from '@/stores/Auth/auth.store';
 import ApiUserController from '@api/ApiUserController';
 import { makeAutoObservable, runInAction } from 'mobx';
-import { ChangeUser, UserRegister } from '@/types/index';
+import { ChangeUser, Pagination, UserRegister } from '@/types/index';
 import { STATUS } from '@/types/status';
 import { toast } from '@/hooks/use-toast';
 import {
@@ -18,6 +18,7 @@ export class UsersStore implements UsersStoreProps {
   private _status = STATUS.INITIAL;
   private _isLoading: boolean = false;
   private _error: string | null = null;
+  private _pagination: Pagination | null = null;
   constructor() {
     makeAutoObservable(this, undefined, { autoBind: true });
   }
@@ -40,6 +41,10 @@ export class UsersStore implements UsersStoreProps {
 
   get error() {
     return this._error;
+  }
+
+  get pagination() {
+    return this._pagination;
   }
 
   private async _responseHandler<T>(
@@ -80,18 +85,22 @@ export class UsersStore implements UsersStoreProps {
     }
   }
 
-  fetchUserById(id: string | number) {
+  fetchUserById = (id: string) => {
     return this._responseHandler(
-      () => ApiUserController.getUserById(id as string),
+      () => ApiUserController.getUserById(id),
       (response) =>
         (this._user = response.data.id ? (response.data as ChangeUser) : null)
     );
-  }
+  };
 
   fetchUsers = async (page?: number, size?: number) => {
     return await this._responseHandler(
       () => ApiUserController.getUsers(page, size),
-      (response) => (this._users = response.data.content)
+      (response) => {
+        const { content, ...res } = response.data;
+        this._pagination = res;
+        this._users = [...content];
+      }
     );
   };
 
@@ -105,9 +114,9 @@ export class UsersStore implements UsersStoreProps {
     );
   };
 
-  updateUser = async (user: UserRegister, id: string | number) => {
+  updateUser = async (id: string, user: UserRegister) => {
     return this._responseHandler(
-      () => ApiUserController.updateUserById(user, id as string),
+      () => ApiUserController.updateUserById(id, user),
       (response) => {
         const index = this._users.findIndex((u) => u.id === id);
         if (index !== -1) {
@@ -120,9 +129,9 @@ export class UsersStore implements UsersStoreProps {
     );
   };
 
-  deleteUser = async (id: string | number) => {
+  deleteUser = async (id: string) => {
     return this._responseHandler(
-      () => ApiUserController.deleteUserById(id as string),
+      () => ApiUserController.deleteUserById(id),
       () => {
         this._users = this._users.filter((u) => u.id !== id);
         toast(TOASTS.SUCCESS_DELETE_USER);
@@ -130,7 +139,7 @@ export class UsersStore implements UsersStoreProps {
     );
   };
 
-  async fetchUserData() {
+  fetchUserData = async () => {
     return this._responseHandler(
       async () => {
         const userId = authStore.userId;
@@ -143,7 +152,7 @@ export class UsersStore implements UsersStoreProps {
         this._user = response.data;
       }
     );
-  }
+  };
 
   //метод для обновления пароля от роли администратора
   updateUserPasswordForAdmin = (id: string, password: string) => {

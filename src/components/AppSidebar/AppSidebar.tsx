@@ -18,7 +18,7 @@ interface MenuItem {
   title: string;
   url: string;
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-  id: number;
+  id?: number;
 }
 
 interface SidebarProps {
@@ -36,7 +36,15 @@ export const AppSidebar: FC<SidebarProps> = observer(
     );
 
     useEffect(() => {
-      if (usersStore.user?.roles.some((role) => role.name === 'USER')) {
+      setActiveName(menuItems.find((item) => item.url === lastPart)?.title);
+    }, [lastPart, menuItems]);
+
+    useEffect(() => {
+      if (
+        usersStore.user?.roles.some(
+          (role) => typeof role === 'object' && role.name === 'USER'
+        )
+      ) {
         void documentsStore.fetchDocuments(0, 100, 'owner');
         void documentsStore.fetchDocumentsForSign(0, 100, 'after_signer');
         void documentsStore.fetchDocumentsForSign(0, 100, 'before_signer');

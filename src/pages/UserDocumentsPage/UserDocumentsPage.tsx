@@ -1,28 +1,23 @@
 import { documentsStore, documentTypesStore, usersStore } from '@/stores';
-import { CreateDocumentForm } from '@components/CreateDocument/CreateDocument';
-import { Spinner } from '@components/UI';
-import { DIALOGS_VALUES, EMPTY_DOC } from '@constants/createDocument';
-import { observer } from 'mobx-react-lite';
-import { useEffect } from 'react';
+import { DocumentState } from '@/types/state';
 import {
   ActionDelete,
-  ActionEdit,
   ActionSendForSign,
   ActionSignByAuthor,
 } from '@components/Action';
+import { CreateDocumentForm } from '@components/CreateDocument/CreateDocument';
 import { DataTable2 } from '@components/DataTable2';
+import { Spinner } from '@components/UI';
+import { DIALOGS_VALUES, EMPTY_DOC } from '@constants/createDocument';
+import { userMenuItems } from '@constants/sideBar';
 import {
-  CONFIG_FIELDS_USER_EDIT,
-  DIALOGS_USER,
-  formSchemaValidate,
-  mapSubmitPayloadUserEdit,
   TABLE_USER_COLUMN_VISIBLE,
   TABLE_USER_DOCUMENTS_CONFIG,
 } from '@constants/userDocument';
+import { observer } from 'mobx-react-lite';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NumberParam, useQueryParams } from 'use-query-params';
-import { DocumentState } from '@/types/state';
-import { userMenuItems } from '@constants/sideBar';
 
 const UserDocumentsPage = observer(() => {
   const navigate = useNavigate();
@@ -36,7 +31,6 @@ const UserDocumentsPage = observer(() => {
     loading,
     paginationDocuments,
     deleteDocument,
-    updateDocument,
     fetchDocuments,
     createDocument,
     signDocumentById,
@@ -44,10 +38,7 @@ const UserDocumentsPage = observer(() => {
   } = documentsStore;
 
   useEffect(() => {
-    void documentsStore.fetchDocuments(
-      query.page ?? 0, //+ 1
-      query.limit ?? 20
-    );
+    void documentsStore.fetchDocuments(query.page ?? 0, query.limit ?? 20);
   }, [query.limit, query.page]);
 
   const {
@@ -61,10 +52,7 @@ const UserDocumentsPage = observer(() => {
 
   useEffect(() => {
     fetchDocTypesAndAttributes(0, 100);
-    fetchDocuments(
-      query.page ?? 0, //+ 1
-      query.limit ?? 20
-    );
+    fetchDocuments(query.page ?? 0, query.limit ?? 20);
     fetchUsers(0, 100);
   }, []);
 
@@ -140,16 +128,6 @@ const UserDocumentsPage = observer(() => {
               };
             },
             actionMore: {
-              onEdit: (props) => (
-                <ActionEdit
-                  formSchemaValidate={formSchemaValidate}
-                  onUpdate={updateDocument}
-                  mapSubmitPayload={mapSubmitPayloadUserEdit}
-                  dialogTexts={DIALOGS_USER.EDIT}
-                  configFields={CONFIG_FIELDS_USER_EDIT}
-                  {...props}
-                />
-              ),
               onSignByAuthor: (props) => (
                 <ActionSignByAuthor
                   onSignByAuthor={onSignByAuthor}
@@ -165,7 +143,10 @@ const UserDocumentsPage = observer(() => {
                 />
               ),
               onDelete: (props) => (
-                <ActionDelete onDelete={deleteDocument} {...props} />
+                <ActionDelete
+                  onDeleteWithNumberId={deleteDocument}
+                  {...props}
+                />
               ),
             },
           }}

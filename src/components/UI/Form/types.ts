@@ -1,5 +1,9 @@
+import { Props as SelectProps } from 'react-select';
+
 export enum FieldTypes {
   Input = 'Input',
+  Select = 'Select',
+  Checkbox = 'checkbox',
 }
 
 export type BaseFieldProps = {
@@ -11,4 +15,18 @@ export type BaseFieldProps = {
   required?: boolean;
 };
 
-export type FormSwitcherProps = BaseFieldProps & { type: FieldTypes };
+export type FormSwitcherProps = {
+  baseFieldProps: BaseFieldProps & {
+    type: FieldTypes;
+  };
+  selectFieldProps?: SelectProps;
+  checkboxFieldProps?: {
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    checked: boolean;
+  };
+};
+
+export interface OptionItem {
+  value: string;
+  label: string;
+}

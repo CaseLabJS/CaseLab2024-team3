@@ -11,11 +11,13 @@ import {
   ChangeAttribute,
   ChangeDocumentType,
   CreateAttribute,
+  Pagination,
 } from 'src/types';
 import { AttributesStoreProps } from './types';
 import ApiDocumentTypeController from '@api/ApiDocumentTypeController';
 
 export class AttributesStore implements AttributesStoreProps {
+  private _pagination: Pagination | null = null;
   private _attribute: ChangeAttribute | null = null;
   private _attributes: ChangeAttribute[] = [];
   private _documentTypes: ChangeDocumentType[] = [];
@@ -25,6 +27,10 @@ export class AttributesStore implements AttributesStoreProps {
 
   constructor() {
     makeAutoObservable(this, undefined, { autoBind: true });
+  }
+
+  get pagination() {
+    return this._pagination;
   }
 
   get attribute() {
@@ -85,17 +91,19 @@ export class AttributesStore implements AttributesStoreProps {
   fetchDocTypesAndAttributes = async (
     page?: number,
     size?: number,
-    sizeForAttributes = 100
+    sizeForDocTypes = 100
   ) => {
     return this._responseHandler(
       () =>
         Promise.all([
-          ApiAttributeController.getAttributes(0, sizeForAttributes),
-          ApiDocumentTypeController.getDocumentTypes(page, size),
+          ApiAttributeController.getAttributes(page, size),
+          ApiDocumentTypeController.getDocumentTypes(0, sizeForDocTypes),
         ]),
       ([responseAttributes, responseDocTypes]) => {
+        const { content, ...res } = responseAttributes.data;
+        this._pagination = res;
+        this._attributes = [...content];
         this._documentTypes = responseDocTypes.data.content;
-        this._attributes = responseAttributes.data.content;
       }
     );
   };
@@ -113,7 +121,9 @@ export class AttributesStore implements AttributesStoreProps {
     return this._responseHandler(
       () => ApiAttributeController.getAttributes(page, size),
       (response) => {
-        this._attributes = [...response.data.content];
+        const { content, ...res } = response.data;
+        this._pagination = res;
+        this._attributes = [...content];
       }
     );
   }
@@ -135,7 +145,7 @@ export class AttributesStore implements AttributesStoreProps {
     );
   };
 
-  updateAttribute = (attribute: CreateAttribute, id: number) => {
+  updateAttribute = (id: number, attribute: CreateAttribute) => {
     return this._responseHandler(
       () => ApiAttributeController.updateAttributeById(id, attribute),
       (response) => {

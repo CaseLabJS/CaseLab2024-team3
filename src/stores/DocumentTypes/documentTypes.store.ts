@@ -9,10 +9,12 @@ import {
   ChangeAttribute,
   ChangeDocumentType,
   CreateDocumentType,
+  Pagination,
 } from 'src/types';
 import { DocumentTypesStoreProps } from './types';
 
 export class DocumentTypesStore implements DocumentTypesStoreProps {
+  private _pagination: Pagination | null = null;
   private _documentTypes: ChangeDocumentType[] = [];
   private _documentAttributes: ChangeAttribute[] = [];
   private _documentType: ChangeDocumentType | null = null;
@@ -22,6 +24,10 @@ export class DocumentTypesStore implements DocumentTypesStoreProps {
 
   constructor() {
     makeAutoObservable(this, undefined, { autoBind: true });
+  }
+
+  get pagination() {
+    return this._pagination;
   }
 
   get documentTypes() {
@@ -87,7 +93,9 @@ export class DocumentTypesStore implements DocumentTypesStoreProps {
           ApiDocumentTypeController.getDocumentTypes(page, size),
         ]),
       ([responseAttributes, responseTypes]) => {
-        this._documentTypes = responseTypes.data.content;
+        const { content, ...res } = responseTypes.data;
+        this._pagination = res;
+        this._documentTypes = [...content];
         this._documentAttributes = responseAttributes.data.content;
       }
     );
@@ -97,7 +105,9 @@ export class DocumentTypesStore implements DocumentTypesStoreProps {
     return this._responseHandler(
       () => ApiDocumentTypeController.getDocumentTypes(page, size),
       (response) => {
-        this._documentTypes = response.data.content;
+        const { content, ...res } = response.data;
+        this._pagination = res;
+        this._documentTypes = [...content];
       }
     );
   };
@@ -148,9 +158,9 @@ export class DocumentTypesStore implements DocumentTypesStoreProps {
     );
   };
 
-  updateDocumentType = (data: Partial<CreateDocumentType>, id: number) => {
+  updateDocumentType = (id: number, data: Partial<CreateDocumentType>) => {
     return this._responseHandler(
-      () => ApiDocumentTypeController.updateDocumentTypeById(id, data),
+      () => ApiDocumentTypeController.updateDocumentTypeById(data, id),
       (response) => {
         const index = this._documentTypes.findIndex((doc) => doc.id === id);
         if (index !== -1) {

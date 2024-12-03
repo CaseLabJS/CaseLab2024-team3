@@ -30,7 +30,11 @@ function UpdatePasswordDialog() {
   useEffect(() => {
     const userRoles = usersStore?.user?.roles;
     if (userRoles) {
-      setRoles(userRoles.map((role) => role.name));
+      setRoles(
+        userRoles.map((role) =>
+          typeof role === 'object' && 'name' in role ? role.name : String(role)
+        )
+      );
     }
   }, [usersStore?.user?.roles]);
   function handleOnSave() {
@@ -56,7 +60,7 @@ function UpdatePasswordDialog() {
       <div>
         {isAdmin ? (
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger  asChild>
+            <DialogTrigger asChild>
               <Button variant="outline" className="max-w-fit">
                 Изменить пароль пользователя
               </Button>
