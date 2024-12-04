@@ -138,8 +138,13 @@ export type ChangeAttributeValue = CreateAttributeValue & {
 export type ChangeDocument = {
   attributeValues: Attribute[];
   name?: string;
-  base64Data?: string;
+  file?: DocFile;
 };
+
+export type DocFile ={
+  base64Data?: string;
+  fileName: string;
+}
 
 export type ChangeDocumentResponse = CreateDocumentResponse;
 
@@ -156,6 +161,7 @@ export type CreateDocumentResponse = {
   documentId: number;
   attributeValues: Attribute[];
   documentVersionId: number;
+  file?: DocFile;
 };
 
 export type GetDocument = {

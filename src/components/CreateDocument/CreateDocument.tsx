@@ -120,7 +120,12 @@ export const CreateDocumentForm = ({
       ...inputs,
       documentTypeId: inputs.documentTypeId ?? 0,
       attributeValues: inputs.attributeValues ?? [],
-      base64Data: base64str,
+      file: base64str
+        ? {
+            base64Data: base64str,
+            fileName: uploadedFileName || '',
+          }
+        : undefined,
     };
 
     if (onSave) {
@@ -225,15 +230,15 @@ export const CreateDocumentForm = ({
             )}
             {Object.entries(inputs)
               .filter(([key]) => !fieldLabels[key]?.hidden)
-              .map(([key, value]) => (
+              .map(([key]) => (
                 <div key={key} className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor={key} className="text-right">
                     {fieldLabels[key]?.label || key}
                     {fieldLabels[key].label === 'Название документа' ? '*' : ''}
                   </Label>
-                  {key === 'base64Data' ? (
+                  {key === 'file' ? (
                     <div className="col-span-3">
-                      {inputs.base64Data ? (
+                      {inputs.file && inputs.file.base64Data && inputs.file.fileName ? (
                         <div className="flex items-center gap-4">
                           <div className="text-sm text-green-600">
                             Файл <strong>{uploadedFileName}</strong> успешно
@@ -245,7 +250,7 @@ export const CreateDocumentForm = ({
                             onClick={() =>
                               setInputs((prev) => ({
                                 ...prev,
-                                base64Data: '',
+                                file: { fileName: '', base64Data: '' },
                               }))
                             }
                           >
@@ -256,6 +261,7 @@ export const CreateDocumentForm = ({
                         <Button
                           variant="outline"
                           className="w-full"
+                          type='button'
                           onClick={() => {
                             const fileInput = document.createElement('input');
                             fileInput.type = 'file';
@@ -268,7 +274,10 @@ export const CreateDocumentForm = ({
                                     await convertFileToBase64(file);
                                   setInputs((prev) => ({
                                     ...prev,
-                                    base64Data: base64,
+                                    file: {
+                                      fileName: file.name,
+                                      base64Data: base64,
+                                    },
                                   }));
                                   setUploadedFileName(file.name);
                                 } catch (error) {
@@ -289,11 +298,6 @@ export const CreateDocumentForm = ({
                   ) : (
                     <Input
                       name={key}
-                      value={
-                        Array.isArray(value)
-                          ? JSON.stringify(value)
-                          : (value ?? '')
-                      }
                       required
                       disabled={key === 'id'}
                       className="col-span-3"
@@ -308,6 +312,7 @@ export const CreateDocumentForm = ({
             <Button
               className="block hover:opacity-75 mb-3 bg-bg-header hover:bg-bg-header"
               type="submit"
+              onClick={handleOnSave}
             >
               Сохранить
             </Button>
