@@ -1,5 +1,5 @@
-import { useState, useMemo } from "react";
-import Select, { MultiValue } from "react-select";
+import { useState, useMemo } from 'react';
+import Select, { MultiValue } from 'react-select';
 import {
   Button,
   Dialog,
@@ -11,11 +11,11 @@ import {
   DialogTrigger,
   Input,
   Label,
-} from "src/components/UI";
+} from 'src/components/UI';
 
-import { ChangeUser, UserRegister, Voting } from "@/types/index";
-import { DateTimePicker } from "@components/UI/DateTimePicker";
-import { useParams } from "react-router-dom";
+import { ChangeUser, UserRegister, Voting } from '@/types/index';
+import { DateTimePicker } from '@components/UI/DateTimePicker';
+import { useParams } from 'react-router-dom';
 
 interface UserSelectDialogProps {
   process: 'signing' | 'voting';
@@ -58,14 +58,18 @@ export const UserSelectDialog: React.FC<UserSelectDialogProps> = ({
 
   const userOptions = useMemo(
     () =>
-      users.filter((user) => user.id !== currentUser?.id).map((user) => ({
-        value: user.id,
-        label: `${user.firstName} ${user.lastName} (${user.email})`,
-      })),
+      users
+        .filter((user) => user.id !== currentUser?.id)
+        .map((user) => ({
+          value: user.id,
+          label: `${user.firstName} ${user.lastName} (${user.email})`,
+        })),
     [users]
   );
 
-  const handleSelectChange = (option: { value: string; label: string } | null) => {
+  const handleSelectChange = (
+    option: { value: string; label: string } | null
+  ) => {
     const user = users.find((u) => u.id === option?.value) || null;
     setSelectedUser(user);
   };
@@ -125,7 +129,14 @@ export const UserSelectDialog: React.FC<UserSelectDialogProps> = ({
             <Select
               options={userOptions}
               placeholder="Выберите пользователя"
-              value={selectedUser ? { value: selectedUser.id, label: `${selectedUser.firstName} ${selectedUser.lastName} (${selectedUser.email})` } : null}
+              value={
+                selectedUser
+                  ? {
+                      value: selectedUser.id,
+                      label: `${selectedUser.firstName} ${selectedUser.lastName} (${selectedUser.email})`,
+                    }
+                  : null
+              }
               onChange={handleSelectChange}
               classNamePrefix="select"
               className="basic-multi-select"
@@ -192,8 +203,8 @@ export const UserSelectDialog: React.FC<UserSelectDialogProps> = ({
               disabled={!selectedUser}
               className={`${
                 selectedUser
-                  ? "bg-green-600 text-white hover:bg-green-700"
-                  : "bg-gray-200 text-gray-500 cursor-not-allowed"
+                  ? 'bg-green-600 text-white hover:bg-green-700'
+                  : 'bg-gray-200 text-gray-500 cursor-not-allowed'
               }`}
             >
               Отправить

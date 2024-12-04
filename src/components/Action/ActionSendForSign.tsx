@@ -37,18 +37,22 @@ export const ActionSendForSign = <
 }: ActionSendForSignProps<TData>) => {
   const [selectedUser, setSelectedUser] = useState<ChangeUser | null>(null);
 
-  const options = users.filter((user) => user.id !== currentUser?.id).map((user) => ({
-    value: user.id,
-    label: `${user.firstName} ${user.lastName} ${user.email}`,
-  }));
+  const options = users
+    .filter((user) => user.id !== currentUser?.id)
+    .map((user) => ({
+      value: user.id,
+      label: `${user.firstName} ${user.lastName} ${user.email}`,
+    }));
 
   if (data?.state === DocumentState.AUTHOR_SIGNED) {
     return (
-      <AlertDialog onOpenChange={(open) => {
-        if (!open) {
-          setSelectedUser(null);
+      <AlertDialog
+        onOpenChange={(open) => {
+          if (!open) {
+            setSelectedUser(null);
+          }
         }}
-      }>
+      >
         <AlertDialogTrigger asChild>
           <Button variant="ghost" {...props}>
             <PenTool />
@@ -68,7 +72,10 @@ export const ActionSendForSign = <
               options={options}
               value={
                 selectedUser
-                  ? { value: selectedUser.id, label: `${selectedUser.firstName} ${selectedUser.lastName} ${selectedUser.email}` }
+                  ? {
+                      value: selectedUser.id,
+                      label: `${selectedUser.firstName} ${selectedUser.lastName} ${selectedUser.email}`,
+                    }
                   : null
               }
               onChange={(option) => {

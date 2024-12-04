@@ -78,7 +78,7 @@ const UserSignedDocuments = observer(() => {
               const to = row?.getValue('id') as string;
               return {
                 onClick: () => navigate(to),
-                href: `${"/app/after-sign/" + to}`,
+                href: `${'/app/after-sign/' + to}`,
               };
             },
           }}

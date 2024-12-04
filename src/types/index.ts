@@ -141,10 +141,10 @@ export type ChangeDocument = {
   file?: DocFile;
 };
 
-export type DocFile ={
+export type DocFile = {
   base64Data?: string;
   fileName: string;
-}
+};
 
 export type ChangeDocumentResponse = CreateDocumentResponse;
 
