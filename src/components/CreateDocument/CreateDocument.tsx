@@ -39,7 +39,7 @@ export const CreateDocumentForm = ({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
   const [base64str, setBase64str] = useState<string>('');
-  const [filteredAttributes, setFilteredAttributes] = useState<any[]>([]);
+  const [filteredAttributes, setFilteredAttributes] = useState<ChangeAttribute[]>([]);
 
   const { btnTriggerText, dialogDescriptionText, dialogTitleText } =
     dialogTexts;
@@ -116,6 +116,10 @@ export const CreateDocumentForm = ({
 
   const handleOnSave = (event: React.FormEvent) => {
     event.preventDefault();
+    if (!base64str || !uploadedFileName) {
+      console.error('Файл обязателен для загрузки');
+      return;
+    }
     const newData: CreateDocument = {
       ...inputs,
       documentTypeId: inputs.documentTypeId ?? 0,
@@ -238,7 +242,9 @@ export const CreateDocumentForm = ({
                   </Label>
                   {key === 'file' ? (
                     <div className="col-span-3">
-                      {inputs.file && inputs.file.base64Data && inputs.file.fileName ? (
+                      {inputs.file &&
+                      inputs.file.base64Data &&
+                      inputs.file.fileName ? (
                         <div className="flex items-center gap-4">
                           <div className="text-sm text-green-600">
                             Файл <strong>{uploadedFileName}</strong> успешно
@@ -261,7 +267,7 @@ export const CreateDocumentForm = ({
                         <Button
                           variant="outline"
                           className="w-full"
-                          type='button'
+                          type="button"
                           onClick={() => {
                             const fileInput = document.createElement('input');
                             fileInput.type = 'file';
@@ -312,7 +318,20 @@ export const CreateDocumentForm = ({
             <Button
               className="block hover:opacity-75 mb-3 bg-bg-header hover:bg-bg-header"
               type="submit"
-              onClick={handleOnSave}
+              disabled={
+                !uploadedFileName ||
+                !inputs.documentTypeId ||
+                !inputs.name?.trim() ||
+                filteredAttributes.some((attribute) => {
+                  const attributeValue = inputs.attributeValues?.find(
+                    (attr) => attr.attributeId === attribute.id
+                  );
+                  return (
+                    attribute.required &&
+                    (!attributeValue || attributeValue.value?.trim() === '')
+                  );
+                })
+              }
             >
               Сохранить
             </Button>

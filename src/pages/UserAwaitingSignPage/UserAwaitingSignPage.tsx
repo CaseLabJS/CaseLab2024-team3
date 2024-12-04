@@ -30,7 +30,7 @@ const UserAwaitingSignPage = observer(() => {
 
   useEffect(() => {
     void documentsStore.fetchDocumentsForSign(
-      (query.page ?? 0),
+      query.page ?? 0,
       query.limit ?? 20
     );
   }, [query.limit, query.page]);
@@ -78,7 +78,7 @@ const UserAwaitingSignPage = observer(() => {
               const to = row?.getValue('id') as string;
               return {
                 onClick: () => navigate(to),
-                href: `${"/app/awaiting-sign/" + to}`,
+                href: `${'/app/awaiting-sign/' + to}`,
               };
             },
             actionMore: {
@@ -89,7 +89,8 @@ const UserAwaitingSignPage = observer(() => {
                   action_color={'bg-green-600 hover:bg-green-600'}
                   description={'Вы собираетесь подписать этот документ.'}
                   status={DocumentState.APPROVED}
-                  {...props}>
+                  {...props}
+                >
                   <PenTool />
                 </ActionSign>
               ),
@@ -100,18 +101,23 @@ const UserAwaitingSignPage = observer(() => {
                   action_color={'bg-orange-600 hover:bg-orange-600'}
                   description={'Вы собираетесь отклонить этот документ.'}
                   status={DocumentState.REJECTED}
-                  {...props}>
-                    <X />
+                  {...props}
+                >
+                  <X />
                 </ActionSign>
-              ),onReworkRequired: (props) => (
+              ),
+              onReworkRequired: (props) => (
                 <ActionSign
                   onSign={signDocumentById}
                   action_text={'Требуется доработка'}
                   action_color={'bg-orange-600 hover:bg-orange-600'}
-                  description={'Вы собираетесь отправить на доработку этот документ.'}
+                  description={
+                    'Вы собираетесь отправить на доработку этот документ.'
+                  }
                   status={DocumentState.REWORK_REQUIRED}
-                  {...props}>
-                    <NotebookPen />
+                  {...props}
+                >
+                  <NotebookPen />
                 </ActionSign>
               ),
             },

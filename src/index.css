@@ -8,44 +8,43 @@
   box-sizing: border-box;
 }
 
-
 .basic-multi-select .select__control {
-  @apply bg-background border-border shadow-none
+  @apply bg-background border-border shadow-none;
 }
 .basic-multi-select .select__control:hover {
-  @apply border-ring
+  @apply border-ring;
 }
 
 .basic-multi-select .select__menu {
-  @apply bg-background border border-border
+  @apply bg-background border border-border;
 }
 
 .basic-multi-select .select__menu-list {
-  @apply bg-background border-border
+  @apply bg-background border-border;
 }
 
 .basic-multi-select .select__option--is-focused {
-  @apply bg-muted
+  @apply bg-muted;
 }
 
 .basic-multi-select .select__multi-value {
-  @apply bg-muted text-foreground
+  @apply bg-muted text-foreground;
 }
 
 .basic-multi-select .select__multi-value__label {
-  @apply text-foreground
+  @apply text-foreground;
 }
 
 .basic-multi-select .select__control--is-focused {
-  @apply focus-visible:ring-2
+  @apply focus-visible:ring-2;
 }
 
 .basic-multi-select .select__input-container {
-  @apply text-foreground
+  @apply text-foreground;
 }
 
 .basic-multi-select .select__single-value {
-  @apply text-foreground
+  @apply text-foreground;
 }
 
 @layer base {
@@ -131,7 +130,7 @@
   }
 }
 
-input[type="checkbox"] {
+input[type='checkbox'] {
   -webkit-appearance: none;
   appearance: none;
 
@@ -141,6 +140,6 @@ input[type="checkbox"] {
   padding: 0;
 }
 
-input[type="checkbox"]:checked {
+input[type='checkbox']:checked {
   @apply bg-bg-header;
 }

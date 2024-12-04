@@ -16,11 +16,10 @@ export const EMPTY_DOC = {
   ],
   documentTypeId: 0,
   name: '',
-  file:{
+  file: {
     fileName: '',
     base64Data: '',
   },
-  
 };
 
 export const fieldLabels: Record<string, { label: string; hidden: boolean }> = {

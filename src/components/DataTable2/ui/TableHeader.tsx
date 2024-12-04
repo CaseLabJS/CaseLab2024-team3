@@ -32,9 +32,9 @@ export const TableHeader = <TData,>({ table }: TableHeaderProps<TData>) => {
                 {header.isPlaceholder
                   ? null
                   : flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
                 <TableSorting header={header} />
                 <TableResize header={header} />
               </TableHead>

@@ -19,7 +19,7 @@ const meta = {
   component: AlertDialog,
   tags: ['autodocs'],
   args: {
-    onOpenChange: () => { },
+    onOpenChange: () => {},
   },
   argTypes: {
     open: {
@@ -31,7 +31,7 @@ const meta = {
       control: {
         type: 'boolean',
       },
-    }
+    },
   },
 } satisfies Meta<typeof AlertDialog>;
 
