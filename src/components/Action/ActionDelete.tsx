@@ -13,6 +13,7 @@ import {
 } from '@components/UI';
 import { Trash } from 'lucide-react';
 import { ActionDefaultData } from './types';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface ActionDeleteProps<TData>
   extends ActionDefaultData<TData>,
@@ -27,13 +28,24 @@ export const ActionDelete = <TData,>({
   data,
   ...props
 }: ActionDeleteProps<TData>) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const handleClick = () => {
     const id = typeof data === 'object' && data && 'id' in data && data?.id;
 
+    const handleNavigation = () => {
+      if (location.pathname !== '/app/documents') {
+        navigate('../documents');
+      }
+    };
+
     if (typeof id === 'number' && onDeleteWithNumberId) {
       onDeleteWithNumberId(id);
+      handleNavigation();
     } else if (typeof id === 'string' && onDeleteWithStringId) {
       onDeleteWithStringId(id);
+      handleNavigation();
     } else {
       console.warn('Missing or invalid "id" property in data');
     }

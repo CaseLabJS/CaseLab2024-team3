@@ -42,7 +42,7 @@ export const UpdateDocumentForm = ({
   const [file, setFile] = useState<string | null>(null);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
+  const [uploadedFileName, setUploadedFileName] = useState<string>('');
   const [base64str, setBase64str] = useState<string>('');
   const { btnTriggerText, dialogDescriptionText, dialogTitleText } =
     dialogTexts;
@@ -74,10 +74,17 @@ export const UpdateDocumentForm = ({
       attributeValues: inputs.map((input) => ({
         attributeId: input.attributeId,
         value: input.value,
-        base64Data: base64str,
+        file: base64str
+          ? {
+              base64Data: base64str,
+              fileName: uploadedFileName ?? '',
+            }
+          : undefined,
       })),
       name: documentName,
-      ...(file !== null && { base64Data: file }),
+      ...(file !== null && {
+        file: { base64Data: file, fileName: uploadedFileName },
+      }),
     };
 
     if (documentId) {
@@ -194,6 +201,7 @@ export const UpdateDocumentForm = ({
                 <Button
                   variant="outline"
                   className="w-full"
+                  type="button"
                   onClick={() => {
                     const fileInput = document.createElement('input');
                     fileInput.type = 'file';
