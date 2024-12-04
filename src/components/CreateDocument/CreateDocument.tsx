@@ -39,7 +39,7 @@ export const CreateDocumentForm = ({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
   const [base64str, setBase64str] = useState<string>('');
-  const [filteredAttributes, setFilteredAttributes] = useState<any[]>([]);
+  const [filteredAttributes, setFilteredAttributes] = useState<ChangeAttribute[]>([]);
 
   const { btnTriggerText, dialogDescriptionText, dialogTitleText } =
     dialogTexts;
