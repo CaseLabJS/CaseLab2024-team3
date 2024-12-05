@@ -131,6 +131,13 @@ export const CreateUserForm = ({
             className="block hover:opacity-75 mb-3 bg-bg-header hover:bg-bg-header"
             type="submit"
             onClick={handleOnSave}
+            disabled={
+              !inputs.firstName ||
+              !inputs.lastName ||
+              !inputs.email ||
+              !inputs.password ||
+              !inputs.login
+            }
           >
             Сохранить
           </Button>

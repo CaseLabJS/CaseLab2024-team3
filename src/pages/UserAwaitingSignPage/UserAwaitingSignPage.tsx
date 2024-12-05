@@ -29,10 +29,18 @@ const UserAwaitingSignPage = observer(() => {
   } = documentsStore;
 
   useEffect(() => {
-    void documentsStore.fetchDocumentsForSign(
-      query.page ?? 0,
-      query.limit ?? 20
-    );
+    // Если query.page и query.limit не определены, устанавливаем дефолтные значения
+    if (query.page === undefined || query.limit === undefined) {
+      setQuery({
+        page: 0,
+        limit: 20,
+      });
+    } else {
+      void documentsStore.fetchDocumentsForSign(
+        query.page ?? 0,
+        query.limit ?? 20
+      );
+    }
   }, [query.limit, query.page]);
 
   if (loading) {

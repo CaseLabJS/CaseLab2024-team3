@@ -41,7 +41,15 @@ const DocumentsTypePage: FC<DocumentsTypePageProps> = observer(() => {
   } = documentTypesStore;
 
   useEffect(() => {
-    void fetchDocTypesAndAttributes(page ?? 0, limit ?? 20);
+    // Если query.page и query.limit не определены, устанавливаем дефолтные значения
+    if (page === undefined || limit === undefined) {
+      setQuery({
+        page: 0,
+        limit: 20,
+      });
+    } else {
+      void fetchDocTypesAndAttributes(page ?? 0, limit ?? 20);
+    }
   }, [fetchDocTypesAndAttributes, page, limit]);
 
   if (isLoading) {
