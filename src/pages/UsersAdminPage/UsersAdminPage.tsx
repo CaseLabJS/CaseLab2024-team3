@@ -32,9 +32,18 @@ const UsersAdminPage = observer(() => {
     pagination,
     createUser,
   } = usersStore;
+
   useEffect(() => {
-    void fetchUsers(query.page ?? 0, query.limit ?? 20);
-  }, [query.limit, query.page, fetchUsers]);
+    // Если query.page и query.limit не определены, устанавливаем дефолтные значения
+    if (query.page === undefined || query.limit === undefined) {
+      setQuery({
+        page: 0,
+        limit: 20,
+      });
+    } else {
+      void fetchUsers(query.page ?? 0, query.limit ?? 20);
+    }
+  }, [query.page, query.limit, fetchUsers]);
 
   if (isLoading) {
     return (

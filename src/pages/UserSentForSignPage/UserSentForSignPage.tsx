@@ -22,20 +22,25 @@ const UserSentForSignPage = observer(() => {
     documentsStore;
 
   useEffect(() => {
-    void documentsStore.fetchDocuments(
-      query.page ?? 0, //+ 1
-      query.limit ?? 20
-    );
+    // Если query.page и query.limit не определены, устанавливаем дефолтные значения
+    if (query.page === undefined || query.limit === undefined) {
+      setQuery({
+        page: 0,
+        limit: 20,
+      });
+    } else {
+      void documentsStore.fetchDocuments(
+        query.page ?? 0, //+ 1
+        query.limit ?? 20
+      );
+    }
   }, [query.limit, query.page]);
 
   const { fetchDocTypesAndAttributes, isLoading } = documentTypesStore;
 
   useEffect(() => {
     fetchDocTypesAndAttributes(0, 100);
-    fetchDocuments(
-      query.page ?? 0, //+ 1
-      query.limit ?? 20
-    );
+    fetchDocuments(0, 20);
   }, []);
 
   if (loading || isLoading) {

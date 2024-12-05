@@ -24,15 +24,23 @@ const UserSignedDocuments = observer(() => {
   } = documentsStore;
 
   useEffect(() => {
-    void fetchDocumentsForSign(
-      query.page ?? 0,
-      query.limit ?? 20,
-      'after_signer'
-    );
+    // Если query.page и query.limit не определены, устанавливаем дефолтные значения
+    if (query.page === undefined || query.limit === undefined) {
+      setQuery({
+        page: 0,
+        limit: 20,
+      });
+    } else {
+      void fetchDocumentsForSign(
+        query.page ?? 0,
+        query.limit ?? 20,
+        'after_signer'
+      );
+    }
   }, [query.limit, query.page]);
 
   useEffect(() => {
-    fetchDocumentsForSign(0, 100, 'after_signer');
+    fetchDocumentsForSign(0, 20, 'after_signer');
   }, []);
 
   if (loading) {
