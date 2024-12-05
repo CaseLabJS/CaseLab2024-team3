@@ -15,10 +15,13 @@ import { UpdateDocumentForm } from '@components/UpdateDocument/UpdateDocument';
 import { DocumentState } from '@/types/state';
 import { UserSelectDialog } from '@components/UserSelectDialog/UserSelectDialog';
 import { Voting } from 'src/types';
+import { ActionDelete } from '@components/Action';
 
 interface DocumentPageProps {
   type: string;
 }
+
+const deleteValidStates = ['DRAFT', 'APPROVED', 'REJECTED', 'REWORK_REQUIRED'];
 
 const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
   const navigate = useNavigate();
@@ -26,6 +29,7 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
 
   const {
     document,
+    documents,
     fetchDocumentById,
     fetchDocumentForSign,
     signDocumentById,
@@ -71,11 +75,6 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
       </section>
     );
   }
-
-  const handleOnDelete = () => {
-    deleteDocument(+documentId!);
-    navigate('../documents');
-  };
 
   const handleSignDocument = (status: DocumentState) => {
     signDocumentById(+documentId!, status);
@@ -166,11 +165,18 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
                 onSetInputs={fetchDocumentById}
               />
             )}
-            {type === 'user-document' && (
-              <Button variant="destructive" onClick={handleOnDelete}>
-                Удалить
-              </Button>
-            )}
+            {type === 'user-document' &&
+              deleteValidStates.includes(document.state) &&
+              (() => {
+                const doc = documents.find((doc) => doc.id === +documentId!);
+                return (
+                  <ActionDelete
+                    variant="destructive"
+                    onDeleteWithNumberId={deleteDocument}
+                    data={doc}
+                  />
+                );
+              })()}
             {type === 'user-document' &&
               document.state === DocumentState.DRAFT && (
                 <Button
@@ -240,7 +246,7 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
               )}
           </div>
           <Button
-            className="absolute top-2 -right-4 bg-transparent border"
+            className="absolute top-2 -right-8 bg-transparent border"
             onClick={() => {
               if (type === 'user-document') {
                 navigate('../documents');
