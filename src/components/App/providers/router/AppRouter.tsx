@@ -35,7 +35,7 @@ const AppRouter = () => {
         <Route path={ROUTE_CONSTANTS.DEFAULT} element={<SignInPage />} />
         <Route element={<Layout />}>
           <Route element={<ProtectedRoute role="USER" />}>
-            <Route index element={<Navigate replace to="admin" />} />
+            <Route index element={<Navigate replace to="app" />} />
             <Route path={ROUTE_CONSTANTS.APP} element={<UserDashboardPage />}>
               <Route
                 path={ROUTE_CONSTANTS.USER_DASHBOARD_INDEX}
@@ -73,7 +73,7 @@ const AppRouter = () => {
             </Route>
           </Route>
           <Route element={<ProtectedRoute role="ADMIN" />}>
-            <Route index element={<Navigate replace to="app" />} />
+            <Route index element={<Navigate replace to="admin" />} />
             <Route path={ROUTE_CONSTANTS.ADMIN} element={<AdminPage />}>
               <Route
                 path={ROUTE_CONSTANTS.ADMIN_INDEX}
