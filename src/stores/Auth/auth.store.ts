@@ -17,7 +17,7 @@ export class AuthStore implements AuthStoreProps {
   private _status = STATUS.INITIAL;
   private _error: string | null = null;
   private _userId = '';
-  private tokenRefreshTimeout: NodeJS.Timeout | null = null;
+  private tokenRefreshInterval: NodeJS.Timeout | null = null;
 
   constructor() {
     const refreshToken = this.getToken();
@@ -47,34 +47,17 @@ export class AuthStore implements AuthStoreProps {
   }
 
   private setTokenRefreshTimer = () => {
-    if (this.tokenRefreshTimeout) {
-      clearTimeout(this.tokenRefreshTimeout);
+    if (this.tokenRefreshInterval) {
+      clearInterval(this.tokenRefreshInterval);
     }
-    const expiresAt = localStorage.getItem('token_expiry');
-    const now = Date.now();
-    const timeUntilRefresh = expiresAt
-      ? Math.max(Number(expiresAt) - now, 0)
-      : TIME_TOKEN;
-
-    // Если время некорректное, не запускаем таймер
-    if (timeUntilRefresh <= 0) {
-      if (this._isAuth) {
-        toast({
-          title: 'Сессия истекла',
-          description: 'Вам необходимо заново войти в систему.',
-          variant: 'destructive',
-        });
-        this.logout();
-      }
-      return;
-    }
-    this.tokenRefreshTimeout = setTimeout(async () => {
+    this.tokenRefreshInterval = setInterval(async () => {
       try {
         await this.checkAuth();
       } catch (error) {
         console.error('Ошибка при обновлении токена:', error);
+        this.logout();
       }
-    }, timeUntilRefresh);
+    }, TIME_TOKEN);
   };
 
   private async _responseHandler<T>(
@@ -130,7 +113,6 @@ export class AuthStore implements AuthStoreProps {
         this._userId = data.userId;
         void usersStore.fetchUserData();
         this.helperLocalStorage({ action: 'setItem', data });
-        localStorage.setItem('token_expiry', String(Date.now() + TIME_TOKEN));
         this.setTokenRefreshTimer();
       }
     );
@@ -140,7 +122,10 @@ export class AuthStore implements AuthStoreProps {
     return this._responseHandler(
       async () => {
         const refreshToken = this.getToken();
-        if (!refreshToken) throw new Error('No refresh token found');
+        if (!refreshToken) {
+          window.location.replace('/sign-in');
+          throw new Error('No refresh token found');
+        }
         const data = await ApiAuthController.refresh(refreshToken);
         this.helperLocalStorage({ action: 'setItem', data });
         return data;
@@ -154,13 +139,12 @@ export class AuthStore implements AuthStoreProps {
     );
   }
 
-  logout = () => {
-    if (this.tokenRefreshTimeout) {
-      localStorage.removeItem('token_expiry');
-      clearTimeout(this.tokenRefreshTimeout);
-      this.tokenRefreshTimeout = null;
+  logout = async () => {
+    if (this.tokenRefreshInterval) {
+      clearInterval(this.tokenRefreshInterval);
+      this.tokenRefreshInterval = null;
     }
-    return this._responseHandler(
+    await this._responseHandler(
       () => {
         this.helperLocalStorage({ action: 'removeItem' });
         return Promise.resolve(null);
@@ -168,9 +152,9 @@ export class AuthStore implements AuthStoreProps {
       () => {
         this._isAuth = false;
         this._userId = '';
-        // usersStore.fetchUserData()
       }
     );
+    window.location.replace('/sign-in');
   };
 }
 
