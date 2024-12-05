@@ -1,6 +1,7 @@
 export const ROUTE_CONSTANTS = {
   SIGN_IN: '/sign-in',
   SIGN_UP: '/sign-up',
+  DEFAULT: '/',
 
   APP: 'app',
   USER_DASHBOARD_INDEX: '',

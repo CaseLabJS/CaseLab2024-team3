@@ -32,6 +32,7 @@ const AppRouter = () => {
       <Routes>
         <Route path={ROUTE_CONSTANTS.SIGN_IN} element={<SignInPage />} />
         <Route path={ROUTE_CONSTANTS.SIGN_UP} element={<SignUpPage />} />
+        <Route path={ROUTE_CONSTANTS.DEFAULT} element={<SignInPage />} />
         <Route element={<Layout />}>
           <Route element={<ProtectedRoute role="USER" />}>
             <Route index element={<Navigate replace to="app" />} />
