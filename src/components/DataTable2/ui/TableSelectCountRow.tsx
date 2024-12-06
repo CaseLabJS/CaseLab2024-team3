@@ -17,7 +17,7 @@ export const TableSelectCountRow = <TData,>({
           table.setPageSize(Number(e.target.value));
         }}
       >
-        {[20, 50, 100, 500].map((pageSize) => (
+        {[20, 50, 100].map((pageSize) => (
           <option key={pageSize} value={pageSize}>
             {pageSize}
           </option>

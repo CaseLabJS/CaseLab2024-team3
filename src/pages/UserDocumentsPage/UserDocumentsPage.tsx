@@ -132,7 +132,7 @@ const UserDocumentsPage = observer(() => {
               const to = row?.getValue('id') as string;
               return {
                 onClick: () => navigate(to),
-                href: `${to}`,
+                href: `/app/${to}`,
               };
             },
             actionMore: {

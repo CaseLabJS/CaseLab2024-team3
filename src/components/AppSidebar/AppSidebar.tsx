@@ -46,14 +46,15 @@ export const AppSidebar: FC<SidebarProps> = observer(
         )
       ) {
         void documentsStore.fetchDocuments(0, 100, 'owner');
-        void documentsStore.fetchDocumentsForSign(0, 100, 'after_signer');
-        void documentsStore.fetchDocumentsForSign(0, 100, 'before_signer');
+        void documentsStore.fetchDocumentsForSign(0, 100, 'signer', 'after_signer');
+        void documentsStore.fetchDocumentsForSign(0, 100, 'signer', 'before_signer');
+        void documentsStore.fetchDocumentsForSign(0, 100, 'owner', 'before_signer');
       }
     }, []);
 
     const quantityMapping: Record<number, number> = {
       1: documentsStore.paginationDocuments?.totalElements || 0,
-      2: documentsStore.documentsSentForSign.length || 0,
+      2: documentsStore.paginationDocumentsSentForSign?.totalElements || 0,
       3: documentsStore.paginationDocumentsForSign?.totalElements || 0,
       4: documentsStore.paginationDocumentsAfterSign?.totalElements || 0,
     };

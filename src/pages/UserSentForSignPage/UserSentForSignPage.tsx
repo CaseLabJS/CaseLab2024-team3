@@ -18,8 +18,12 @@ const UserSentForSignPage = observer(() => {
     limit: NumberParam,
   });
 
-  const { documentsSentForSign, loading, paginationDocuments, fetchDocuments } =
-    documentsStore;
+  const {
+    documentsSentForSign,
+    loading,
+    paginationDocumentsSentForSign,
+    fetchDocumentsForSign,
+  } = documentsStore;
 
   useEffect(() => {
     // Если query.page и query.limit не определены, устанавливаем дефолтные значения
@@ -29,9 +33,11 @@ const UserSentForSignPage = observer(() => {
         limit: 20,
       });
     } else {
-      void documentsStore.fetchDocuments(
-        query.page ?? 0, //+ 1
-        query.limit ?? 20
+      void fetchDocumentsForSign(
+        query.page ?? 0,
+        query.limit ?? 20,
+        'owner',
+        'before_signer'
       );
     }
   }, [query.limit, query.page]);
@@ -40,7 +46,7 @@ const UserSentForSignPage = observer(() => {
 
   useEffect(() => {
     fetchDocTypesAndAttributes(0, 100);
-    fetchDocuments(0, 20);
+    fetchDocumentsForSign(0, 20, 'owner', 'before_signer');
   }, []);
 
   if (loading || isLoading) {
@@ -80,13 +86,13 @@ const UserSentForSignPage = observer(() => {
           }}
           meta={{
             pagination: {
-              totalPages: paginationDocuments?.totalPages,
+              totalPages: paginationDocumentsSentForSign?.totalPages,
             },
             actionItem: ({ row }) => {
               const to = row?.getValue('id') as string;
               return {
                 onClick: () => navigate(to),
-                href: `${to}`,
+                href: `${'/app/sent-for-sign/' + to}`,
               };
             },
           }}

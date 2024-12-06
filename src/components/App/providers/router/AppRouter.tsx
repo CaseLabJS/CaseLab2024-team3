@@ -50,6 +50,10 @@ const AppRouter = () => {
                 element={<DocumentPage type="user-document" />}
               />
               <Route
+                path={ROUTE_CONSTANTS.USER_SENT_FOR_SIGN_DOCUMENT}
+                element={<DocumentPage type="sent-for-sign" />}
+              />
+              <Route
                 path={ROUTE_CONSTANTS.USER_AWAITING_SIGN_DOCUMENT}
                 element={<DocumentPage type="awaiting-sign" />}
               />

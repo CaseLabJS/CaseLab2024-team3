@@ -49,7 +49,7 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
   const { createVoting, votingResult, getVotingResult } = votingStore;
 
   useEffect(() => {
-    if (type === 'user-document') {
+    if (type === 'user-document' || type === 'sent-for-sign') {
       (async () => {
         await fetchDocumentById(Number(documentId));
         await fetchUsers(0, 100);
@@ -250,6 +250,8 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
             onClick={() => {
               if (type === 'user-document') {
                 navigate('../documents');
+              } else if (type === 'sent-for-sign') {
+                navigate('../sent-for-sign');
               } else if (type == 'after-sign') {
                 navigate('../after-sign');
               } else {

@@ -28,6 +28,9 @@ export class DocumentsStore implements DocumentsStoreProps {
   private _pagination_documentsForSign: Pagination | null = null;
   private _documentsForSign: GetDocument[] = [];
 
+  private _pagination_documentsSentForSign: Pagination | null = null;
+  private _documentsSentForSign: GetDocument[] = [];
+
   private _pagination_documentsAfterSign: Pagination | null = null;
   private _documentsAfterSign: GetDocument[] = [];
 
@@ -48,6 +51,10 @@ export class DocumentsStore implements DocumentsStoreProps {
     return this._pagination_documentsForSign;
   }
 
+  get paginationDocumentsSentForSign() {
+    return this._pagination_documentsSentForSign;
+  }
+
   get paginationDocumentsAfterSign() {
     return this._pagination_documentsAfterSign;
   }
@@ -65,11 +72,7 @@ export class DocumentsStore implements DocumentsStoreProps {
   }
 
   get documentsSentForSign() {
-    return this._documents.filter(
-      (doc) =>
-        doc.state === DocumentState.PENDING_CONTRACTOR_SIGN ||
-        doc.state === DocumentState.PENDING_AUTHOR_SIGN
-    );
+    return this._documentsSentForSign;
   }
 
   get documentsAfterSign() {
@@ -201,14 +204,18 @@ export class DocumentsStore implements DocumentsStoreProps {
   fetchDocumentsForSign = (
     page?: number,
     size?: number,
+    initiator: Initiator = 'signer',
     type: 'before_signer' | 'after_signer' = 'before_signer'
   ) => {
     return this._responseHandler(
-      () => ApiDocumentController.getDocumentsForSign(page, size, type),
+      () => ApiDocumentController.getDocumentsForSign(page, size, initiator, type),
       (response) => {
         const { content, ...res } = response.data;
 
-        if (type === 'before_signer') {
+        if (initiator === 'owner' && type === 'before_signer') {
+          this._documentsSentForSign = [...content];
+          this._pagination_documentsSentForSign = res;
+        } else if (type === 'before_signer') {
           this._documentsForSign = [...content];
           this._pagination_documentsForSign = res;
         } else {
