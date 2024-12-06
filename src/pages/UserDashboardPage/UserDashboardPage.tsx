@@ -12,7 +12,7 @@ const UserDashboardPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   return (
-    <section className="h-layout flex relative px-4 md:px-8 lg:px-40">
+    <section className="h-layout flex relative px-4 md:px-8 lg:px-16 xl:px-40">
       <SidebarProvider open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
         <AppSidebar
           sidebarName="Панель пользователя"
@@ -25,7 +25,7 @@ const UserDashboardPage = () => {
             </div>
           }
         >
-          <SidebarTrigger />
+          <SidebarTrigger className="absolute md:static top-1 left-1" />
           <Outlet />
         </Suspense>
       </SidebarProvider>

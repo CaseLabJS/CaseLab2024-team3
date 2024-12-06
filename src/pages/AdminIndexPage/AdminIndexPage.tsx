@@ -11,8 +11,8 @@ const AdminIndexPage = () => {
           className="bg-gradient-to-r from-blue-400 to-blue-600 text-white text-center rounded-xl p-6 sm:p-8 shadow-lg transform hover:scale-105 transition-transform duration-300 ease-out"
         >
           <article className="flex flex-col text-center items-center h-full">
-            <Users className="text-4xl sm:text-5xl mb-4 animate-pulse" />
-            <h2 className="2xl:text-3xl xl:text-2xl text-3xl basis-8/12 font-bold flex items-center justify-center">
+            <Users className="text-4xl sm:text-5xl animate-pulse" />
+            <h2 className="2xl:text-3xl xl:text-2xl text-xl basis-8/12 font-bold flex items-center justify-center">
               Пользователи
             </h2>
           </article>
@@ -23,8 +23,8 @@ const AdminIndexPage = () => {
           className="bg-gradient-to-r from-green-400 to-green-600 text-white text-center rounded-xl p-6 sm:p-8 shadow-lg transform hover:scale-105 transition-transform duration-300 ease-out"
         >
           <article className="flex flex-col text-center items-center h-full">
-            <FileStack className="text-4xl sm:text-5xl mb-4 animate-pulse" />
-            <h2 className="2xl:text-3xl xl:text-2xl text-3xl basis-8/12 font-bold flex items-center justify-center">
+            <FileStack className="text-4xl sm:text-5xl animate-pulse" />
+            <h2 className="2xl:text-3xl xl:text-2xl text-xl basis-8/12 font-bold flex items-center justify-center">
               Типы документов
             </h2>
           </article>
@@ -35,8 +35,8 @@ const AdminIndexPage = () => {
           className="bg-gradient-to-r from-orange-400 to-orange-600 text-white text-center rounded-xl p-6 sm:p-8 shadow-lg transform hover:scale-105 transition-transform duration-300 ease-out"
         >
           <article className="flex flex-col text-center items-center h-full">
-            <Calendar className="text-4xl sm:text-5xl mb-4 animate-pulse" />
-            <h2 className="2xl:text-3xl xl:text-2xl text-3xl basis-8/12 font-bold flex items-center justify-center">
+            <Calendar className="text-4xl sm:text-5xl animate-pulse" />
+            <h2 className="2xl:text-3xl xl:text-2xl text-xl basis-8/12 font-bold flex items-center justify-center">
               Атрибуты документов
             </h2>
           </article>

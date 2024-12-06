@@ -93,9 +93,11 @@ const DocumentsTypePage: FC<DocumentsTypePageProps> = observer(() => {
   };
 
   return (
-    <div className="w-full p-4 flex items-center flex-col h-layout overflow-y-auto">
+    <div className="w-full p-4 flex flex-col h-layout overflow-y-auto">
       <section className="flex-grow flex-col gap-4 overflow-auto flex py-5">
-        <h1 className="self-start text-4xl">{adminMenuItems[1].title}</h1>
+        <h1 className="self-start text-2xl md:text-4xl">
+          {adminMenuItems[1].title}
+        </h1>
 
         <ActionEditDocTypes
           onCreate={createDocumentType}
