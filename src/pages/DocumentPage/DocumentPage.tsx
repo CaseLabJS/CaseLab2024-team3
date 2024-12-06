@@ -16,12 +16,11 @@ import { DocumentState } from '@/types/state';
 import { UserSelectDialog } from '@components/UserSelectDialog/UserSelectDialog';
 import { Voting } from 'src/types';
 import { ActionDelete } from '@components/Action';
+import { deleteValidStates } from '@constants/userDocument';
 
 interface DocumentPageProps {
   type: string;
 }
-
-const deleteValidStates = ['DRAFT', 'APPROVED', 'REJECTED', 'REWORK_REQUIRED'];
 
 const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
   const navigate = useNavigate();
