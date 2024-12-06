@@ -155,6 +155,9 @@ const AttributesPage: FC<AttributesPageProps> = observer(() => {
               ),
             },
             relatedData: documentTypes,
+            isOptionsMore: () => {
+              return true;
+            }
           }}
         />
       </section>

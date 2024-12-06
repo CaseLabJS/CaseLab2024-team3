@@ -92,6 +92,9 @@ const UserSignedDocuments = observer(() => {
                 href: `${'/app/after-sign/' + to}`,
               };
             },
+            isOptionsMore: () => {
+              return false;
+            }
           }}
         />
       </section>

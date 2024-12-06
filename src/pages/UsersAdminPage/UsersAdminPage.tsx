@@ -114,6 +114,9 @@ const UsersAdminPage = observer(() => {
                   <ActionDelete onDeleteWithStringId={deleteUser} {...props} />
                 ),
               },
+              isOptionsMore: () => {
+                return true;
+              }
             }}
           />
         </section>

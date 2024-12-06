@@ -15,7 +15,7 @@ export const TableBody = <TData,>({ table }: TableBodyProps<TData>) => {
   const navigate = useNavigate();
   const actionItem = table.options.meta?.actionItem;
   const actionMore = table.options.meta?.actionMore;
-  const TableRowLink = actionItem ? 'a' : TableRow;
+  const isOptionsMoreFn = table.options.meta?.isOptionsMore;
 
   return (
     <TableBodyComp className="border">
@@ -23,6 +23,8 @@ export const TableBody = <TData,>({ table }: TableBodyProps<TData>) => {
         table.getRowModel().rows.map((row) => {
           if (!row) return null;
           const props = (actionItem?.({ row }) as { href: string }) ?? {};
+          const isOptionsMore = isOptionsMoreFn?.({row});
+
           return (
             <TableRow
               key={row.id}
@@ -38,8 +40,7 @@ export const TableBody = <TData,>({ table }: TableBodyProps<TData>) => {
             >
               {row.getVisibleCells().map((cell) => {
                 const isActionMoreCell = cell.id.includes('actionMore');
-
-                if (isActionMoreCell && !actionMore) {
+                if (isActionMoreCell && !isOptionsMore) {
                   return null;
                 }
 

@@ -97,6 +97,9 @@ const UserSentForSignPage = observer(() => {
                 href: `${'/app/sent-for-sign/' + to}`,
               };
             },
+            isOptionsMore: () => {
+              return false;
+            }
           }}
         />
       </section>

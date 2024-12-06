@@ -8,6 +8,7 @@ export interface CustomTableMeta<TData> {
   };
   actionItem?: (props: ActionItem<TData>) => unknown;
   actionMore?: ActionMore<TData>;
+  isOptionsMore?: (props: ActionItem<TData>) => boolean;
   state?: RecordStateInfo<string>;
   relatedData?: { id: number; name: string }[];
   onDelete?: (id: number) => Promise<void>;

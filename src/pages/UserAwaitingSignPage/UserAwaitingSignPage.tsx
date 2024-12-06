@@ -133,6 +133,9 @@ const UserAwaitingSignPage = observer(() => {
                 </ActionSign>
               ),
             },
+            isOptionsMore: () => {
+              return true;
+            }
           }}
         />
       </section>
