@@ -6,6 +6,7 @@ import { CreateUser } from '@components/CreateUser/createUsersForm.types';
 import { DataTable2 } from '@components/DataTable2';
 import { Spinner } from '@components/UI';
 import UpdatePasswordDialog from '@components/UpdatePasswordDialog/UpdatePasswordDialog';
+import { adminMenuItems } from '@constants/sideBar';
 import { DIALOGS_USER } from '@constants/updateUser';
 
 import {
@@ -56,11 +57,12 @@ const UsersAdminPage = observer(() => {
   const refreshTableData = () => {
     void fetchUsers();
   };
+
   return (
-    <div className="p-10 flex flex-col h-layout gap-4 overflow-y-auto">
-      <div></div>
+    <div className="w-full p-4 flex items-center flex-col h-layout overflow-y-auto">
       {users && users.length > 0 ? (
-        <>
+        <section className="flex-grow flex-col gap-4 overflow-auto flex py-5">
+          <h1 className="self-start text-4xl">{adminMenuItems[0].title}</h1>
           <div style={{ display: 'flex', gap: '30px' }}>
             <CreateUserForm
               dialogTexts={DIALOGS_USER.CREATE}
@@ -70,55 +72,49 @@ const UsersAdminPage = observer(() => {
             />
             <UpdatePasswordDialog />
           </div>
-
-          <section className="flex-grow overflow-auto flex py-5">
-            <DataTable2
-              columns={TABLE_USERS_LIST_CONFIG}
-              data={users as UserRegister[]}
-              initialState={{
-                page: query.page!,
-                limit: query.limit!,
-              }}
-              handlers={{
-                onPaginationChange: (updater) => {
-                  const newSortingValue =
-                    updater instanceof Function
-                      ? updater({
-                          pageIndex: query.page ?? 0,
-                          pageSize: query.limit ?? 20,
-                        })
-                      : updater;
-                  setQuery({
-                    page: newSortingValue.pageIndex,
-                    limit: newSortingValue.pageSize,
-                  });
-                },
-              }}
-              meta={{
-                pagination: {
-                  totalPages: pagination?.totalPages,
-                },
-                actionMore: {
-                  onEdit: (props) => (
-                    <ActionEdit
-                      onUpdate={updateUser}
-                      mapSubmitPayload={mapSubmitPayloadUserEdit}
-                      dialogTexts={DIALOGS_USER.EDIT}
-                      configFields={CONFIG_FIELDS_USER_EDIT}
-                      {...props}
-                    />
-                  ),
-                  onDelete: (props) => (
-                    <ActionDelete
-                      onDeleteWithStringId={deleteUser}
-                      {...props}
-                    />
-                  ),
-                },
-              }}
-            />
-          </section>
-        </>
+          <DataTable2
+            columns={TABLE_USERS_LIST_CONFIG}
+            data={users as UserRegister[]}
+            initialState={{
+              page: query.page!,
+              limit: query.limit!,
+            }}
+            handlers={{
+              onPaginationChange: (updater) => {
+                const newSortingValue =
+                  updater instanceof Function
+                    ? updater({
+                        pageIndex: query.page ?? 0,
+                        pageSize: query.limit ?? 20,
+                      })
+                    : updater;
+                setQuery({
+                  page: newSortingValue.pageIndex,
+                  limit: newSortingValue.pageSize,
+                });
+              },
+            }}
+            meta={{
+              pagination: {
+                totalPages: pagination?.totalPages,
+              },
+              actionMore: {
+                onEdit: (props) => (
+                  <ActionEdit
+                    onUpdate={updateUser}
+                    mapSubmitPayload={mapSubmitPayloadUserEdit}
+                    dialogTexts={DIALOGS_USER.EDIT}
+                    configFields={CONFIG_FIELDS_USER_EDIT}
+                    {...props}
+                  />
+                ),
+                onDelete: (props) => (
+                  <ActionDelete onDeleteWithStringId={deleteUser} {...props} />
+                ),
+              },
+            }}
+          />
+        </section>
       ) : (
         <div className="flex align-center w-full h-full">
           Данные пока не заполнены.

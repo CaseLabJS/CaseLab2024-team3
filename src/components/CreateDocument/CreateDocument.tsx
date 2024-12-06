@@ -35,11 +35,16 @@ export const CreateDocumentForm = ({
   ChangeDocumentType,
   ChangeAttribute
 >) => {
+  const [selectedDocumentType, setSelectedDocumentType] = useState<
+    number | null
+  >(null);
   const [inputs, setInputs] = useState(data);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
   const [base64str, setBase64str] = useState<string>('');
-  const [filteredAttributes, setFilteredAttributes] = useState<ChangeAttribute[]>([]);
+  const [filteredAttributes, setFilteredAttributes] = useState<
+    ChangeAttribute[]
+  >([]);
 
   const { btnTriggerText, dialogDescriptionText, dialogTitleText } =
     dialogTexts;
@@ -49,7 +54,6 @@ export const CreateDocumentForm = ({
       documentTypes?.map((type) => ({
         value: type.id.toString(),
         label: type.name || 'Без названия',
-        isSelected: type.id === data.documentTypeId,
       })) ?? [],
     [documentTypes, data]
   );
@@ -67,14 +71,16 @@ export const CreateDocumentForm = ({
       return;
     }
 
-    const selectedDocumentType = documentTypes.find(
+    const selectedDocumentTypeId = documentTypes.find(
       (type) => type.id === documentTypeId
     );
 
-    if (selectedDocumentType) {
+    if (selectedDocumentTypeId) {
+      setSelectedDocumentType(selectedDocumentTypeId.id);
+
       const attributes =
         documentAttributes?.filter((attribute) =>
-          selectedDocumentType.attributeIds?.includes(attribute.id)
+          selectedDocumentTypeId.attributeIds?.includes(attribute.id)
         ) || [];
       setFilteredAttributes(attributes);
 
@@ -193,7 +199,7 @@ export const CreateDocumentForm = ({
                   classNamePrefix="select"
                   options={documentTypesOptions}
                   defaultValue={documentTypesOptions.find(
-                    (option) => option.isSelected
+                    (option) => +option.value === selectedDocumentType
                   )}
                   onChange={(selectedOption) => {
                     if (!selectedOption) return;

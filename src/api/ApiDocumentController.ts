@@ -129,7 +129,7 @@ class ApiDocumentController {
   public static async getVotingResult(
     documentId: number
   ): Promise<AxiosResponse<VotingResult>> {
-    return api.post(`/document/approvement/${documentId}/result`);
+    return api.get(`/document/approvement/${documentId}/result`);
   }
 }
 

@@ -3,7 +3,6 @@ import { CreateDocument, DialogTexts } from 'src/types/index';
 export interface OptionItem {
   value: string;
   label: string;
-  isSelected: boolean | undefined;
 }
 
 export type DocumentType = CreateDocument;

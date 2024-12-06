@@ -13,6 +13,7 @@ import {
   mapSubmitPayloadAttributes,
   TABLE_ATTRIBUTES_CONFIG,
 } from '@constants/adminAttributes';
+import { adminMenuItems } from '@constants/sideBar';
 import { observer } from 'mobx-react-lite';
 import { FC, useEffect } from 'react';
 import { ChangeAttribute } from 'src/types/index';
@@ -91,8 +92,10 @@ const AttributesPage: FC<AttributesPageProps> = observer(() => {
   };
 
   return (
-    <div className="w-full p-10 flex flex-col h-layout overflow-y-auto">
+    <div className="w-full p-4 flex items-center flex-col h-layout overflow-y-auto">
       <section className="flex-grow flex-col gap-4 overflow-auto flex py-5">
+        <h1 className="self-start text-4xl">{adminMenuItems[2].title}</h1>
+
         <ActionEditAttributes
           onCreate={createAttribute}
           mapSubmitPayload={mapSubmitPayloadAttributes}
