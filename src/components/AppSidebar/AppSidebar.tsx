@@ -74,6 +74,7 @@ export const AppSidebar: FC<SidebarProps> = observer(
                       asChild
                       isActive={activeName === item.title}
                       onClick={() => setActiveName(item.title)}
+                      className="py-5"
                     >
                       <Link to={item.url}>
                         <item.icon />

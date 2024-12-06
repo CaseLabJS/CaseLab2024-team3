@@ -17,7 +17,7 @@ import {
   GetDocument,
   Initiator,
   Pagination,
-} from 'src/types';
+} from '@/types';
 import { DocumentsStoreProps } from './types';
 
 export class DocumentsStore implements DocumentsStoreProps {
