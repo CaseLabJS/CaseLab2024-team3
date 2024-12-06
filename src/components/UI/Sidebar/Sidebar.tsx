@@ -771,5 +771,6 @@ export {
   SidebarSeparator,
   SidebarTrigger,
   useSidebar,
+  sidebarMenuButtonVariants,
 };
 export type { SidebarProviderProps, SidebarProps };

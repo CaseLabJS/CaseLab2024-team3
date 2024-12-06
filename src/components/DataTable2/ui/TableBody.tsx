@@ -24,9 +24,11 @@ export const TableBody = <TData,>({ table }: TableBodyProps<TData>) => {
           if (!row) return null;
           const props = (actionItem?.({ row }) as { href: string }) ?? {};
           return (
-            <TableRowLink
+            <TableRow
               key={row.id}
-              className={`${props.href && 'cursor-pointer'} relative table-row border last:border-none after:content-[''] after:absolute after:inset-0 after:inset-y-[-1px] after:hover:bg-foreground/5 after:pointer-events-none after:z-[1] dark:after:hover:bg-muted/20`}
+              className={`${props.href && 'cursor-pointer'} relative table-row border last:border-none after:content-['']
+                after:absolute after:inset-0 after:inset-y-[-1px] after:hover:bg-foreground/5
+                ${actionMore && 'after:pointer-events-none'} after:z-[1] dark:after:hover:bg-muted/20`}
               onClick={() => {
                 if (props.href) {
                   navigate(props.href);
@@ -55,7 +57,7 @@ export const TableBody = <TData,>({ table }: TableBodyProps<TData>) => {
                   </TableCell>
                 );
               })}
-            </TableRowLink>
+            </TableRow>
           );
         })
       ) : (

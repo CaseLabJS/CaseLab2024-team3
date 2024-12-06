@@ -58,9 +58,11 @@ const UserSentForSignPage = observer(() => {
   }
 
   return (
-    <div className="w-full p-4 flex flex-col items-center h-[calc(100vh-130px)] overflow-y-auto">
+    <div className="w-full p-4 flex flex-col h-[calc(100vh-130px)] overflow-y-auto">
       <section className="flex-grow flex-col overflow-auto flex py-5">
-        <h1 className="self-start text-4xl pb-5">{userMenuItems[1].title}</h1>
+        <h1 className="self-start text-2xl md:text-4xl pb-5">
+          {userMenuItems[1].title}
+        </h1>
         <DataTable2
           columns={TABLE_USER_DOCUMENTS_CONFIG}
           data={documentsSentForSign}

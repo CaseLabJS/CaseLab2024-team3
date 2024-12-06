@@ -7,4 +7,6 @@ export {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  sidebarMenuButtonVariants,
+  useSidebar,
 } from './Sidebar';

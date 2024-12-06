@@ -3,5 +3,6 @@ export {
   SheetContent,
   SheetDescription,
   SheetHeader,
+  SheetTrigger,
   SheetTitle,
 } from './Sheet';
