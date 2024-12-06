@@ -20,12 +20,12 @@ const UserDashboardIndexPage = observer(() => {
           className="bg-gradient-to-r from-blue-400 to-blue-600 text-white text-center rounded-xl p-6 sm:p-8 shadow-lg transform hover:scale-105 transition-transform duration-300 ease-out"
         >
           <article className="flex flex-col text-center items-center">
-            <FileText className="text-4xl md:text-5xl mb-4 animate-pulse" />
+            <FileText className="text-4xl md:text-5xl mb-2 animate-pulse" />
             <div>
               <h2 className="text-3xl md:text-4xl font-bold">
                 {documentsStore.paginationDocuments?.totalElements}
               </h2>
-              <p className="text-md md:text-lg mt-2">Всего документов</p>
+              <p className="text-md md:text-lg font-bold">Всего документов</p>
             </div>
           </article>
         </Link>
@@ -35,12 +35,12 @@ const UserDashboardIndexPage = observer(() => {
           className="bg-gradient-to-r from-green-400 to-green-600 text-white text-center rounded-xl p-6 sm:p-8 shadow-lg transform hover:scale-105 transition-transform duration-300 ease-out"
         >
           <article className="flex flex-col text-center items-center">
-            <FileCheck className="text-4xl md:text-5xl mb-4 animate-pulse" />
+            <FileCheck className="text-4xl md:text-5xl mb-2 animate-pulse" />
             <div>
               <h2 className="text-3xl md:text-4xl font-bold">
                 {documentsStore.documentsSentForSign.length}
               </h2>
-              <p className="text-md md:text-lg mt-2">
+              <p className="text-md md:text-lg font-bold">
                 Отправленные на подписание
               </p>
             </div>
@@ -52,12 +52,12 @@ const UserDashboardIndexPage = observer(() => {
           className="bg-gradient-to-r from-orange-400 to-orange-600 text-white text-center rounded-xl p-6 sm:p-8 shadow-lg transform hover:scale-105 transition-transform duration-300 ease-out"
         >
           <article className="flex flex-col text-center items-center">
-            <Hourglass className="text-4xl md:text-5xl mb-4 animate-pulse" />
+            <Hourglass className="text-4xl md:text-5xl mb-2 animate-pulse" />
             <div>
               <h2 className="text-3xl md:text-4xl font-bold">
                 {documentsStore.paginationDocumentsForSign?.totalElements}
               </h2>
-              <p className="text-md md:text-lg mt-2">Ожидают подписание</p>
+              <p className="text-md md:text-lg font-bold">Ожидают подписание</p>
             </div>
           </article>
         </Link>
@@ -67,12 +67,12 @@ const UserDashboardIndexPage = observer(() => {
           className="bg-gradient-to-r from-purple-400 to-purple-600 text-white text-center rounded-xl p-6 sm:p-8 shadow-lg transform hover:scale-105 transition-transform duration-300 ease-out"
         >
           <article className="flex flex-col text-center items-center">
-            <Check className="text-4xl md:text-5xl mb-4 animate-pulse" />
+            <Check className="text-4xl md:text-5xl mb-2 animate-pulse" />
             <div>
               <h2 className="text-3xl md:text-4xl font-bold">
                 {documentsStore.paginationDocumentsAfterSign?.totalElements}
               </h2>
-              <p className="text-md md:text-lg mt-2">Подписанные документы</p>
+              <p className="text-md md:text-lg">Подписанные документы</p>
             </div>
           </article>
         </Link>

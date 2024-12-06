@@ -59,11 +59,13 @@ const UsersAdminPage = observer(() => {
   };
 
   return (
-    <div className="w-full p-4 flex items-center flex-col h-layout overflow-y-auto">
+    <div className="w-full p-4 flex flex-col h-layout overflow-y-auto">
       {users && users.length > 0 ? (
         <section className="flex-grow flex-col gap-4 overflow-auto flex py-5">
-          <h1 className="self-start text-4xl">{adminMenuItems[0].title}</h1>
-          <div style={{ display: 'flex', gap: '30px' }}>
+          <h1 className="self-start text-2xl md:text-4xl">
+            {adminMenuItems[0].title}
+          </h1>
+          <div className="flex gap-4 gap-y-2 flex-wrap">
             <CreateUserForm
               dialogTexts={DIALOGS_USER.CREATE}
               data={EMPTY_USER_ATTRIBUTE}

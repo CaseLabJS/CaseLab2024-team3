@@ -1,14 +1,100 @@
 import { Link, NavLink } from 'react-router-dom';
-import { useState } from 'react';
+import { FC, useState } from 'react';
 
 import Logo from 'src/assets/Symbol.svg';
 import { observer } from 'mobx-react-lite';
 import { authStore, usersStore } from 'src/stores';
 import { User } from './User';
 import UpdatePasswordDialog from '@components/UpdatePasswordDialog/UpdatePasswordDialog';
+import {
+  Button,
+  ButtonProps,
+  DialogTitle,
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTrigger,
+} from '@components/UI';
+import { Menu } from 'lucide-react';
+import { SheetFooter } from '@components/UI/Sheet/Sheet';
+import { cn } from '@/lib';
+
+interface HeaderMenuProps extends ButtonProps {
+  isUser: boolean | undefined;
+  isAdmin: boolean | undefined;
+}
+
+const HeaderMenu: FC<HeaderMenuProps> = observer(
+  ({ isUser, isAdmin, className, ...props }) => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    return (
+      <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+        <SheetTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            className={cn(
+              '[&_svg]:w-6 [&_svg]:h-6 [&_svg]:text-indigo-200 hover:bg-inherit',
+              className
+            )}
+            {...props}
+          >
+            <Menu />
+          </Button>
+        </SheetTrigger>
+        <SheetContent className="flex flex-col">
+          <DialogTitle>
+            <SheetHeader>
+              <User className="[&_svg]:text-foreground [&_span]:text-foreground" />
+            </SheetHeader>
+          </DialogTitle>
+          <div className="gap-4 py-4 flex-grow">
+            <ul className="space-y-4 text-center">
+              {isUser && (
+                <li>
+                  <Button className="w-full" variant="ghost">
+                    <NavLink
+                      to="app"
+                      className="block py-2 font-medium"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Панель пользователя
+                    </NavLink>
+                  </Button>
+                </li>
+              )}
+              {isAdmin && (
+                <li>
+                  <Button className="w-full" variant="ghost">
+                    <NavLink
+                      to="admin"
+                      className="block py-2 font-medium"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Панель администратора
+                    </NavLink>
+                  </Button>
+                </li>
+              )}
+            </ul>
+          </div>
+          <SheetFooter>
+            <Button
+              onClick={() => {
+                setIsMenuOpen(false);
+                authStore.logout();
+              }}
+            >
+              Выход
+            </Button>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet>
+    );
+  }
+);
 
 const Header = observer(() => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const hasRole = (roleName: string) =>
     usersStore.user?.roles.some(
       (roleUser) => typeof roleUser === 'object' && roleUser.name === roleName
@@ -18,9 +104,9 @@ const Header = observer(() => {
   const isAdmin = hasRole('ADMIN');
 
   return (
-    <header className="bg-bg-header h-header px-4 md:px-8 lg:px-40">
+    <header className="bg-bg-header h-header px-4 md:px-8 lg:px-16 xl:px-40">
       <nav className="py-2.5">
-        <div className="flex justify-between items-center ">
+        <div className="flex justify-between items-center gap-2">
           <Link to={isUser ? '/' : '/admin'} className="flex items-center">
             <img src={Logo} className="mr-3 h-6 sm:h-9" alt="Logo" />
             <span className="text-sm font-semibold text-white">
@@ -36,7 +122,6 @@ const Header = observer(() => {
                 className={({ isActive }) =>
                   `block py-2 text-white font-medium ${isActive && isUser && isAdmin ? 'decoration-2 rounded-lg underline underline-offset-[5px]' : 'hover:text-gray-200'}`
                 }
-                onClick={() => setIsMenuOpen(false)}
               >
                 Панель пользователя
               </NavLink>
@@ -46,7 +131,6 @@ const Header = observer(() => {
                 className={({ isActive }) =>
                   `block py-2 text-white font-medium ${isActive && isUser && isAdmin ? 'decoration-2 underline underline-offset-[5px]' : 'hover:text-gray-200'}`
                 }
-                onClick={() => setIsMenuOpen(false)}
               >
                 Панель администратора
               </NavLink>
@@ -69,7 +153,12 @@ const Header = observer(() => {
             </div>
 
             {/* Кнопка для мобильного меню */}
-            <button
+            <HeaderMenu
+              isUser={isUser}
+              isAdmin={isAdmin}
+              className="lg:hidden"
+            />
+            {/* <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="lg:hidden p-2 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white"
             >
@@ -80,12 +169,12 @@ const Header = observer(() => {
                   clipRule="evenodd"
                 ></path>
               </svg>
-            </button>
+            </button> */}
           </div>
         </div>
 
         {/* Мобильное меню */}
-        {isMenuOpen && (
+        {/* {isMenuOpen && (
           <div className="fixed top-0 right-0 h-full w-64 bg-bg-header text-white transform transition-transform duration-300 ease-in-out z-50">
             <div className="flex justify-between items-center p-4">
               <User />
@@ -130,7 +219,7 @@ const Header = observer(() => {
               </li>
             </ul>
           </div>
-        )}
+        )} */}
       </nav>
     </header>
   );

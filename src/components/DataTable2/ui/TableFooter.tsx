@@ -8,7 +8,7 @@ interface TableFooterProps<TData> {
 
 export const TableFooter = <TData,>({ table }: TableFooterProps<TData>) => {
   return (
-    <div className="flex items-center justify-between gap-2">
+    <div className="flex items-center justify-between gap-5 gap-y-2 flex-wrap">
       <TableSelectCountRow table={table} />
       <TablePagination table={table} />
     </div>

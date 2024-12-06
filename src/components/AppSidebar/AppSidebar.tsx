@@ -9,6 +9,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@components/UI';
 import { observer } from 'mobx-react-lite';
 import { FC, useEffect, useState } from 'react';
@@ -28,6 +29,7 @@ interface SidebarProps {
 
 export const AppSidebar: FC<SidebarProps> = observer(
   ({ menuItems, sidebarName }) => {
+    const { setOpenMobile } = useSidebar();
     const { pathname } = useLocation();
     const lastPart = pathname.split('/').filter(Boolean).pop();
 
@@ -61,7 +63,7 @@ export const AppSidebar: FC<SidebarProps> = observer(
     return (
       <Sidebar
         collapsible="offcanvas"
-        className="absolute h-layout md:ml-8 lg:ml-40"
+        className="absolute h-layout md:ml-8 lg:ml-16 xl:ml-40"
       >
         <SidebarContent>
           <SidebarGroup>
@@ -73,7 +75,10 @@ export const AppSidebar: FC<SidebarProps> = observer(
                     <SidebarMenuButton
                       asChild
                       isActive={activeName === item.title}
-                      onClick={() => setActiveName(item.title)}
+                      onClick={() => {
+                        setActiveName(item.title);
+                        setOpenMobile(false);
+                      }}
                       className="py-5"
                     >
                       <Link to={item.url}>
