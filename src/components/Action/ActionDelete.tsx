@@ -14,6 +14,8 @@ import {
 import { Trash } from 'lucide-react';
 import { ActionDefaultData } from './types';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { deleteValidStates } from '@constants/userDocument';
+import { DocumentState } from '@/types/state';
 
 interface ActionDeleteProps<TData>
   extends ActionDefaultData<TData>,
@@ -22,7 +24,9 @@ interface ActionDeleteProps<TData>
   onDeleteWithNumberId?: (id: number) => Promise<void>;
 }
 
-export const ActionDelete = <TData,>({
+export const ActionDelete = <
+  TData extends { id: number; state: DocumentState },
+>({
   onDeleteWithNumberId,
   onDeleteWithStringId,
   data,
@@ -35,7 +39,7 @@ export const ActionDelete = <TData,>({
     const id = typeof data === 'object' && data && 'id' in data && data?.id;
 
     const handleNavigation = () => {
-      if (location.pathname !== '/app/documents') {
+      if (location.pathname.startsWith(`/app/${id as number}`)) {
         navigate('../documents');
       }
     };
@@ -51,34 +55,36 @@ export const ActionDelete = <TData,>({
     }
   };
 
-  return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button variant="ghost" {...props}>
-          <Trash />
-          Удалить
-        </Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Вы точно уверены?</AlertDialogTitle>
-          <AlertDialogDescription>
-            Это действие не может быть отменено. Эта операция удалит данные с
-            сервера.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel className="mb-3 hover:bg-bg-header">
-            Отменить
-          </AlertDialogCancel>
-          <AlertDialogAction
-            className="hover:opacity-75 mb-3 bg-bg-header hover:bg-bg-header"
-            onClick={handleClick}
-          >
-            Продолжить
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
-  );
+  if (data && deleteValidStates.includes(data?.state)) {
+    return (
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button variant="ghost" {...props}>
+            <Trash />
+            Удалить
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Вы точно уверены?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Это действие не может быть отменено. Эта операция удалит данные с
+              сервера.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="mb-3 hover:bg-bg-header">
+              Отменить
+            </AlertDialogCancel>
+            <AlertDialogAction
+              className="hover:opacity-75 mb-3 bg-bg-header hover:bg-bg-header"
+              onClick={handleClick}
+            >
+              Продолжить
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    );
+  }
 };

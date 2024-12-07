@@ -95,3 +95,11 @@ export const DIALOGS_USER: Record<string, DialogTexts> = {
     btnTriggerText: BUTTONS_NAMES.edit,
   },
 };
+
+// статусы для документов, которые можно удалять
+export const deleteValidStates = [
+  'DRAFT',
+  'APPROVED',
+  'REJECTED',
+  'REWORK_REQUIRED',
+];
