@@ -14,6 +14,7 @@ import {
   EMPTY_USER_ATTRIBUTE,
   TABLE_USERS_LIST_CONFIG,
   mapSubmitPayloadUserEdit,
+  CreateUserSchema,
 } from '@constants/usersListTable';
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
@@ -71,6 +72,7 @@ const UsersAdminPage = observer(() => {
               data={EMPTY_USER_ATTRIBUTE}
               onSave={createUser as (data: CreateUser) => Promise<void>}
               updateTableData={refreshTableData}
+              formSchemaValidate={CreateUserSchema}
             />
             <UpdatePasswordDialog />
           </div>

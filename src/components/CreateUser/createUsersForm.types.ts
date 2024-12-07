@@ -1,4 +1,5 @@
 import { ChangeUser, DialogTexts, UserRegister } from 'src/types/index';
+import { z, ZodType } from 'zod';
 
 export interface OptionItem {
   value: string;
@@ -16,4 +17,7 @@ export interface CreateUserProps<TData = CreateUser> {
   };
   onUpdate?: (id: string, data: Partial<TData>) => Promise<void>;
   updateTableData?: () => void;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  formSchemaValidate?: z.infer<ZodType<any, any, any>>;
 }

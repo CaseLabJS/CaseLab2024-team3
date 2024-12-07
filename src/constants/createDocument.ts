@@ -2,7 +2,7 @@ export const DIALOGS_VALUES = {
   docTypesCreate: {
     dialogTitleText: 'Создание документа',
     dialogDescriptionText:
-      'Для создания документа необходимо заполнить поля ниже.',
+      'Для создания документа необходимо заполнить поля ниже.Поля с * обязательны.',
     btnTriggerText: 'Создать документ',
   },
 };
@@ -25,6 +25,7 @@ export const EMPTY_DOC = {
 export const fieldLabels: Record<string, { label: string; hidden: boolean }> = {
   name: { label: 'Название документа', hidden: false },
   documentTypeId: { label: 'ID типа документа', hidden: true },
-  file: { label: 'Файл', hidden: false },
+  file: { label: 'Файл*', hidden: false },
   attributeValues: { label: 'Атрибут документа', hidden: true },
 };
+

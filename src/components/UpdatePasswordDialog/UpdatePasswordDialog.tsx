@@ -8,7 +8,14 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@components/UI/Dialog/Dialog';
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@components/UI';
 import { Input } from '@components/UI/Input/Input';
 import { useEffect, useState } from 'react';
 import Select from 'react-select';
@@ -26,6 +33,7 @@ function UpdatePasswordDialog() {
   const [password, setPassword] = useState<string>('');
   const [oldpassword, setOldPassword] = useState<string>('');
   const [roles, setRoles] = useState<string[]>([]);
+  const [alertOpen, setAlertOpen] = useState(false);
   const isAdmin = roles.includes('ADMIN');
   useEffect(() => {
     const userRoles = usersStore?.user?.roles;
@@ -37,19 +45,25 @@ function UpdatePasswordDialog() {
       );
     }
   }, [usersStore?.user?.roles]);
+
   function handleOnSave() {
     if (!isAdmin) {
-      usersStore.updateUserPasswordForUser(oldpassword, password);
-      setIsDialogOpen(false);
+      if (oldpassword && password) {
+        usersStore.updateUserPasswordForUser(oldpassword, password);
+        setIsDialogOpen(false);
+      } else {
+        setAlertOpen(true);
+      }
     } else {
       if (selectedUser && password) {
         usersStore.updateUserPasswordForAdmin(selectedUser?.value, password);
         setIsDialogOpen(false);
       } else {
-        alert('Пожалуйста, выберите пользователя и введите пароль.');
+        setAlertOpen(true);
       }
     }
   }
+
   const userOptions = usersStore.users.map((user) => ({
     value: user.id,
     label: `${user.lastName} ${user.firstName} ${user.patronymic ?? ''}`.trim(),
@@ -69,10 +83,10 @@ function UpdatePasswordDialog() {
               <DialogHeader
                 className={`sm:max-w-[${DEFAULT_DIALOG_FORM_WIDTH}px]`}
               >
-                <DialogTitle style={{ marginBottom: '20px' }}>
+                <DialogTitle className="text-center mb-5">
                   Форма обновления пароля пользователя
                 </DialogTitle>
-                <DialogDescription>
+                <DialogDescription className="text-center">
                   Выберите в выпадающем списке пользователя и присвойте ему
                   новый пароль, затем нажмите кнопку Сохранить.
                 </DialogDescription>
@@ -86,8 +100,11 @@ function UpdatePasswordDialog() {
                   onChange={(selectedOption) => setSelectedUser(selectedOption)}
                 />
 
-                <Label htmlFor="newPassword" className="text-left mb-2">
-                  Введите новый пароль:
+                <Label
+                  htmlFor="newPassword"
+                  className="text-indigo-700 text-sm font-medium flex mb-2"
+                >
+                  Введите новый пароль*:
                 </Label>
                 <Input
                   name="newPassword"
@@ -119,16 +136,19 @@ function UpdatePasswordDialog() {
               <DialogHeader
                 className={`sm:max-w-[${DEFAULT_DIALOG_FORM_WIDTH}px]`}
               >
-                <DialogTitle style={{ marginBottom: '20px' }}>
+                <DialogTitle className="text-center mb-5">
                   Форма обновления пароля
                 </DialogTitle>
-                <DialogDescription>
+                <DialogDescription className="text-center">
                   Введите старый и новый пароль, затем нажмите кнопку Сохранить.
                 </DialogDescription>
               </DialogHeader>
-              <div className="flex flex-col space-y-5">
-                <Label htmlFor="oldPassword" className="text-left mb-2">
-                  Введите старый пароль:
+              <div className="flex flex-col space-y-3">
+                <Label
+                  htmlFor="oldPassword"
+                  className="text-indigo-700 text-sm font-medium flex mb-2"
+                >
+                  Введите старый пароль*:
                 </Label>
                 <Input
                   name="oldPassword"
@@ -136,8 +156,11 @@ function UpdatePasswordDialog() {
                   className="col-span-3"
                   onChange={(e) => setOldPassword(e.target.value)}
                 />
-                <Label htmlFor="newPassword" className="text-left mb-2">
-                  Введите новый пароль:
+                <Label
+                  htmlFor="newPassword"
+                  className="text-indigo-700 text-sm font-medium flex mb-2"
+                >
+                  Введите новый пароль*:
                 </Label>
                 <Input
                   name="newPassword"
@@ -160,6 +183,19 @@ function UpdatePasswordDialog() {
           </Dialog>
         )}
       </div>
+      <AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Внимание!</AlertDialogTitle>
+            <AlertDialogDescription>
+              Пожалуйста, выберите пользователя и введите пароль.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Ок</AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
