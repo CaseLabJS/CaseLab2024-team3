@@ -1,4 +1,9 @@
-import { ChangeDocument, DialogTexts, GetDocument } from '@/types';
+import {
+  ChangeDocument,
+  DialogTexts,
+  DocumentState,
+  GetDocument,
+} from '@/types';
 import { FieldTypes, FormSwitcherProps } from '@components/UI/Form/types';
 import { ColumnDef } from '@tanstack/react-table';
 import { z } from 'zod';
@@ -89,9 +94,9 @@ export const DIALOGS_USER: Record<string, DialogTexts> = {
 };
 
 // статусы для документов, которые можно удалять
-export const deleteValidStates = [
-  'DRAFT',
-  'APPROVED',
-  'REJECTED',
-  'REWORK_REQUIRED',
+export const deleteValidStates: DocumentState[] = [
+  DocumentState.DRAFT,
+  DocumentState.APPROVED,
+  DocumentState.REJECTED,
+  DocumentState.REWORK_REQUIRED,
 ];

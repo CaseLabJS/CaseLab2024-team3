@@ -104,9 +104,9 @@ const UserDocumentsPage = observer(() => {
   };
 
   const onSendForSign = async (documentId: number, userId: string) => {
-    sendForSignDocumentById(documentId, userId);
+    await sendForSignDocumentById(documentId, userId);
     fetchDocumentsForSign(0, 20, 'owner', 'before_signer');
-  }
+  };
 
   return (
     <div className="w-full p-4 flex flex-col h-layout overflow-y-auto">
@@ -182,9 +182,9 @@ const UserDocumentsPage = observer(() => {
               ),
             },
             isOptionsMore: ({ row }) => {
-              const state = row?.getValue('state') as string;
+              const state = row?.getValue('state');
               return (
-                deleteValidStates.includes(state) ||
+                deleteValidStates.includes(state as DocumentState) ||
                 state === DocumentState.DRAFT ||
                 state === DocumentState.PENDING_AUTHOR_SIGN ||
                 state === DocumentState.AUTHOR_SIGNED
