@@ -77,7 +77,6 @@ const SignInPage: FC<SignInPageProps> = observer(() => {
                   label="Логин*"
                   type="text"
                   error={form.formState.errors.login?.message}
-                  register={form.register}
                 />
 
                 <BaseForm.FormFieldInput
@@ -85,7 +84,6 @@ const SignInPage: FC<SignInPageProps> = observer(() => {
                   type="password"
                   label="Пароль*"
                   error={form.formState.errors.password?.message}
-                  register={form.register}
                 />
 
                 <Button
