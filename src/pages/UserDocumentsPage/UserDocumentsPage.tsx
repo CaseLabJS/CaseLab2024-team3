@@ -33,6 +33,7 @@ const UserDocumentsPage = observer(() => {
     paginationDocuments,
     deleteDocument,
     fetchDocuments,
+    fetchDocumentsForSign,
     createDocument,
     signDocumentById,
     sendForSignDocumentById,
@@ -87,6 +88,11 @@ const UserDocumentsPage = observer(() => {
     await signDocumentById(id, DocumentState.APPROVED);
     await fetchDocuments(query.page ?? 0, query.limit ?? 20);
   };
+
+  const onSendForSign = async (documentId: number, userId: string) => {
+    sendForSignDocumentById(documentId, userId);
+    fetchDocumentsForSign(0, 20, 'owner', 'before_signer');
+  }
 
   return (
     <div className="w-full p-4 flex flex-col h-layout overflow-y-auto">
@@ -147,7 +153,7 @@ const UserDocumentsPage = observer(() => {
               ),
               onSendForSign: (props) => (
                 <ActionSendForSign
-                  onSendForSign={sendForSignDocumentById}
+                  onSendForSign={onSendForSign}
                   currentUser={user}
                   users={users}
                   {...props}
