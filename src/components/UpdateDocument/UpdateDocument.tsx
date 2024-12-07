@@ -129,14 +129,16 @@ export const UpdateDocumentForm = ({
       </DialogTrigger>
       <DialogContent className={`sm:max-w-[${DEFAULT_DIALOG_FORM_WIDTH}px]`}>
         <DialogHeader>
-          <DialogTitle className="text-center mb-2">{dialogTitleText}</DialogTitle>
+          <DialogTitle className="text-center mb-2">
+            {dialogTitleText}
+          </DialogTitle>
           <DialogDescription className="text-center">
             {dialogDescriptionText}
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleOnSave}>
-          <div className="grid gap-4 py-4">
+          <div>
             <div>
               {/* Название документа */}
               <Label className="text-indigo-700 text-sm font-medium flex mb-2">
