@@ -84,21 +84,22 @@ class ApiDocumentController {
   public static async getDocumentsForSign(
     page?: number,
     size?: number,
+    initiator: Initiator = 'owner',
     type: 'before_signer' | 'after_signer' = 'before_signer'
   ): Promise<AxiosResponse<GetDocumentsResponse>> {
     if (page && size) {
-      return api.get(`/document/signer/${type}?page=${page}&size=${size}`);
+      return api.get(`/document/${initiator}/${type}?page=${page}&size=${size}`);
     }
 
     if (page) {
-      return api.get(`/document/signer/${type}?page=${page}`);
+      return api.get(`/document/${initiator}/${type}?page=${page}`);
     }
 
     if (size) {
-      return api.get(`/document/signer/${type}?size=${size}`);
+      return api.get(`/document/${initiator}/${type}?size=${size}`);
     }
 
-    return api.get(`/document/signer/${type}`);
+    return api.get(`/document/${initiator}/${type}`);
   }
 
   public static async getDocumentForSign(

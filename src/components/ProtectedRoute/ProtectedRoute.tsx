@@ -53,10 +53,13 @@ const ProtectedRouteSuccess: FC<{ role: string }> = observer(({ role }) => {
 
 const ProtectedRoute: FC<ProtectedRouteProps> = observer(({ role }) => {
   const Component = MapComponent[authStore.status] ?? null;
+  
   if (!Component) return null;
-  if (!authStore.isAuth) {
+
+  if (!authStore.isAuth && authStore.status !== STATUS.LOADING) {
     return <Navigate to={ROUTE_CONSTANTS.SIGN_IN} />;
   }
+
   return <Component role={role} />;
 });
 

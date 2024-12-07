@@ -107,7 +107,7 @@ export const ActionEditDocTypes = <TData extends { id: number }, RData>({
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost" {...props}>
-          {btnTriggerText === DIALOGS_DOCTYPE.EDIT && <Pencil />}
+          {btnTriggerText === DIALOGS_DOCTYPE.EDIT.btnTriggerText && <Pencil />}
           {btnTriggerText}
         </Button>
       </DialogTrigger>

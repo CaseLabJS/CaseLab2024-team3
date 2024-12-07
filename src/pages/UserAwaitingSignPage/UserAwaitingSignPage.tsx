@@ -38,7 +38,9 @@ const UserAwaitingSignPage = observer(() => {
     } else {
       void documentsStore.fetchDocumentsForSign(
         query.page ?? 0,
-        query.limit ?? 20
+        query.limit ?? 20,
+        "signer",
+        "before_signer"
       );
     }
   }, [query.limit, query.page]);
@@ -131,6 +133,9 @@ const UserAwaitingSignPage = observer(() => {
                 </ActionSign>
               ),
             },
+            isOptionsMore: () => {
+              return true;
+            }
           }}
         />
       </section>

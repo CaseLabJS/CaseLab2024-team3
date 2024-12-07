@@ -11,6 +11,7 @@ import { Spinner } from '@components/UI';
 import { DIALOGS_VALUES, EMPTY_DOC } from '@constants/createDocument';
 import { userMenuItems } from '@constants/sideBar';
 import {
+  deleteValidStates,
   TABLE_USER_COLUMN_VISIBLE,
   TABLE_USER_DOCUMENTS_CONFIG,
 } from '@constants/userDocument';
@@ -73,7 +74,7 @@ const UserDocumentsPage = observer(() => {
   }
 
   const refreshTableData = () => {
-    documentsStore.fetchDocuments();
+    fetchDocuments(query.page ?? 0, query.limit ?? 20);
   };
 
   const onSignByAuthor = async (id: number, status: DocumentState) => {
@@ -134,7 +135,7 @@ const UserDocumentsPage = observer(() => {
               const to = row?.getValue('id') as string;
               return {
                 onClick: () => navigate(to),
-                href: `${to}`,
+                href: `/app/${to}`,
               };
             },
             actionMore: {
@@ -158,6 +159,12 @@ const UserDocumentsPage = observer(() => {
                   {...props}
                 />
               ),
+            },
+            isOptionsMore:  ({ row }) => {
+              const state = row?.getValue('state') as string;
+              return deleteValidStates.includes(state)
+              || (state === DocumentState.DRAFT || state === DocumentState.PENDING_AUTHOR_SIGN)
+              || state === DocumentState.AUTHOR_SIGNED
             },
           }}
         />

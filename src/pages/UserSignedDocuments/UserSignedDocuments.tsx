@@ -34,13 +34,14 @@ const UserSignedDocuments = observer(() => {
       void fetchDocumentsForSign(
         query.page ?? 0,
         query.limit ?? 20,
+        'signer',
         'after_signer'
       );
     }
   }, [query.limit, query.page]);
 
   useEffect(() => {
-    fetchDocumentsForSign(0, 20, 'after_signer');
+    fetchDocumentsForSign(0, 20, 'signer', 'after_signer');
   }, []);
 
   if (loading) {
@@ -91,6 +92,9 @@ const UserSignedDocuments = observer(() => {
                 href: `${'/app/after-sign/' + to}`,
               };
             },
+            isOptionsMore: () => {
+              return false;
+            }
           }}
         />
       </section>

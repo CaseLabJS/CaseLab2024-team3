@@ -114,7 +114,7 @@ export const ActionEditAttributes = <TData extends { id: number }, RData>({
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost" {...props}>
-          {btnTriggerText === DIALOGS_ATTRIBUTES.EDIT && <Pencil />}
+          {btnTriggerText === DIALOGS_ATTRIBUTES.EDIT.btnTriggerText && <Pencil />}
           {btnTriggerText}
         </Button>
       </DialogTrigger>
