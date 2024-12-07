@@ -87,3 +87,5 @@ export const VOTING_STATUS: RecordVotingInfo<VotingStatus> = {
     votingClassName: 'bg-red-700 text-white',
   },
 };
+
+export const DEFAULT_PAGE_SIZE = 20;

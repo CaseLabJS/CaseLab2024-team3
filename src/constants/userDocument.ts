@@ -11,8 +11,6 @@ import {
   timeColumn,
 } from './defaultTableColumns';
 
-const DOCUMENT_ID = 'documentId';
-const UPDATED_AT = 'updatedAt';
 const CONTENT_URL = 'contentUrl';
 
 export const TABLE_USER_DOCUMENTS_CONFIG: ColumnDef<GetDocument>[] = [
@@ -32,26 +30,20 @@ export const TABLE_USER_DOCUMENTS_CONFIG: ColumnDef<GetDocument>[] = [
     header: 'Статус',
     state: DOCUMENT_STATE,
   }),
-  defaultColumn({ accessorKey: DOCUMENT_ID, header: 'ID документа' }),
   defaultColumn({ accessorKey: CONTENT_URL, header: 'КонтентURL' }),
   timeColumn({
     accessorKey: 'createdAt',
     enableSorting: true,
     header: 'Создан',
   }),
-  timeColumn({ accessorKey: UPDATED_AT, header: 'Обновлён' }),
   actionMoreColumn(),
 ];
 
 export const TABLE_USER_DOCUMENTS_COLUMN_VISIBLE = {
-  [DOCUMENT_ID]: false,
-  [UPDATED_AT]: false,
   [CONTENT_URL]: false,
 };
 
 export const TABLE_USER_COLUMN_VISIBLE = {
-  [DOCUMENT_ID]: false,
-  [UPDATED_AT]: false,
   [CONTENT_URL]: false,
 };
 
@@ -91,7 +83,7 @@ export const DIALOGS_USER: Record<string, DialogTexts> = {
   EDIT: {
     dialogTitleText: 'Редактирование документа',
     dialogDescriptionText:
-      'Здесь можно изменить документ. После внесения изменений нажмите "Сохранить".Поля с * обязательны.',
+      'Здесь можно изменить документ. После внесения изменений нажмите "Сохранить". Поля с * обязательны.',
     btnTriggerText: BUTTONS_NAMES.edit,
   },
 };

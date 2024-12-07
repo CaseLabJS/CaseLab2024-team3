@@ -5,14 +5,15 @@ import { DataTable2 } from '@components/DataTable2';
 import { ButtonProps, Spinner } from '@components/UI';
 import { FormSwitcherProps } from '@components/UI/Form/types';
 import {
+  attributesFormSchemaValidate,
   CONFIG_FIELDS_ATTRIBUTES_CREATE,
   CONFIG_FIELDS_ATTRIBUTES_EDIT,
   DIALOGS_ATTRIBUTES,
   EMPTY_DOC_ATTRIBUTE,
-  attributesFormSchemaValidate,
   mapSubmitPayloadAttributes,
   TABLE_ATTRIBUTES_CONFIG,
 } from '@constants/adminAttributes';
+import { DEFAULT_PAGE_SIZE } from '@constants/defaultConstants';
 import { adminMenuItems } from '@constants/sideBar';
 import { observer } from 'mobx-react-lite';
 import { FC, useEffect } from 'react';
@@ -45,12 +46,12 @@ const AttributesPage: FC<AttributesPageProps> = observer(() => {
     if (page === undefined || limit === undefined) {
       setQuery({
         page: 0,
-        limit: 20,
+        limit: DEFAULT_PAGE_SIZE,
       });
     } else {
-      void fetchDocTypesAndAttributes(page ?? 0, limit ?? 20);
+      void fetchDocTypesAndAttributes(page ?? 0, limit ?? DEFAULT_PAGE_SIZE);
     }
-  }, [fetchDocTypesAndAttributes, page, limit]);
+  }, [fetchDocTypesAndAttributes, page, limit, setQuery]);
 
   if (loading) {
     return (
@@ -121,7 +122,7 @@ const AttributesPage: FC<AttributesPageProps> = observer(() => {
                 updater instanceof Function
                   ? updater({
                       pageIndex: page ?? 0,
-                      pageSize: limit ?? 20,
+                      pageSize: limit ?? DEFAULT_PAGE_SIZE,
                     })
                   : updater;
               setQuery({

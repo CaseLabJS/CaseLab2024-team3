@@ -28,13 +28,13 @@ export const DIALOGS_USER: Record<string, DialogTexts> = {
   EDIT: {
     dialogTitleText: 'Редактирование пользователя',
     dialogDescriptionText:
-      'Здесь можно изменить данные пользователя. После внесения изменений нажмите "Сохранить".Поля с * обязательны.',
+      'Здесь можно изменить данные пользователя. После внесения изменений нажмите "Сохранить". Поля с * обязательны.',
     btnTriggerText: BUTTONS_NAMES.edit,
   },
   CREATE: {
     dialogTitleText: 'Создание нового пользователя',
     dialogDescriptionText:
-      'Для создания нового пользователя необходимо заполнить поля ниже.Поля с * обязательны.',
+      'Для создания нового пользователя необходимо заполнить поля ниже. Поля с * обязательны.',
     btnTriggerText: 'Создать пользователя',
   },
 };
@@ -48,4 +48,3 @@ export const EMPTY_USER_ATTRIBUTE: UserRegister = {
   password: '',
   roles: [] as Role[],
 };
-

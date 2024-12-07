@@ -42,7 +42,7 @@ export const stateColumn = <T>(props?: StateColumnProps<T>): ColumnDef<T> => {
   return defaultColumn<T>({
     cell: TableStatusCell,
     minSize: 180,
-    size: 150,
+    size: 250,
     meta: {
       state,
       ...meta,

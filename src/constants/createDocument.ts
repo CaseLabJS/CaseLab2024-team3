@@ -2,7 +2,7 @@ export const DIALOGS_VALUES = {
   docTypesCreate: {
     dialogTitleText: 'Создание документа',
     dialogDescriptionText:
-      'Для создания документа необходимо заполнить поля ниже.Поля с * обязательны.',
+      'Для создания документа необходимо заполнить поля ниже. Поля с * обязательны.',
     btnTriggerText: 'Создать документ',
   },
 };

@@ -47,22 +47,27 @@ export const TABLE_USERS_LIST_CONFIG: ColumnDef<UserRegister>[] = [
   defaultColumn({
     accessorKey: 'lastName',
     header: 'Фамилия',
+    enableSorting: true,
   }),
   defaultColumn({
     accessorKey: 'firstName',
     header: 'Имя',
+    enableSorting: true,
   }),
   defaultColumn({
     accessorKey: 'patronymic',
     header: 'Отчество',
+    enableSorting: true,
   }),
   defaultColumn({
     accessorKey: USER_EMAIL,
     header: 'Эл-ая почта',
+    enableSorting: true,
   }),
   defaultColumn({
     accessorKey: USER_LOGIN,
     header: 'Логин',
+    enableSorting: true,
   }),
   defaultColumn({
     accessorKey: USER_ROLES,
