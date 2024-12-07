@@ -65,11 +65,17 @@ const UserAwaitingSignPage = observer(() => {
 
   const onSignDocument = async (id: number, status: DocumentState) => {
     await signDocumentById(id, status);
-    await documentsStore.fetchDocumentsForSign(
+    documentsStore.fetchDocumentsForSign(
       query.page ?? 0,
       query.limit ?? 20,
       'signer',
       'before_signer'
+    );
+    documentsStore.fetchDocumentsForSign(
+      query.page ?? 0,
+      query.limit ?? 20,
+      'signer',
+      'after_signer'
     );
   };
 
