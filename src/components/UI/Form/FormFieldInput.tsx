@@ -22,6 +22,8 @@ interface FormFieldInput
   descriptionProps?: React.HTMLAttributes<HTMLParagraphElement>;
   messageProps?: React.HTMLAttributes<HTMLParagraphElement>;
   defaultValue?: string;
+  error?: string;
+  register?: any;
 }
 
 export const FormFieldInput: AssignComponent<'input', FormFieldInput> = ({

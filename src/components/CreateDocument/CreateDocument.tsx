@@ -180,14 +180,25 @@ export const CreateDocumentForm = ({
       </DialogTrigger>
       <DialogContent className={`sm:max-w-[${DEFAULT_DIALOG_FORM_WIDTH}px]`}>
         <DialogHeader>
-          <DialogTitle>{dialogTitleText}</DialogTitle>
-          <DialogDescription>{dialogDescriptionText}</DialogDescription>
+          <DialogTitle className="text-center mb-2">
+            {dialogTitleText}
+          </DialogTitle>
+          <DialogDescription className="text-center">
+            {dialogDescriptionText}
+          </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleOnSave} name="createDocument">
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="documentTypeId" className="text-right">
+        <form
+          onSubmit={handleOnSave}
+          name="createDocument"
+          className="space-y-2"
+        >
+          <div >
+            <div>
+              <Label
+                htmlFor="documentTypeId"
+                className="text-indigo-700 text-sm font-medium flex mb-2"
+              >
                 Тип документа*
               </Label>
               <div className="col-span-3">
@@ -212,13 +223,10 @@ export const CreateDocumentForm = ({
             {filteredAttributes.length > 0 && (
               <>
                 {filteredAttributes.map((attribute: ChangeAttribute) => (
-                  <div
-                    key={attribute.id}
-                    className="grid grid-cols-4 items-center gap-4"
-                  >
+                  <div key={attribute.id}>
                     <Label
                       htmlFor={`attribute-${attribute.id}`}
-                      className="text-right"
+                      className="text-indigo-700 text-sm font-medium flex mb-2"
                     >
                       {attribute.name}
                       {attribute.required ? '*' : ''}
@@ -232,7 +240,6 @@ export const CreateDocumentForm = ({
                       }
                       required={attribute.required}
                       onChange={(e) => handleAttributeChange(e, attribute.id)}
-                      className="col-span-3"
                     />
                   </div>
                 ))}
@@ -241,8 +248,11 @@ export const CreateDocumentForm = ({
             {Object.entries(inputs)
               .filter(([key]) => !fieldLabels[key]?.hidden)
               .map(([key]) => (
-                <div key={key} className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor={key} className="text-right">
+                <div key={key}>
+                  <Label
+                    htmlFor={key}
+                    className="text-indigo-700 text-sm font-medium flex mb-2"
+                  >
                     {fieldLabels[key]?.label || key}
                     {fieldLabels[key].label === 'Название документа' ? '*' : ''}
                   </Label>

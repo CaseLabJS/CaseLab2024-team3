@@ -3,6 +3,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { actionMoreColumn, defaultColumn } from './defaultTableColumns';
 
 import { FieldTypes, FormSwitcherProps } from '@components/UI/Form/types';
+import { z } from 'zod';
 
 export const FIELD_LABELS: { [key: string]: string } = {
   id: 'Ид. номер',
@@ -13,12 +14,12 @@ export const FIELD_LABELS: { [key: string]: string } = {
   required: 'Обязательный',
   dataType: 'Тип данных',
   roles: 'Роли',
-  lastName: 'Фамилия',
-  firstName: 'Имя',
+  lastName: 'Фамилия*',
+  firstName: 'Имя*',
   patronymic: 'Отчество',
-  email: 'Электронная почта',
-  login: 'Логин',
-  password: 'Пароль',
+  email: 'Электронная почта*',
+  login: 'Логин*',
+  password: 'Пароль*',
 };
 
 export const ROLES = [
@@ -92,14 +93,14 @@ export const CONFIG_FIELDS_USER_EDIT: FormSwitcherProps[] = [
     baseFieldProps: {
       name: 'lastName',
       type: FieldTypes.Input,
-      label: 'Фамилия',
+      label: 'Фамилия*',
     },
   },
   {
     baseFieldProps: {
       name: 'firstName',
       type: FieldTypes.Input,
-      label: 'Имя',
+      label: 'Имя*',
     },
   },
   {
@@ -113,14 +114,14 @@ export const CONFIG_FIELDS_USER_EDIT: FormSwitcherProps[] = [
     baseFieldProps: {
       name: USER_EMAIL,
       type: FieldTypes.Input,
-      label: 'Эл-ая почта',
+      label: 'Эл-ая почта*',
     },
   },
   {
     baseFieldProps: {
       name: USER_LOGIN,
       type: FieldTypes.Input,
-      label: 'Логин',
+      label: 'Логин*',
     },
   },
   {
@@ -166,3 +167,15 @@ export type Role = {
   id: number;
   name: string;
 };
+export const CreateUserSchema = z.object({
+  email: z
+    .string()
+    .email({ message: 'Введите корректный email' })
+    .min(1, { message: 'Поле Email обязательно' }),
+  login: z.string().min(1, { message: 'Поле Логин обязательно' }),
+  password: z
+    .string()
+    .min(6, { message: 'Пароль должен быть не менее 6 символов' }),
+  firstName: z.string().min(1, { message: 'Поле Имя обязательно' }),
+  lastName: z.string().min(1, { message: 'Поле Фамилия обязательно' }),
+});

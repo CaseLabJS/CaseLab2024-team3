@@ -120,8 +120,10 @@ export const UserSelectDialog: React.FC<UserSelectDialogProps> = ({
 
       <DialogContent className="">
         <DialogHeader>
-          <DialogTitle>{dialogTitle}</DialogTitle>
-          <DialogDescription>{dialogDescription}</DialogDescription>
+          <DialogTitle className="text-center mb-2">{dialogTitle}</DialogTitle>
+          <DialogDescription className="text-center">
+            {dialogDescription}
+          </DialogDescription>
         </DialogHeader>
 
         <div className="grid gap-4 py-4">
@@ -144,8 +146,10 @@ export const UserSelectDialog: React.FC<UserSelectDialogProps> = ({
           )}
           {process === 'voting' && (
             <>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label>Голосующие: </Label>
+              <div>
+                <Label className="text-indigo-700 text-sm font-medium flex mb-2">
+                  Голосующие*:{' '}
+                </Label>
                 <div className="col-span-3">
                   <Select
                     options={userOptions}
@@ -158,8 +162,10 @@ export const UserSelectDialog: React.FC<UserSelectDialogProps> = ({
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label>Процент одобрения: </Label>
+              <div>
+                <Label className="text-indigo-700 text-sm font-medium flex mb-2">
+                  Процент одобрения*:{' '}
+                </Label>
                 <div className="col-span-3">
                   <Input
                     type="number"
@@ -176,9 +182,11 @@ export const UserSelectDialog: React.FC<UserSelectDialogProps> = ({
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label>Крайний срок голосования: </Label>
-                <div className="col-span-3">
+              <div>
+                <Label className="text-indigo-700 text-sm font-medium flex mb-2">
+                  Крайний срок голосования*:{' '}
+                </Label>
+                <div className="col-span-3" >
                   {/* source: https://time.openstatus.dev/ */}
                   <DateTimePicker
                     setDeadline={setDeadline}

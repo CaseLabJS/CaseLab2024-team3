@@ -1,8 +1,11 @@
 import { observer } from 'mobx-react-lite';
 import { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from 'react-router-dom';
 import { Logo } from 'src/components/Logo';
+import { loginSchema } from '@constants/authConstants';
 import {
   BaseForm,
   Button,
@@ -16,10 +19,11 @@ import {
   TooltipTrigger,
 } from 'src/components/UI';
 import { authStore, usersStore } from 'src/stores';
-import type { UserLogin } from 'src/types';
 import { STATUS } from 'src/types/status';
 
 interface SignInPageProps {}
+
+type LoginFormValues = z.infer<typeof loginSchema>;
 
 const LogoSignIn: FC = () => {
   return (
@@ -32,7 +36,10 @@ const LogoSignIn: FC = () => {
 
 const SignInPage: FC<SignInPageProps> = observer(() => {
   const navigate = useNavigate();
-  const form = useForm<UserLogin>();
+  const form = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    mode: 'onSubmit',
+  });
 
   useEffect(() => {
     const navigateToApp = async () => {
@@ -50,9 +57,10 @@ const SignInPage: FC<SignInPageProps> = observer(() => {
     navigateToApp();
   }, [authStore.status, authStore.isAuth]);
 
-  const onSubmit = async (payload: UserLogin) => {
+  const onSubmit = async (payload: LoginFormValues) => {
     await authStore.login(payload);
   };
+
   return (
     <div className="flex justify-center items-center h-full">
       <div className="flex flex-col gap-7 items-center">
@@ -66,14 +74,20 @@ const SignInPage: FC<SignInPageProps> = observer(() => {
               >
                 <BaseForm.FormFieldInput
                   name="login"
-                  label="Логин"
+                  label="Логин*"
                   type="text"
+                  error={form.formState.errors.login?.message}
+                  register={form.register}
                 />
+
                 <BaseForm.FormFieldInput
                   name="password"
                   type="password"
-                  label="Пароль"
+                  label="Пароль*"
+                  error={form.formState.errors.password?.message}
+                  register={form.register}
                 />
+
                 <Button
                   className="w-full"
                   loading={form.formState.isSubmitting}
