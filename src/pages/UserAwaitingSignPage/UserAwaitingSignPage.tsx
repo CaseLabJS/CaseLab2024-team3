@@ -10,15 +10,24 @@ import {
   TABLE_SENT_FOR_USER_DOCUMENTS_CONFIG,
 } from '@constants/sentForUserDocument';
 import { useNavigate } from 'react-router-dom';
-import { NumberParam, useQueryParams } from 'use-query-params';
+import {
+  NumberParam,
+  StringParam,
+  useQueryParams,
+  withDefault,
+} from 'use-query-params';
 import { DocumentState } from '@/types/state';
 import { userMenuItems } from '@constants/sideBar';
+import { DEFAULT_PAGE_SIZE } from '@constants/defaultConstants';
+import { SORTING_STATE } from '@constants/sorting';
+import { prepareSortingState } from '@/lib';
 
 const UserAwaitingSignPage = observer(() => {
   const navigate = useNavigate();
   const [query, setQuery] = useQueryParams({
     page: NumberParam,
     limit: NumberParam,
+    sort: withDefault(StringParam, SORTING_STATE.without),
   });
 
   const {
@@ -33,17 +42,18 @@ const UserAwaitingSignPage = observer(() => {
     if (query.page === undefined || query.limit === undefined) {
       setQuery({
         page: 0,
-        limit: 20,
+        limit: DEFAULT_PAGE_SIZE,
       });
     } else {
       void documentsStore.fetchDocumentsForSign(
         query.page ?? 0,
-        query.limit ?? 20,
+        query.limit ?? DEFAULT_PAGE_SIZE,
         'signer',
-        'before_signer'
+        'before_signer',
+        query.sort
       );
     }
-  }, [query.limit, query.page]);
+  }, [query.limit, query.page, query.sort]);
 
   if (loading) {
     return (
@@ -61,7 +71,7 @@ const UserAwaitingSignPage = observer(() => {
       'signer',
       'before_signer'
     );
-  }
+  };
 
   return (
     <div className="w-full p-4 flex flex-col h-[calc(100vh-130px)] overflow-y-auto">
@@ -76,6 +86,7 @@ const UserAwaitingSignPage = observer(() => {
             columnVisibility: TABLE_USER_COLUMN_VISIBLE,
             page: query.page!,
             limit: query.limit!,
+            sorting: prepareSortingState(query.sort),
           }}
           handlers={{
             onPaginationChange: (updater) => {
@@ -83,7 +94,7 @@ const UserAwaitingSignPage = observer(() => {
                 updater instanceof Function
                   ? updater({
                       pageIndex: query.page ?? 0,
-                      pageSize: query.limit ?? 20,
+                      pageSize: query.limit ?? DEFAULT_PAGE_SIZE,
                     })
                   : updater;
               setQuery({

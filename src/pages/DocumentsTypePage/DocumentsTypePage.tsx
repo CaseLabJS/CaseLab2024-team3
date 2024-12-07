@@ -14,6 +14,7 @@ import {
   mapSubmitPayloadDocType,
   TABLE_DOCUMENT_TYPES_CONFIG,
 } from '@constants/adminDocumentType';
+import { DEFAULT_PAGE_SIZE } from '@constants/defaultConstants';
 import { adminMenuItems } from '@constants/sideBar';
 import { observer } from 'mobx-react-lite';
 import { FC, useEffect } from 'react';
@@ -46,12 +47,12 @@ const DocumentsTypePage: FC<DocumentsTypePageProps> = observer(() => {
     if (page === undefined || limit === undefined) {
       setQuery({
         page: 0,
-        limit: 20,
+        limit: DEFAULT_PAGE_SIZE,
       });
     } else {
-      void fetchDocTypesAndAttributes(page ?? 0, limit ?? 20);
+      void fetchDocTypesAndAttributes(page ?? 0, limit ?? DEFAULT_PAGE_SIZE);
     }
-  }, [fetchDocTypesAndAttributes, page, limit]);
+  }, [fetchDocTypesAndAttributes, page, limit, setQuery]);
 
   if (isLoading) {
     return (
@@ -122,7 +123,7 @@ const DocumentsTypePage: FC<DocumentsTypePageProps> = observer(() => {
                 updater instanceof Function
                   ? updater({
                       pageIndex: page ?? 0,
-                      pageSize: limit ?? 20,
+                      pageSize: limit ?? DEFAULT_PAGE_SIZE,
                     })
                   : updater;
               setQuery({

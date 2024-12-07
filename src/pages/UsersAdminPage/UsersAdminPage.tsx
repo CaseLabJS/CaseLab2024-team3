@@ -7,6 +7,7 @@ import { DataTable2 } from '@components/DataTable2';
 import { Spinner } from '@components/UI';
 import UpdatePasswordDialog from '@components/UpdatePasswordDialog/UpdatePasswordDialog';
 import { adminMenuItems } from '@constants/sideBar';
+import { DEFAULT_PAGE_SIZE } from '@constants/defaultConstants';
 import { DIALOGS_USER } from '@constants/updateUser';
 
 import {
@@ -40,12 +41,12 @@ const UsersAdminPage = observer(() => {
     if (query.page === undefined || query.limit === undefined) {
       setQuery({
         page: 0,
-        limit: 20,
+        limit: DEFAULT_PAGE_SIZE,
       });
     } else {
-      void fetchUsers(query.page ?? 0, query.limit ?? 20);
+      void fetchUsers(query.page ?? 0, query.limit ?? DEFAULT_PAGE_SIZE);
     }
-  }, [query.page, query.limit, fetchUsers]);
+  }, [query.page, query.limit, fetchUsers, setQuery]);
 
   if (isLoading) {
     return (
@@ -89,7 +90,7 @@ const UsersAdminPage = observer(() => {
                   updater instanceof Function
                     ? updater({
                         pageIndex: query.page ?? 0,
-                        pageSize: query.limit ?? 20,
+                        pageSize: query.limit ?? DEFAULT_PAGE_SIZE,
                       })
                     : updater;
                 setQuery({

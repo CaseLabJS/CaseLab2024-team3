@@ -1,3 +1,4 @@
+import { prepareSortingState } from '@/lib/sorting';
 import { documentsStore, documentTypesStore, usersStore } from '@/stores';
 import { DocumentState } from '@/types/state';
 import {
@@ -9,7 +10,9 @@ import { CreateDocumentForm } from '@components/CreateDocument/CreateDocument';
 import { DataTable2 } from '@components/DataTable2';
 import { Spinner } from '@components/UI';
 import { DIALOGS_VALUES, EMPTY_DOC } from '@constants/createDocument';
+import { DEFAULT_PAGE_SIZE } from '@constants/defaultConstants';
 import { userMenuItems } from '@constants/sideBar';
+import { SORTING_STATE } from '@constants/sorting';
 import {
   deleteValidStates,
   TABLE_USER_COLUMN_VISIBLE,
@@ -18,13 +21,19 @@ import {
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { NumberParam, useQueryParams } from 'use-query-params';
+import {
+  NumberParam,
+  StringParam,
+  useQueryParams,
+  withDefault,
+} from 'use-query-params';
 
 const UserDocumentsPage = observer(() => {
   const navigate = useNavigate();
-  const [query, setQuery] = useQueryParams({
-    page: NumberParam,
-    limit: NumberParam,
+  const [{ limit, page, sort }, setQuery] = useQueryParams({
+    page: withDefault(NumberParam, 0),
+    limit: withDefault(NumberParam, DEFAULT_PAGE_SIZE),
+    sort: withDefault(StringParam, SORTING_STATE.without),
   });
 
   const {
@@ -41,15 +50,20 @@ const UserDocumentsPage = observer(() => {
 
   useEffect(() => {
     // Если query.page и query.limit не определены, устанавливаем дефолтные значения
-    if (query.page === undefined || query.limit === undefined) {
+    if (page === undefined || limit === undefined) {
       setQuery({
         page: 0,
-        limit: 20,
+        limit: DEFAULT_PAGE_SIZE,
       });
     } else {
-      void documentsStore.fetchDocuments(query.page ?? 0, query.limit ?? 20);
+      void documentsStore.fetchDocuments(
+        page ?? 0,
+        limit ?? DEFAULT_PAGE_SIZE,
+        'owner',
+        sort
+      );
     }
-  }, [query.limit, query.page]);
+  }, [limit, page, sort, setQuery]);
 
   const {
     documentTypes,
@@ -62,7 +76,7 @@ const UserDocumentsPage = observer(() => {
 
   useEffect(() => {
     fetchDocTypesAndAttributes(0, 100);
-    fetchDocuments(query.page ?? 0, query.limit ?? 20);
+    fetchDocuments(page ?? 0, limit ?? DEFAULT_PAGE_SIZE);
     fetchUsers(0, 100);
   }, []);
 
@@ -75,7 +89,7 @@ const UserDocumentsPage = observer(() => {
   }
 
   const refreshTableData = () => {
-    fetchDocuments(query.page ?? 0, query.limit ?? 20);
+    fetchDocuments(page ?? 0, limit ?? DEFAULT_PAGE_SIZE, 'owner', sort);
   };
 
   const onSignByAuthor = async (id: number, status: DocumentState) => {
@@ -86,7 +100,7 @@ const UserDocumentsPage = observer(() => {
     }
 
     await signDocumentById(id, DocumentState.APPROVED);
-    await fetchDocuments(query.page ?? 0, query.limit ?? 20);
+    await fetchDocuments(page ?? 0, limit ?? DEFAULT_PAGE_SIZE, 'owner', sort);
   };
 
   const onSendForSign = async (documentId: number, userId: string) => {
@@ -115,16 +129,17 @@ const UserDocumentsPage = observer(() => {
           data={documents}
           initialState={{
             columnVisibility: TABLE_USER_COLUMN_VISIBLE,
-            page: query.page!,
-            limit: query.limit!,
+            page,
+            limit,
+            sorting: prepareSortingState(sort),
           }}
           handlers={{
             onPaginationChange: (updater) => {
               const newSortingValue =
                 updater instanceof Function
                   ? updater({
-                      pageIndex: query.page ?? 0,
-                      pageSize: query.limit ?? 20,
+                      pageIndex: page ?? 0,
+                      pageSize: limit ?? DEFAULT_PAGE_SIZE,
                     })
                   : updater;
               setQuery({
@@ -166,11 +181,14 @@ const UserDocumentsPage = observer(() => {
                 />
               ),
             },
-            isOptionsMore:  ({ row }) => {
+            isOptionsMore: ({ row }) => {
               const state = row?.getValue('state') as string;
-              return deleteValidStates.includes(state)
-              || (state === DocumentState.DRAFT || state === DocumentState.PENDING_AUTHOR_SIGN)
-              || state === DocumentState.AUTHOR_SIGNED
+              return (
+                deleteValidStates.includes(state) ||
+                state === DocumentState.DRAFT ||
+                state === DocumentState.PENDING_AUTHOR_SIGN ||
+                state === DocumentState.AUTHOR_SIGNED
+              );
             },
           }}
         />

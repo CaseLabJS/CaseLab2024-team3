@@ -1,5 +1,4 @@
-import { observer } from 'mobx-react-lite';
-import { TableBody, TableFooter, TableHeader } from './ui';
+import { cn } from '@/lib';
 import { Table as TableComp } from '@components/UI';
 import {
   ColumnDef,
@@ -13,8 +12,13 @@ import {
   TableMeta,
   useReactTable,
 } from '@tanstack/react-table';
-import { useState } from 'react';
-import { cn } from '@/lib';
+import { observer } from 'mobx-react-lite';
+import { useEffect, useState } from 'react';
+import { SORTING_STATE } from '@constants/sorting';
+import { StringParam, useQueryParams } from 'use-query-params';
+import { TableBody, TableFooter, TableHeader } from './ui';
+import { DEFAULT_PAGE_SIZE } from '@constants/defaultConstants';
+import { useLocation } from 'react-router-dom';
 
 type InitialTableState = Omit<InitialTableStateLib, 'pagination'> & {
   page?: PaginationState['pageIndex'];
@@ -55,8 +59,14 @@ export const DataTable2 = observer(
     );
     const pagination = {
       pageIndex: page ?? 0,
-      pageSize: limit ?? 20,
+      pageSize: limit ?? DEFAULT_PAGE_SIZE,
     };
+    const [, setQuery] = useQueryParams({
+      sort: StringParam,
+    });
+    const { pathname } = useLocation();
+    const isClientSideSort = ['admin'].some((str) => pathname.includes(str));
+
     const table = useReactTable({
       data,
       columns,
@@ -66,7 +76,9 @@ export const DataTable2 = observer(
       onColumnVisibilityChange: setColumnVisibility,
       onSortingChange: setSorting,
       onColumnSizingChange: setColumnSizing,
+      autoResetPageIndex: false,
       columnResizeMode: 'onChange',
+      manualSorting: isClientSideSort ? false : true,
       state: {
         sorting,
         columnSizing,
@@ -79,6 +91,19 @@ export const DataTable2 = observer(
       },
       ...handlers,
     });
+
+    useEffect(() => {
+      if (sorting.length) {
+        const key = `${sorting[0].id}${sorting[0].desc ? 'Desc' : 'Asc'}`;
+        const sort = SORTING_STATE[key as keyof typeof SORTING_STATE];
+
+        setQuery({
+          sort,
+        });
+      } else {
+        setQuery({ sort: SORTING_STATE.without });
+      }
+    }, [setQuery, sorting]);
 
     return (
       <div

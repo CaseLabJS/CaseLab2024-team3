@@ -1,3 +1,5 @@
+import { DEFAULT_PAGE_SIZE } from '@constants/defaultConstants';
+import { SORTING_STATE } from '@constants/sorting';
 import { AxiosResponse } from 'axios';
 import {
   ChangeDocument,
@@ -47,23 +49,28 @@ class ApiDocumentController {
   }
 
   public static async getDocuments(
-    page?: number,
-    size?: number,
-    initiator: Initiator = 'owner'
+    page: number = 0,
+    size: number = DEFAULT_PAGE_SIZE,
+    initiator: Initiator = 'owner',
+    sort = SORTING_STATE.without
   ): Promise<AxiosResponse<GetDocumentsResponse>> {
     if (page && size) {
-      return api.get(`/document/${initiator}?page=${page}&size=${size}`);
+      return api.get(
+        `/document/${initiator}?page=${page}&size=${size}&sort_type=${sort}`
+      );
     }
 
     if (page) {
-      return api.get(`/document/${initiator}?page=${page}`);
+      return api.get(`/document/${initiator}?page=${page}&sort_type=${sort}`);
     }
 
     if (size) {
-      return api.get(`/document/${initiator}?size=${size}`);
+      return api.get(`/document/${initiator}?size=${size}&sort_type=${sort}`);
     }
 
-    return api.get(`/document/${initiator}`);
+    return api.get(
+      `/document/${initiator}?page=${page}&size=${size}&sort_type=${sort}`
+    );
   }
 
   public static async createDocument(
@@ -85,21 +92,28 @@ class ApiDocumentController {
     page?: number,
     size?: number,
     initiator: Initiator = 'owner',
-    type: 'before_signer' | 'after_signer' = 'before_signer'
+    type: 'before_signer' | 'after_signer' = 'before_signer',
+    sort = SORTING_STATE.without
   ): Promise<AxiosResponse<GetDocumentsResponse>> {
     if (page && size) {
-      return api.get(`/document/${initiator}/${type}?page=${page}&size=${size}`);
+      return api.get(
+        `/document/${initiator}/${type}?page=${page}&size=${size}&sort_type=${sort}`
+      );
     }
 
     if (page) {
-      return api.get(`/document/${initiator}/${type}?page=${page}`);
+      return api.get(
+        `/document/${initiator}/${type}?page=${page}&sort_type=${sort}`
+      );
     }
 
     if (size) {
-      return api.get(`/document/${initiator}/${type}?size=${size}`);
+      return api.get(
+        `/document/${initiator}/${type}?size=${size}&sort_type=${sort}`
+      );
     }
 
-    return api.get(`/document/${initiator}/${type}`);
+    return api.get(`/document/${initiator}/${type}&sort_type=${sort}`);
   }
 
   public static async getDocumentForSign(

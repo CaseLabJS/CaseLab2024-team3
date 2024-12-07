@@ -1,19 +1,28 @@
+import { prepareSortingState } from '@/lib';
 import { documentsStore } from '@/stores';
-import { Spinner } from '@components/UI';
-import { observer } from 'mobx-react-lite';
-import { useEffect } from 'react';
 import { DataTable2 } from '@components/DataTable2';
-import { TABLE_USER_COLUMN_VISIBLE } from '@constants/userDocument';
-import { useNavigate } from 'react-router-dom';
-import { NumberParam, useQueryParams } from 'use-query-params';
+import { Spinner } from '@components/UI';
+import { DEFAULT_PAGE_SIZE } from '@constants/defaultConstants';
 import { TABLE_SENT_FOR_USER_DOCUMENTS_CONFIG } from '@constants/sentForUserDocument';
 import { userMenuItems } from '@constants/sideBar';
+import { SORTING_STATE } from '@constants/sorting';
+import { TABLE_USER_COLUMN_VISIBLE } from '@constants/userDocument';
+import { observer } from 'mobx-react-lite';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {
+  NumberParam,
+  StringParam,
+  useQueryParams,
+  withDefault,
+} from 'use-query-params';
 
 const UserSignedDocuments = observer(() => {
   const navigate = useNavigate();
   const [query, setQuery] = useQueryParams({
     page: NumberParam,
     limit: NumberParam,
+    sort: withDefault(StringParam, SORTING_STATE.without),
   });
 
   const {
@@ -28,20 +37,21 @@ const UserSignedDocuments = observer(() => {
     if (query.page === undefined || query.limit === undefined) {
       setQuery({
         page: 0,
-        limit: 20,
+        limit: DEFAULT_PAGE_SIZE,
       });
     } else {
       void fetchDocumentsForSign(
         query.page ?? 0,
-        query.limit ?? 20,
+        query.limit ?? DEFAULT_PAGE_SIZE,
         'signer',
-        'after_signer'
+        'after_signer',
+        query.sort
       );
     }
-  }, [query.limit, query.page]);
+  }, [query.limit, query.page, query.sort]);
 
   useEffect(() => {
-    fetchDocumentsForSign(0, 20, 'signer', 'after_signer');
+    fetchDocumentsForSign(0, DEFAULT_PAGE_SIZE, 'signer', 'after_signer');
   }, []);
 
   if (loading) {
@@ -65,6 +75,7 @@ const UserSignedDocuments = observer(() => {
             columnVisibility: TABLE_USER_COLUMN_VISIBLE,
             page: query.page!,
             limit: query.limit!,
+            sorting: prepareSortingState(query.sort),
           }}
           handlers={{
             onPaginationChange: (updater) => {
@@ -72,7 +83,7 @@ const UserSignedDocuments = observer(() => {
                 updater instanceof Function
                   ? updater({
                       pageIndex: query.page ?? 0,
-                      pageSize: query.limit ?? 20,
+                      pageSize: query.limit ?? DEFAULT_PAGE_SIZE,
                     })
                   : updater;
               setQuery({

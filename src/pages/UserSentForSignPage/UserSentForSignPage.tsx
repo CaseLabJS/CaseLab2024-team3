@@ -1,21 +1,30 @@
+import { prepareSortingState } from '@/lib';
 import { documentsStore, documentTypesStore } from '@/stores';
-import { Spinner } from '@components/UI';
-import { observer } from 'mobx-react-lite';
-import { useEffect } from 'react';
 import { DataTable2 } from '@components/DataTable2';
+import { Spinner } from '@components/UI';
+import { DEFAULT_PAGE_SIZE } from '@constants/defaultConstants';
+import { userMenuItems } from '@constants/sideBar';
+import { SORTING_STATE } from '@constants/sorting';
 import {
   TABLE_USER_COLUMN_VISIBLE,
   TABLE_USER_DOCUMENTS_CONFIG,
 } from '@constants/userDocument';
+import { observer } from 'mobx-react-lite';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { NumberParam, useQueryParams } from 'use-query-params';
-import { userMenuItems } from '@constants/sideBar';
+import {
+  NumberParam,
+  StringParam,
+  useQueryParams,
+  withDefault,
+} from 'use-query-params';
 
 const UserSentForSignPage = observer(() => {
   const navigate = useNavigate();
   const [query, setQuery] = useQueryParams({
     page: NumberParam,
     limit: NumberParam,
+    sort: withDefault(StringParam, SORTING_STATE.without),
   });
 
   const {
@@ -30,23 +39,24 @@ const UserSentForSignPage = observer(() => {
     if (query.page === undefined || query.limit === undefined) {
       setQuery({
         page: 0,
-        limit: 20,
+        limit: DEFAULT_PAGE_SIZE,
       });
     } else {
       void fetchDocumentsForSign(
         query.page ?? 0,
-        query.limit ?? 20,
+        query.limit ?? DEFAULT_PAGE_SIZE,
         'owner',
-        'before_signer'
+        'before_signer',
+        query.sort
       );
     }
-  }, [query.limit, query.page]);
+  }, [query.limit, query.page, query.sort]);
 
   const { fetchDocTypesAndAttributes, isLoading } = documentTypesStore;
 
   useEffect(() => {
     fetchDocTypesAndAttributes(0, 100);
-    fetchDocumentsForSign(0, 20, 'owner', 'before_signer');
+    fetchDocumentsForSign(0, DEFAULT_PAGE_SIZE, 'owner', 'before_signer');
   }, []);
 
   if (loading || isLoading) {
@@ -70,6 +80,7 @@ const UserSentForSignPage = observer(() => {
             columnVisibility: TABLE_USER_COLUMN_VISIBLE,
             page: query.page!,
             limit: query.limit!,
+            sorting: prepareSortingState(query.sort),
           }}
           handlers={{
             onPaginationChange: (updater) => {
@@ -77,7 +88,7 @@ const UserSentForSignPage = observer(() => {
                 updater instanceof Function
                   ? updater({
                       pageIndex: query.page ?? 0,
-                      pageSize: query.limit ?? 20,
+                      pageSize: query.limit ?? DEFAULT_PAGE_SIZE,
                     })
                   : updater;
               setQuery({
@@ -99,7 +110,7 @@ const UserSentForSignPage = observer(() => {
             },
             isOptionsMore: () => {
               return false;
-            }
+            },
           }}
         />
       </section>

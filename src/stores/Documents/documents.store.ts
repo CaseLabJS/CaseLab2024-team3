@@ -1,13 +1,4 @@
 import { toast } from '@/hooks/use-toast';
-import ApiAttributeController from '@api/ApiAttributeController';
-import ApiDocumentController from '@api/ApiDocumentController';
-import {
-  NETWORK_ERROR_MESSAGE,
-  UNKNOWN_ERROR_MESSAGE,
-} from '@constants/errorMessage';
-import { TOASTS } from '@constants/toast';
-import { AxiosError } from 'axios';
-import { makeAutoObservable, runInAction } from 'mobx';
 import {
   ChangeAttribute,
   ChangeDocument,
@@ -18,6 +9,16 @@ import {
   Initiator,
   Pagination,
 } from '@/types';
+import ApiAttributeController from '@api/ApiAttributeController';
+import ApiDocumentController from '@api/ApiDocumentController';
+import {
+  NETWORK_ERROR_MESSAGE,
+  UNKNOWN_ERROR_MESSAGE,
+} from '@constants/errorMessage';
+import { SORTING_STATE } from '@constants/sorting';
+import { TOASTS } from '@constants/toast';
+import { AxiosError } from 'axios';
+import { makeAutoObservable, runInAction } from 'mobx';
 import { DocumentsStoreProps } from './types';
 
 export class DocumentsStore implements DocumentsStoreProps {
@@ -138,10 +139,11 @@ export class DocumentsStore implements DocumentsStoreProps {
   fetchDocuments = (
     page?: number,
     size?: number,
-    initiator: Initiator = 'owner'
+    initiator: Initiator = 'owner',
+    sort: string = SORTING_STATE.without
   ) => {
     return this._responseHandler(
-      () => ApiDocumentController.getDocuments(page, size, initiator),
+      () => ApiDocumentController.getDocuments(page, size, initiator, sort),
       (response) => {
         const { content, ...res } = response.data;
 
@@ -205,10 +207,18 @@ export class DocumentsStore implements DocumentsStoreProps {
     page?: number,
     size?: number,
     initiator: Initiator = 'signer',
-    type: 'before_signer' | 'after_signer' = 'before_signer'
+    type: 'before_signer' | 'after_signer' = 'before_signer',
+    sort = SORTING_STATE.without
   ) => {
     return this._responseHandler(
-      () => ApiDocumentController.getDocumentsForSign(page, size, initiator, type),
+      () =>
+        ApiDocumentController.getDocumentsForSign(
+          page,
+          size,
+          initiator,
+          type,
+          sort
+        ),
       (response) => {
         const { content, ...res } = response.data;
 

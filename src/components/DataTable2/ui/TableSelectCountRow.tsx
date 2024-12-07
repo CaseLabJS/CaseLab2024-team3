@@ -1,3 +1,4 @@
+import { DEFAULT_PAGE_SIZE } from '@constants/defaultConstants';
 import { Table } from '@tanstack/react-table';
 
 interface TableSelectCountRowProps<TData> {
@@ -17,7 +18,7 @@ export const TableSelectCountRow = <TData,>({
           table.setPageSize(Number(e.target.value));
         }}
       >
-        {[20, 50, 100].map((pageSize) => (
+        {[DEFAULT_PAGE_SIZE, 50, 100].map((pageSize) => (
           <option key={pageSize} value={pageSize}>
             {pageSize}
           </option>
