@@ -10,7 +10,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Badge, DocumentDate } from './ui';
 import { Button, Input, Label, Spinner } from '@components/UI';
 import { Cross1Icon, DownloadIcon } from '@radix-ui/react-icons';
-import { DIALOGS_VALUES } from '@constants/updateDocument';
+import { DIALOGS_VALUES, updateValidStates } from '@constants/updateDocument';
 import { UpdateDocumentForm } from '@components/UpdateDocument/UpdateDocument';
 import { DocumentState } from '@/types/state';
 import { UserSelectDialog } from '@components/UserSelectDialog/UserSelectDialog';
@@ -106,7 +106,7 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
     document &&
     documentId !== 'undefined' && (
       <div className="p-4 flex w-full justify-center overflow-y-auto">
-        <div className="relative p-4 pr-6">
+        <div className="relative md:min-w-[650px] p-4 pr-6">
           {document.state === DocumentState.IN_VOTING && votingResult ? (
             <Badge state={document.state} votingResult={votingResult} />
           ) : (
@@ -158,28 +158,34 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
               <DownloadIcon />
               Скачать
             </Button>
-            {type === 'user-document' && (
-              <UpdateDocumentForm
-                dialogTexts={DIALOGS_VALUES.docTypesCreate}
-                data={document}
-                onSave={updateDocument}
-                documentTypes={documentTypes}
-                documentAttributes={attributes}
-                onSetInputs={fetchDocumentById}
-              />
-            )}
-            {type === 'user-document' &&
-              deleteValidStates.includes(document.state) &&
-              (() => {
-                const doc = documents.find((doc) => doc.id === +documentId!);
-                return (
-                  <ActionDelete
-                    variant="destructive"
-                    onDeleteWithNumberId={deleteDocument}
-                    data={doc}
-                  />
-                );
-              })()}
+
+            {/* Проверяем, что автор документа - мы, и что для текущего
+            статуса документа доступно удаление или изменение документа */}
+            {(() => {
+              const doc = documents.find((doc) => doc.id === +documentId!);
+              return (
+                <>
+                  {doc && updateValidStates.includes(document.state) && (
+                    <UpdateDocumentForm
+                      dialogTexts={DIALOGS_VALUES.docTypesCreate}
+                      data={document}
+                      onSave={updateDocument}
+                      documentTypes={documentTypes}
+                      documentAttributes={attributes}
+                      onSetInputs={fetchDocumentById}
+                    />
+                  )}
+                  {doc && deleteValidStates.includes(document.state) && (
+                    <ActionDelete
+                      variant="destructive"
+                      onDeleteWithNumberId={deleteDocument}
+                      data={doc}
+                    />
+                  )}
+                </>
+              );
+            })()}
+
             {type === 'user-document' &&
               document.state === DocumentState.DRAFT && (
                 <Button
@@ -249,7 +255,7 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
               )}
           </div>
           <Button
-            className="absolute top-2 -right-8 bg-transparent border"
+            className="absolute top-2 -right-4 bg-transparent border"
             onClick={() => {
               if (type === 'user-document') {
                 navigate('../documents');

@@ -1,6 +1,6 @@
 import { DocumentState, RecordStateInfo } from '@/types/state';
 import { Theme } from '@components/ThemeProvider/types';
-import { RecordVotingInfo, VotingStatus } from 'src/types/voting';
+import { RecordVotingInfo, VotingStatus } from '@/types/voting';
 
 export const BUTTONS_NAMES = {
   edit: 'Редактировать',

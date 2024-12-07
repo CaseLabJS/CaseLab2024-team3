@@ -15,6 +15,7 @@ import { Trash } from 'lucide-react';
 import { ActionDefaultData } from './types';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { deleteValidStates } from '@constants/userDocument';
+import { DocumentState } from '@/types/state';
 
 interface ActionDeleteProps<TData>
   extends ActionDefaultData<TData>,
@@ -23,9 +24,7 @@ interface ActionDeleteProps<TData>
   onDeleteWithNumberId?: (id: number) => Promise<void>;
 }
 
-export const ActionDelete = <
-  TData,
->({
+export const ActionDelete = <TData,>({
   onDeleteWithNumberId,
   onDeleteWithStringId,
   data,
@@ -55,9 +54,10 @@ export const ActionDelete = <
   };
 
   const isDocument = typeof data === 'object' && data && 'state' in data;
-  const isToDeletedState = isDocument && deleteValidStates.includes(data?.state as string);
+  const isToDeletedState =
+    isDocument && deleteValidStates.includes(data?.state as DocumentState);
 
-  if (!isDocument || data && isToDeletedState) {
+  if (!isDocument || (data && isToDeletedState)) {
     return (
       <AlertDialog>
         <AlertDialogTrigger asChild>
@@ -88,7 +88,7 @@ export const ActionDelete = <
         </AlertDialogContent>
       </AlertDialog>
     );
-  };
+  }
 
   return <></>;
 };

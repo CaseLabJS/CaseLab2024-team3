@@ -1,3 +1,5 @@
+import { DocumentState } from '@/types';
+
 export const DIALOGS_VALUES = {
   docTypesCreate: {
     dialogTitleText: 'Изменение документа',
@@ -23,3 +25,10 @@ export const fieldLabels: Record<string, { label: string; hidden: boolean }> = {
   name: { label: 'Название документа', hidden: false },
   base64Data: { label: 'Файл', hidden: false },
 };
+
+// статусы для документов, которые можно изменять
+export const updateValidStates: DocumentState[] = [
+  DocumentState.DRAFT,
+  DocumentState.REWORK_REQUIRED,
+  DocumentState.PENDING_CONTRACTOR_SIGN,
+];
