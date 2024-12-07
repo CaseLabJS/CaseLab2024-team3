@@ -191,9 +191,9 @@ export const CreateDocumentForm = ({
         <form
           onSubmit={handleOnSave}
           name="createDocument"
-          className="space-y-6"
+          className="space-y-2"
         >
-          <div className="grid gap-4 py-4">
+          <div >
             <div>
               <Label
                 htmlFor="documentTypeId"
