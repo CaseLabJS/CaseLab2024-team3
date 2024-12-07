@@ -39,8 +39,8 @@ const UserAwaitingSignPage = observer(() => {
       void documentsStore.fetchDocumentsForSign(
         query.page ?? 0,
         query.limit ?? 20,
-        "signer",
-        "before_signer"
+        'signer',
+        'before_signer'
       );
     }
   }, [query.limit, query.page]);
@@ -50,6 +50,16 @@ const UserAwaitingSignPage = observer(() => {
       <section className="flex justify-center items-center flex-grow">
         <Spinner />
       </section>
+    );
+  }
+
+  const onSignDocument = async (id: number, status: DocumentState) => {
+    await signDocumentById(id, status);
+    await documentsStore.fetchDocumentsForSign(
+      query.page ?? 0,
+      query.limit ?? 20,
+      'signer',
+      'before_signer'
     );
   }
 
@@ -96,7 +106,7 @@ const UserAwaitingSignPage = observer(() => {
             actionMore: {
               onSign: (props) => (
                 <ActionSign
-                  onSign={signDocumentById}
+                  onSign={onSignDocument}
                   action_text={'Подписать'}
                   action_color={'bg-green-600 hover:bg-green-600'}
                   description={'Вы собираетесь подписать этот документ.'}
@@ -108,7 +118,7 @@ const UserAwaitingSignPage = observer(() => {
               ),
               onReject: (props) => (
                 <ActionSign
-                  onSign={signDocumentById}
+                  onSign={onSignDocument}
                   action_text={'Отклонить'}
                   action_color={'bg-orange-600 hover:bg-orange-600'}
                   description={'Вы собираетесь отклонить этот документ.'}
@@ -120,7 +130,7 @@ const UserAwaitingSignPage = observer(() => {
               ),
               onReworkRequired: (props) => (
                 <ActionSign
-                  onSign={signDocumentById}
+                  onSign={onSignDocument}
                   action_text={'Требуется доработка'}
                   action_color={'bg-orange-600 hover:bg-orange-600'}
                   description={
@@ -133,9 +143,10 @@ const UserAwaitingSignPage = observer(() => {
                 </ActionSign>
               ),
             },
-            isOptionsMore: () => {
-              return true;
-            }
+            isOptionsMore: ({ row }) => {
+              const state = row?.getValue('state') as string;
+              return state !== DocumentState.IN_VOTING;
+            },
           }}
         />
       </section>

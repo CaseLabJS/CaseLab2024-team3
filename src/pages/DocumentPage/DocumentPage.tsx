@@ -31,6 +31,7 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
     documents,
     fetchDocumentById,
     fetchDocumentForSign,
+    fetchDocumentsForSign,
     signDocumentById,
     sendForSignDocumentById,
     downloadDocument,
@@ -75,8 +76,9 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
     );
   }
 
-  const handleSignDocument = (status: DocumentState) => {
-    signDocumentById(+documentId!, status);
+  const handleSignDocument = async (status: DocumentState) => {
+    await signDocumentById(+documentId!, status);
+    fetchDocumentsForSign(0, 10, 'signer', 'after_signer');
     navigate('../awaiting-sign');
   };
 
@@ -91,11 +93,13 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
   const handleSendToUser = async (userId: string) => {
     await sendForSignDocumentById(+documentId!, userId);
     await fetchDocumentById(+documentId!);
+    fetchDocumentsForSign(0, 20, 'owner', 'before_signer');
   };
 
   const handleSendToVoters = async (data: Voting) => {
     await createVoting(data);
     await fetchDocumentById(+documentId!);
+    fetchDocumentsForSign(0, 20, 'owner', 'before_signer');
   };
 
   return (
