@@ -96,8 +96,12 @@ export const ActionEdit = <TData extends UserRegister, UData>({
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{dialogTitleText}</DialogTitle>
-          <DialogDescription>{dialogDescriptionText}</DialogDescription>
+          <DialogTitle className="text-center mb-2">
+            {dialogTitleText}
+          </DialogTitle>
+          <DialogDescription className="text-center">
+            {dialogDescriptionText}
+          </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -109,7 +113,9 @@ export const ActionEdit = <TData extends UserRegister, UData>({
               ) {
                 return (
                   <div key={field.baseFieldProps.name} className="space-y-2">
-                    <label>{field.baseFieldProps.label}</label>
+                    <label className="text-indigo-700 text-sm font-medium flex mb-2">
+                      {field.baseFieldProps.label}
+                    </label>
                     <Select
                       placeholder="Выберите значение"
                       isMulti

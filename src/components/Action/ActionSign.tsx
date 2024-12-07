@@ -34,6 +34,15 @@ export const ActionSign = <TData extends { id: number }>({
   children,
   ...props
 }: ActionSignProps<TData>) => {
+  if (
+    typeof data === 'object' &&
+    'state' in data &&
+    data.state === DocumentState.IN_VOTING &&
+    status === DocumentState.REWORK_REQUIRED
+  ) {
+    return <></>;
+  }
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>

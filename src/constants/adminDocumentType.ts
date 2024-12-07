@@ -37,7 +37,7 @@ export const CONFIG_FIELDS_DOC_TYPE_CREATE: FormSwitcherProps[] = [
     baseFieldProps: {
       name: 'name',
       type: FieldTypes.Input,
-      label: 'Имя',
+      label: 'Имя*',
     },
   },
   {
@@ -97,13 +97,13 @@ export const DIALOGS_DOCTYPE: Record<string, DialogTexts> = {
   EDIT: {
     dialogTitleText: 'Редактирование типа документа',
     dialogDescriptionText:
-      "Здесь можно изменить тип документа. После внесения изменений нажмите 'сохранить'.",
+      "Здесь можно изменить тип документа. После внесения изменений нажмите 'сохранить'.Поля с * обязательны.",
     btnTriggerText: BUTTONS_NAMES.edit,
   },
   CREATE: {
     dialogTitleText: 'Создание типа документа',
     dialogDescriptionText:
-      'Для создания типа документа необходимо заполнить поля ниже.',
+      'Для создания типа документа необходимо заполнить поля ниже.Поля с * обязательны.',
     btnTriggerText: 'Создать тип документа',
   },
 };

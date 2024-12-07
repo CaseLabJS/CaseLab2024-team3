@@ -46,14 +46,14 @@ export const CONFIG_FIELDS_ATTRIBUTES_CREATE: FormSwitcherProps[] = [
     baseFieldProps: {
       name: 'name',
       type: FieldTypes.Input,
-      label: 'Имя',
+      label: 'Имя*',
     },
   },
   {
     baseFieldProps: {
       name: 'dataType',
       type: FieldTypes.Input,
-      label: 'Тип данных',
+      label: 'Тип данных*',
     },
   },
   {
@@ -120,13 +120,13 @@ export const DIALOGS_ATTRIBUTES: Record<string, DialogTexts> = {
   EDIT: {
     dialogTitleText: 'Редактирование атрибута документа',
     dialogDescriptionText:
-      "Здесь можно изменить атрибута документа. После внесения изменений нажмите 'сохранить'.",
+      "Здесь можно изменить атрибута документа. После внесения изменений нажмите 'Сохранить'.Поля с * обязательны.",
     btnTriggerText: BUTTONS_NAMES.edit,
   },
   CREATE: {
     dialogTitleText: 'Создание атрибута документа',
     dialogDescriptionText:
-      'Для создания атрибута документа необходимо заполнить поля ниже.',
+      'Для создания атрибута документа необходимо заполнить поля ниже.Поля с * обязательны.',
     btnTriggerText: 'Создать атрибут документа',
   },
 };

@@ -91,7 +91,7 @@ export const DIALOGS_USER: Record<string, DialogTexts> = {
   EDIT: {
     dialogTitleText: 'Редактирование документа',
     dialogDescriptionText:
-      'Здесь можно изменить документ. После внесения изменений нажмите "Сохранить".',
+      'Здесь можно изменить документ. После внесения изменений нажмите "Сохранить".Поля с * обязательны.',
     btnTriggerText: BUTTONS_NAMES.edit,
   },
 };

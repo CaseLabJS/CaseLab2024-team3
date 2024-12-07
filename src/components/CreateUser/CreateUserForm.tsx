@@ -9,11 +9,16 @@ import {
   DialogTrigger,
   Input,
   Label,
+  Form,
 } from '@/components/UI';
+
 import { useState } from 'react';
 import Select, { MultiValue } from 'react-select';
 import { CreateUser, CreateUserProps } from './createUsersForm.types';
 import { FIELD_LABELS, ROLES } from '@constants/usersListTable';
+import { Controller, useForm } from 'react-hook-form';
+import { ErrorMessage } from '@hookform/error-message';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 const DEFAULT_DIALOG_FORM_WIDTH = 625;
 
@@ -33,9 +38,19 @@ export const CreateUserForm = ({
   data,
   dialogTexts,
   onSave,
+  formSchemaValidate,
 }: CreateUserProps<CreateUser>) => {
   const [inputs, setInputs] = useState(data);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const form = useForm<CreateUser>({
+    resolver:
+      onSave && formSchemaValidate
+        ? zodResolver(formSchemaValidate)
+        : undefined,
+    values: data,
+  });
+
   const { btnTriggerText, dialogDescriptionText, dialogTitleText } =
     dialogTexts;
 
@@ -48,101 +63,123 @@ export const CreateUserForm = ({
       ...prev,
       roles: newRoles,
     }));
-  };
-
-  // Обработчик для изменения текстовых полей
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputs((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    form.setValue('roles', newRoles);
   };
 
   // Обработчик для сохранения нового пользователя
   const handleOnSave = () => {
-    const newData = {
-      ...inputs,
-
-      roles: inputs.roles,
-    };
+    const newData = form.getValues();
     if (onSave) {
       onSave(newData);
     }
-
+    form.clearErrors();
     setIsDialogOpen(false);
     setInputs(data);
   };
 
   return (
-    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline" className="max-w-fit">
-          {btnTriggerText}
-        </Button>
-      </DialogTrigger>
-      <DialogContent className={`sm:max-w-[${DEFAULT_DIALOG_FORM_WIDTH}px]`}>
-        <DialogHeader>
-          <DialogTitle>{dialogTitleText}</DialogTitle>
-          <DialogDescription>{dialogDescriptionText}</DialogDescription>
-        </DialogHeader>
-
-        <div className="grid gap-4 py-4">
-          {Object.entries(inputs).map(([key, value]) => {
-            const label = FIELD_LABELS[key] || key; // Подпись на русском
-            return (
-              <div key={key} className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="name" className="text-right">
-                  {label}
-                </Label>
-                {key === 'roles' ? (
-                  <div className="col-span-3">
-                    <Select
-                      placeholder="Выберите значение"
-                      isMulti
-                      className="basic-multi-select"
-                      classNamePrefix="select"
-                      defaultValue={inputs.roles?.map((role) =>
-                        typeof role === 'object' && 'name' in role
-                          ? { label: role.name, value: role.name }
-                          : { label: role, value: role }
-                      )}
-                      options={ROLES.map((role) => ({
-                        label: role.name,
-                        value: role.name,
-                      }))}
-                      onChange={handleOnRolesChange}
-                    />
-                  </div>
-                ) : (
-                  <Input
-                    name={key}
-                    value={formatValueForInput(value as string)}
-                    disabled={key === 'id'}
-                    className="col-span-3"
-                    onChange={handleOnChange}
-                  />
-                )}
-              </div>
-            );
-          })}
-        </div>
-        <DialogFooter>
-          <Button
-            className="block hover:opacity-75 mb-3 bg-bg-header hover:bg-bg-header"
-            type="submit"
-            onClick={handleOnSave}
-            disabled={
-              !inputs.firstName ||
-              !inputs.lastName ||
-              !inputs.email ||
-              !inputs.password ||
-              !inputs.login
-            }
-          >
-            Сохранить
+    <>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogTrigger asChild>
+          <Button variant="outline" className="max-w-fit">
+            {btnTriggerText}
           </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        </DialogTrigger>
+        <DialogContent className={`sm:max-w-[${DEFAULT_DIALOG_FORM_WIDTH}px]`}>
+          <DialogHeader>
+            <DialogTitle className="text-center mb-2">{dialogTitleText}</DialogTitle>
+            <DialogDescription className="text-center">
+              {dialogDescriptionText}
+            </DialogDescription>
+          </DialogHeader>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(handleOnSave)}
+              className="space-y-6"
+            >
+              <div className="grid gap-4 py-4">
+                {Object.entries(data).map(([key]) => {
+                  const label = FIELD_LABELS[key] || key; // Подпись на русском
+
+                  return (
+                    <div key={key} className="">
+                      <Label
+                        htmlFor={key}
+                        className="text-indigo-700 text-sm font-medium flex mb-2"
+                      >
+                        {label}
+                      </Label>
+                      {key === 'roles' ? (
+                        <Controller
+                          name={key as keyof CreateUser}
+                          control={form.control}
+                          render={({ field }) => (
+                            <Select
+                              {...field}
+                              placeholder="Выберите значение"
+                              isMulti
+                              className="basic-multi-select"
+                              classNamePrefix="select"
+                              value={inputs.roles?.map((role) =>
+                                typeof role === 'object' && 'name' in role
+                                  ? { label: role.name, value: role.name }
+                                  : { label: role, value: role }
+                              )}
+                              options={ROLES.map((role) => ({
+                                label: role.name,
+                                value: role.name,
+                              }))}
+                              onChange={handleOnRolesChange}
+                            />
+                          )}
+                        />
+                      ) : (
+                        <Controller
+                          name={key as keyof CreateUser}
+                          control={form.control}
+                          render={({ field }) => (
+                            <>
+                              <Input
+                                {...field}
+                                id={key}
+                                disabled={key === 'id'}
+                                value={formatValueForInput(
+                                  field.value as string
+                                )}
+                              />
+                              <ErrorMessage
+                                errors={form.formState.errors}
+                                name={key as keyof CreateUser}
+                                render={({ message }) => (
+                                  <div className="mt-1">
+                                    <p className="text-sm text-red-600 bg-red-50 p-2 rounded">
+                                      {message}
+                                    </p>
+                                  </div>
+                                )}
+                              />
+                            </>
+                          )}
+                        />
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+
+              <DialogFooter>
+                <Button
+                  className="block hover:opacity-75 mb-3 bg-bg-header hover:bg-bg-header"
+                  type="submit"
+                  loading={form.formState.isSubmitting}
+                >
+                  Сохранить
+                </Button>
+              </DialogFooter>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };

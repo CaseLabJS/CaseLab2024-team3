@@ -129,15 +129,21 @@ export const UpdateDocumentForm = ({
       </DialogTrigger>
       <DialogContent className={`sm:max-w-[${DEFAULT_DIALOG_FORM_WIDTH}px]`}>
         <DialogHeader>
-          <DialogTitle>{dialogTitleText}</DialogTitle>
-          <DialogDescription>{dialogDescriptionText}</DialogDescription>
+          <DialogTitle className="text-center mb-2">
+            {dialogTitleText}
+          </DialogTitle>
+          <DialogDescription className="text-center">
+            {dialogDescriptionText}
+          </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleOnSave}>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
+          <div>
+            <div>
               {/* Название документа */}
-              <Label>{fieldLabels.name.label}*:</Label>
+              <Label className="text-indigo-700 text-sm font-medium flex mb-2">
+                {fieldLabels.name.label}*:
+              </Label>
               <Input
                 name={fieldLabels.name.label}
                 required
@@ -148,11 +154,8 @@ export const UpdateDocumentForm = ({
             </div>
             {inputs &&
               inputs.map((input) => (
-                <div
-                  key={input.attributeId}
-                  className="grid grid-cols-4 items-center gap-4"
-                >
-                  <Label>
+                <div key={input.attributeId}>
+                  <Label className="text-indigo-700 text-sm font-medium flex mb-2">
                     {(() => {
                       const attribute = documentAttributes?.find(
                         (attr) => attr.id === input.attributeId
@@ -181,8 +184,10 @@ export const UpdateDocumentForm = ({
               ))}
           </div>
 
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label>Файл:</Label>
+          <div>
+            <Label className="text-indigo-700 text-sm font-medium flex mb-2">
+              Файл:
+            </Label>
             <div className="col-span-3">
               {file ? (
                 <div className="flex items-center gap-4">

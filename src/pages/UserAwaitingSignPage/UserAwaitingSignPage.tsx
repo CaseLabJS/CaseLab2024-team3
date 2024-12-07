@@ -143,9 +143,8 @@ const UserAwaitingSignPage = observer(() => {
                 </ActionSign>
               ),
             },
-            isOptionsMore: ({ row }) => {
-              const state = row?.getValue('state') as string;
-              return state !== DocumentState.IN_VOTING;
+            isOptionsMore: () => {
+              return true;
             },
           }}
         />
