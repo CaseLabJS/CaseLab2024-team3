@@ -186,7 +186,7 @@ export const UserSelectDialog: React.FC<UserSelectDialogProps> = ({
                 <Label className="text-indigo-700 text-sm font-medium flex mb-2">
                   Крайний срок голосования*:{' '}
                 </Label>
-                <div className="col-span-3" >
+                <div className="col-span-3">
                   {/* source: https://time.openstatus.dev/ */}
                   <DateTimePicker
                     setDeadline={setDeadline}

@@ -9,12 +9,12 @@ const Layout = observer(() => {
   if (!authStore.isAuth)
     return (
       <main className="flex flex-col min-h-screen">
-      <div className="flex flex-grow flex-col">
-        <Outlet />
-      </div>
-      <Toaster />
-    </main>
-    )
+        <div className="flex flex-grow flex-col">
+          <Outlet />
+        </div>
+        <Toaster />
+      </main>
+    );
 
   return (
     <main className="flex flex-col min-h-screen">

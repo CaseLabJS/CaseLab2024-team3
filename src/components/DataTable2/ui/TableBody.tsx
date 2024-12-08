@@ -23,7 +23,7 @@ export const TableBody = <TData,>({ table }: TableBodyProps<TData>) => {
         table.getRowModel().rows.map((row) => {
           if (!row) return null;
           const props = (actionItem?.({ row }) as { href: string }) ?? {};
-          const isOptionsMore = isOptionsMoreFn?.({row});
+          const isOptionsMore = isOptionsMoreFn?.({ row });
 
           return (
             <TableRow

@@ -193,7 +193,7 @@ export const CreateDocumentForm = ({
           name="createDocument"
           className="space-y-2"
         >
-          <div >
+          <div>
             <div>
               <Label
                 htmlFor="documentTypeId"

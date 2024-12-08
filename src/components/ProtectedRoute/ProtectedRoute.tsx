@@ -53,7 +53,7 @@ const ProtectedRouteSuccess: FC<{ role: string }> = observer(({ role }) => {
 
 const ProtectedRoute: FC<ProtectedRouteProps> = observer(({ role }) => {
   const Component = MapComponent[authStore.status] ?? null;
-  
+
   if (!Component) return null;
 
   if (!authStore.isAuth && authStore.status !== STATUS.LOADING) {
