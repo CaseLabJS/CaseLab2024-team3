@@ -8,7 +8,15 @@ import { observer } from 'mobx-react-lite';
 import { FC, Key, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Badge, DocumentDate } from './ui';
-import { Button, Input, Label, Spinner } from '@components/UI';
+import {
+  Button,
+  Input,
+  Label,
+  Spinner,
+  Accordion,
+  AccordionTrigger,
+  AccordionContent,
+} from '@components/UI';
 import { Cross1Icon, DownloadIcon } from '@radix-ui/react-icons';
 import { DIALOGS_VALUES, updateValidStates } from '@constants/updateDocument';
 import { UpdateDocumentForm } from '@components/UpdateDocument/UpdateDocument';
@@ -17,6 +25,8 @@ import { UserSelectDialog } from '@components/UserSelectDialog/UserSelectDialog'
 import { Voting } from 'src/types';
 import { ActionDelete } from '@components/Action';
 import { deleteValidStates } from '@constants/userDocument';
+import { AccordionItem } from '@radix-ui/react-accordion';
+import { format, parseISO } from 'date-fns';
 
 interface DocumentPageProps {
   type: string;
@@ -290,6 +300,85 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
           >
             <Cross1Icon className="text-foreground" />
           </Button>
+          {documentVersions.length > 1 && (
+            <>
+              {(() => {
+                const versions =
+                  type === 'user-document'
+                    ? documentVersions
+                    : documentVersionsForSign;
+                return (
+                  <>
+                    <br />
+                    <hr />
+                    <Accordion type="single" collapsible>
+                      {versions.slice(1).map((version, id) => (
+                        <AccordionItem key={id} value={`item-${id}`}>
+                          <AccordionTrigger>
+                            Версия от{' '}
+                            {format(
+                              parseISO(
+                                new Date(
+                                  (version.createdAt as number) * 1000
+                                ).toISOString()
+                              ),
+                              'dd.MM.yyyy | H:mm'
+                            )}
+                          </AccordionTrigger>
+                          <AccordionContent>
+                            <Badge state={version.state} />
+                            <h2 className="mb-1 text-2xl">
+                              {version.documentName}
+                            </h2>
+                            {version.attributeValues.map(
+                              (
+                                attributeValue: {
+                                  attributeId: number;
+                                  value: string;
+                                },
+                                i
+                              ) => (
+                                <div
+                                  key={i}
+                                  className="grid grid-cols-4 items-center gap-4"
+                                >
+                                  <Label>
+                                    {
+                                      attributes.find(
+                                        (attribute) =>
+                                          attribute.id ===
+                                          attributeValue.attributeId
+                                      )?.name
+                                    }
+                                    :
+                                  </Label>
+                                  <Input
+                                    name={`attribute-${i}`}
+                                    value={attributeValue.value}
+                                    className="col-span-3 disabled:opacity-100"
+                                    disabled
+                                    key={i}
+                                  ></Input>
+                                </div>
+                              )
+                            )}
+                            <Button
+                              onClick={() =>
+                                downloadDocument(document.contentUrl)
+                              }
+                            >
+                              <DownloadIcon />
+                              Скачать
+                            </Button>
+                          </AccordionContent>
+                        </AccordionItem>
+                      ))}
+                    </Accordion>
+                  </>
+                );
+              })()}
+            </>
+          )}
         </div>
       </div>
     )
