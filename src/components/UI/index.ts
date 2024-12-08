@@ -17,3 +17,4 @@ export * from './Badge';
 export * from './Pagination';
 export * from './DropdownMenu';
 export * from './Calendar';
+export * from './Accordion';

@@ -177,6 +177,10 @@ export type GetDocumentsResponse = Pagination & {
   content: GetDocument[];
 };
 
+export type GetDocumentVersionsResponse = Pagination & {
+  content: CreateDocumentResponse[];
+};
+
 export interface SendDocumentForSignResponse {
   id: number;
   approvementProcessId: number | null;

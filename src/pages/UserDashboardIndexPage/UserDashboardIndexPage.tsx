@@ -4,6 +4,7 @@ import { FileText, FileCheck, Hourglass, Check } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
 import { ROUTE_CONSTANTS } from '@constants/routes';
+import { userMenuItems } from '@constants/sideBar';
 
 const UserDashboardIndexPage = observer(() => {
   useEffect(() => {
@@ -47,7 +48,7 @@ const UserDashboardIndexPage = observer(() => {
                 {documentsStore.documentsSentForSign.length}
               </h2>
               <p className="text-md md:text-lg font-bold">
-                Отправленные на подписание
+                {userMenuItems[1].title}
               </p>
             </div>
           </article>
@@ -63,7 +64,9 @@ const UserDashboardIndexPage = observer(() => {
               <h2 className="text-3xl md:text-4xl font-bold">
                 {documentsStore.paginationDocumentsForSign?.totalElements}
               </h2>
-              <p className="text-md md:text-lg font-bold">Ожидают подписание</p>
+              <p className="text-md md:text-lg font-bold">
+                {userMenuItems[2].title}
+              </p>
             </div>
           </article>
         </Link>
@@ -78,7 +81,7 @@ const UserDashboardIndexPage = observer(() => {
               <h2 className="text-3xl md:text-4xl font-bold">
                 {documentsStore.paginationDocumentsAfterSign?.totalElements}
               </h2>
-              <p className="text-md md:text-lg">Подписанные документы</p>
+              <p className="text-md md:text-lg">{userMenuItems[3].title}</p>
             </div>
           </article>
         </Link>
