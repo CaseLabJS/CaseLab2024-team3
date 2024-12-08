@@ -24,10 +24,12 @@ import { DocumentsStoreProps } from './types';
 export class DocumentsStore implements DocumentsStoreProps {
   private _pagination_documents: Pagination | null = null;
   private _document: CreateDocumentResponse | null = null;
+  private _documentVersions: CreateDocumentResponse[] = [];
   private _documents: GetDocument[] = [];
 
   private _pagination_documentsForSign: Pagination | null = null;
   private _documentsForSign: GetDocument[] = [];
+  private _documentVersionsForSign: CreateDocumentResponse[] = [];
 
   private _pagination_documentsSentForSign: Pagination | null = null;
   private _documentsSentForSign: GetDocument[] = [];
@@ -36,6 +38,8 @@ export class DocumentsStore implements DocumentsStoreProps {
   private _documentsAfterSign: GetDocument[] = [];
 
   private _loading: boolean = false;
+  private _loaderFetchDocumentVersions: boolean = false;
+
   private _error: string | null = null;
 
   private _attributes: ChangeAttribute[] = [];
@@ -64,6 +68,14 @@ export class DocumentsStore implements DocumentsStoreProps {
     return this._document;
   }
 
+  get documentVersions() {
+    return this._documentVersions;
+  }
+
+  get documentVersionsForSign() {
+    return this._documentVersionsForSign;
+  }
+
   get documents() {
     return this._documents;
   }
@@ -82,6 +94,10 @@ export class DocumentsStore implements DocumentsStoreProps {
 
   get loading() {
     return this._loading;
+  }
+
+  get loaderFetchDocumentVersions() {
+    return this._loaderFetchDocumentVersions;
   }
 
   get error() {
@@ -132,6 +148,35 @@ export class DocumentsStore implements DocumentsStoreProps {
       () => ApiDocumentController.getDocumentById(documentId),
       (response) => {
         this._document = response.data;
+      }
+    );
+  };
+
+  fetchDocumentVersionsById = (
+    documentId: number,
+    initiator: Initiator = 'owner',
+    page?: number,
+    size?: number
+  ) => {
+    this._loaderFetchDocumentVersions = true;
+
+    return this._responseHandler(
+      () =>
+        ApiDocumentController.getDocumentVersionsById(
+          documentId,
+          initiator,
+          page,
+          size
+        ),
+      (response) => {
+        const { content } = response.data;
+
+        if (initiator === 'owner') {
+          this._documentVersions = [...content];
+        } else {
+          this._documentVersionsForSign = [...content];
+        }
+        this._loaderFetchDocumentVersions = false;
       }
     );
   };

@@ -8,6 +8,7 @@ import {
   CreateDocumentResponse,
   DocumentState,
   GetDocumentsResponse,
+  GetDocumentVersionsResponse,
   Initiator,
   SendDocumentForSignResponse,
   Voting,
@@ -46,6 +47,29 @@ class ApiDocumentController {
 
   public static async deleteDocumentById(id: number): Promise<AxiosResponse> {
     return api.delete(`/document/${id}`);
+  }
+
+  public static async getDocumentVersionsById(
+    id: number,
+    initiator: Initiator = 'owner',
+    page: number = 0,
+    size: number = DEFAULT_PAGE_SIZE
+  ): Promise<AxiosResponse<GetDocumentVersionsResponse>> {
+    if (page && size) {
+      return api.get(
+        `/document/${initiator}/${id}/versions?page=${page}&size=${size}`
+      );
+    }
+
+    if (page) {
+      return api.get(`/document/${initiator}/${id}/versions?page=${page}`);
+    }
+
+    if (size) {
+      return api.get(`/document/${initiator}/${id}/versions?size=${size}`);
+    }
+
+    return api.get(`/document/${initiator}/${id}/versions`);
   }
 
   public static async getDocuments(

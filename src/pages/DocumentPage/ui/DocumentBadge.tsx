@@ -32,7 +32,7 @@ export const Badge: React.FC<BadgeProps> = ({ state, votingResult }) => {
       </BaseBadge>
       {votingResult && (
         <>
-          <BaseBadge variant="outline">
+          <BaseBadge variant="outline" className="mx-2">
             {newDate &&
               isValid(parseISO(newDate.toISOString())) &&
               ` 🕛 ${format(parseISO(newDate.toISOString()), 'dd.MM.yyyy | H:mm')}`}
