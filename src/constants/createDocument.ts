@@ -28,4 +28,3 @@ export const fieldLabels: Record<string, { label: string; hidden: boolean }> = {
   file: { label: 'Файл*', hidden: false },
   attributeValues: { label: 'Атрибут документа', hidden: true },
 };
-

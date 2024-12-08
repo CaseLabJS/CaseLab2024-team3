@@ -119,7 +119,7 @@ const UsersAdminPage = observer(() => {
               },
               isOptionsMore: () => {
                 return true;
-              }
+              },
             }}
           />
         </section>

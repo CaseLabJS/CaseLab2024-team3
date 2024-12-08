@@ -87,7 +87,9 @@ export const CreateUserForm = ({
         </DialogTrigger>
         <DialogContent className={`sm:max-w-[${DEFAULT_DIALOG_FORM_WIDTH}px]`}>
           <DialogHeader>
-            <DialogTitle className="text-center mb-2">{dialogTitleText}</DialogTitle>
+            <DialogTitle className="text-center mb-2">
+              {dialogTitleText}
+            </DialogTitle>
             <DialogDescription className="text-center">
               {dialogDescriptionText}
             </DialogDescription>

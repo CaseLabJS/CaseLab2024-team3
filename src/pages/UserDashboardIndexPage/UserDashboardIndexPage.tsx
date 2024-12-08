@@ -9,7 +9,12 @@ const UserDashboardIndexPage = observer(() => {
   useEffect(() => {
     void documentsStore.fetchDocuments(0, 100, 'owner');
     void documentsStore.fetchDocumentsForSign(0, 100, 'signer', 'after_signer');
-    void documentsStore.fetchDocumentsForSign(0, 100, 'signer', 'before_signer');
+    void documentsStore.fetchDocumentsForSign(
+      0,
+      100,
+      'signer',
+      'before_signer'
+    );
     void documentsStore.fetchDocumentsForSign(0, 100, 'owner', 'before_signer');
   }, []);
 

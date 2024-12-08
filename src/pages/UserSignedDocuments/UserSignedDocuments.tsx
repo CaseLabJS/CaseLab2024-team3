@@ -105,7 +105,7 @@ const UserSignedDocuments = observer(() => {
             },
             isOptionsMore: () => {
               return false;
-            }
+            },
           }}
         />
       </section>
