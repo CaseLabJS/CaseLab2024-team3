@@ -300,7 +300,8 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
           >
             <Cross1Icon className="text-foreground" />
           </Button>
-          {documentVersions.length > 1 && (
+          {(documentVersionsForSign.length > 1 ||
+            documentVersions.length > 1) && (
             <>
               {(() => {
                 const versions =
