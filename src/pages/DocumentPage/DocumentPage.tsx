@@ -331,41 +331,44 @@ const DocumentPage: FC<DocumentPageProps> = observer(({ type }) => {
                             <h2 className="mb-1 text-2xl">
                               {version.documentName}
                             </h2>
-                            {version.attributeValues.map(
-                              (
-                                attributeValue: {
-                                  attributeId: number;
-                                  value: string;
-                                },
-                                i
-                              ) => (
-                                <div
-                                  key={i}
-                                  className="grid grid-cols-4 items-center gap-4"
-                                >
-                                  <Label>
-                                    {
-                                      attributes.find(
-                                        (attribute) =>
-                                          attribute.id ===
-                                          attributeValue.attributeId
-                                      )?.name
-                                    }
-                                    :
-                                  </Label>
-                                  <Input
-                                    name={`attribute-${i}`}
-                                    value={attributeValue.value}
-                                    className="col-span-3 disabled:opacity-100"
-                                    disabled
+                            <div className="grid gap-4 py-4">
+                              {version.attributeValues.map(
+                                (
+                                  attributeValue: {
+                                    attributeId: number;
+                                    value: string;
+                                  },
+                                  i
+                                ) => (
+                                  <div
                                     key={i}
-                                  ></Input>
-                                </div>
-                              )
-                            )}
+                                    className="grid grid-cols-4 items-center gap-4"
+                                  >
+                                    <Label>
+                                      {
+                                        attributes.find(
+                                          (attribute) =>
+                                            attribute.id ===
+                                            attributeValue.attributeId
+                                        )?.name
+                                      }
+                                      :
+                                    </Label>
+                                    <Input
+                                      name={`attribute-${i}`}
+                                      value={attributeValue.value}
+                                      className="col-span-3 disabled:opacity-100"
+                                      disabled
+                                      key={i}
+                                    ></Input>
+                                  </div>
+                                )
+                              )}
+                            </div>
+
                             <Button
                               onClick={() =>
-                                downloadDocument(document.contentUrl)
+                                downloadDocument(version.contentUrl)
                               }
                             >
                               <DownloadIcon />
